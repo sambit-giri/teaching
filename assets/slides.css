@@ -112,6 +112,22 @@ html, body { background: var(--bg); }
 }
 /* a box drawn over part of a figure (inline left/top/width/height in %) */
 .reveal .mark-wrap { position: relative; }
+/* a label placed over a figure (inside .mark-wrap) with inline left/top in % */
+.reveal .overlay-label { position: absolute; transform: translate(-50%, 0); font-size: 1.2em; color: var(--accent-strong, #0e7490); }
+/* marks over a figure, centred on inline left/top (in %): a dot, a ring (inline width in %), a label */
+.reveal .mark-wrap .pin, .reveal .mark-wrap .ring, .reveal .mark-wrap .tag { position: absolute; transform: translate(-50%, -50%); }
+.reveal .mark-wrap .pin { width: 18px; height: 18px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.5); }
+.reveal .mark-wrap .ring { aspect-ratio: 1; border: 3px solid var(--hot); border-radius: 50%; }
+.reveal .mark-wrap .ring.box { border-color: #15803d; border-radius: 4px; }
+.reveal .mark-wrap .tag.dist { font-size: 15px; background: rgba(14, 116, 144, 0.92); }
+.reveal .mark-wrap .tag {
+  padding: 3px 10px;
+  font: 600 18px var(--f-ui);
+  white-space: nowrap;
+  color: #fff;
+  background: rgba(15, 23, 42, 0.85);
+  border-radius: 6px;
+}
 .reveal .mark { position: absolute; border: 4px solid var(--gold); border-radius: 10px; box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.4); }
 
 /* Cover: title, date, then two figures filling the rest (the history-of-the-Universe timeline in
@@ -168,6 +184,64 @@ html, body { background: var(--bg); }
   cursor: pointer;
 }
 .reveal .wall-bar button:hover { color: var(--accent); border-color: var(--accent); }
+
+.reveal h3 { margin: 0.5em 0 0.3em; font: 700 28px var(--f-ui); letter-spacing: -0.01em; color: var(--ink); }
+
+/* History of Cosmology: one column per cosmology, images of equal height */
+.reveal .history img { height: 300px; width: 100%; object-fit: contain; }
+.reveal .history p { margin: 0 0 0.45em; font-size: 0.92em; line-height: 1.35; }
+.reveal .history b { font-family: var(--f-ui); color: var(--accent); }
+
+/* Clickable options (<div class="choices"> of <details class="yes|no|partly">): the summary is
+   the option, the paragraph opens with the verdict and the reason */
+.reveal .choices { display: grid; gap: 10px; align-content: start; }
+.reveal .choices details { border: 1px solid var(--edge); border-radius: 12px; background: var(--card); }
+.reveal .choices summary {
+  padding: 10px 16px;
+  font: 700 28px var(--f-ui);
+  cursor: pointer;
+  list-style: none;
+}
+.reveal .choices summary::-webkit-details-marker { display: none; }
+.reveal .choices summary span { margin-left: 0.4em; font-weight: 400; font-size: 0.75em; color: var(--ink-soft); }
+.reveal .choices summary:hover { color: var(--accent); }
+.reveal .choices p { margin: 0; padding: 0 16px 12px; font-size: 0.8em; line-height: 1.4; }
+.reveal .choices details.yes[open] { border-color: var(--good); }
+.reveal .choices details.yes b { color: var(--good); }
+.reveal .choices details.no[open] { border-color: var(--hot); }
+.reveal .choices details.no b { color: var(--hot); }
+.reveal .choices details.partly[open] { border-color: var(--gold); }
+.reveal .choices details.partly b { color: var(--gold); }
+
+/* Olbers' paradox widget (lectures/01-observables/olbers.js) */
+.reveal .olbers-sky { width: 480px; height: 480px; border-radius: 50%; image-rendering: pixelated; box-shadow: 0 0 0 1px var(--edge); background: #05080f; }
+.reveal .olbers-label { display: block; margin-top: 0.6em; font: 600 22px var(--f-ui); color: var(--ink-soft); }
+.reveal .olbers-slider { width: 100%; margin: 10px 0 14px; accent-color: var(--accent); }
+.reveal .olbers-out { font-family: var(--f-ui); font-size: 0.8em; }
+.reveal .olbers-paradox { margin-top: 0.4em; padding: 12px 16px; font-size: 0.8em; border: 2px solid var(--accent); border-radius: 12px; background: var(--accent-soft); }
+.reveal .olbers-out sup { font-size: 0.7em; }
+
+/* Isotropy and homogeneity (lectures/01-observables/homogeneity.js) */
+.reveal .patterns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.reveal .patterns figure { margin: 0; }
+.reveal .patterns canvas { width: 100%; aspect-ratio: 1; border-radius: 8px; box-shadow: 0 0 0 1px var(--edge); }
+.reveal .patterns figcaption { margin-top: 8px; font: 400 18px/1.35 var(--f-ui); color: var(--ink-soft); }
+.reveal .patterns figcaption b { color: var(--ink); }
+.reveal table.scales { width: 100%; border-collapse: collapse; font-size: 0.85em; margin-top: 8px; }
+.reveal table.scales th { padding: 6px 10px; text-align: left; font: 500 15px var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); border-bottom: 1px solid var(--edge); }
+.reveal table.scales td { padding: 12px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.reveal table.scales td { vertical-align: middle; padding: 6px 12px; }
+.reveal table.scales td:first-child { width: 190px; padding-left: 0; }
+.reveal table.scales td:first-child img { height: 60px; width: auto; max-width: 200px; border-radius: 4px; }
+.reveal table.scales td:first-child img.plate { padding: 4px; }
+.reveal table.scales td:nth-child(2) { font-family: var(--f-ui); font-weight: 700; white-space: nowrap; }
+.reveal table.scales td:nth-child(2) span { font-weight: 400; color: var(--ink-soft); }
+.reveal .cluster-map { width: 500px; height: 500px; border-radius: 8px; box-shadow: 0 0 0 1px var(--edge); }
+.reveal .cluster-slider { width: 100%; margin: 10px 0 14px; accent-color: var(--accent); }
+.reveal .cluster-out { font-family: var(--f-ui); font-size: 0.8em; }
+.reveal .cluster-key { font-size: 0.8em; color: var(--ink-soft); }
+.reveal .cluster-ok { margin-left: 0.3em; padding: 1px 8px; font-weight: 700; color: #fff; background: var(--good); border-radius: 999px; }
+.reveal .cluster-key i { font-style: normal; font-weight: 700; }
 
 /* numbered steps for an activity */
 .reveal .steps { margin: 0; padding-left: 0; list-style: none; }

@@ -14,6 +14,8 @@
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
 <script defer src="../../../assets/slides.js"></script>
+<script defer src="olbers.js"></script>
+<script defer src="homogeneity.js"></script>
 </head>
 <body>
 <a class="deck-home" href="../../">&larr; AS5003</a>
@@ -42,6 +44,20 @@
       <p class="credit">&nbsp;</p>
     </figure>
   </div>
+</section>
+
+<section id="big-questions">
+  <div class="cols" style="grid-template-columns: 1fr 1fr; gap: 40px;">
+    <div class="fig">
+      <img src="../../figures/flammarion-engraving-colour.jpg" alt="The Flammarion engraving: a traveller puts his head through the edge of the sky and sees the machinery of the heavens beyond" style="border-radius: 6px;">
+      <p class="credit">Flammarion engraving (1888), coloured by Hugo Heikenwaelder · CC BY-SA 2.5</p>
+    </div>
+    <div>
+      <h2 style="font-size: 46px; line-height: 1.3;">Where do we come from?<br>What are we?<br>Where are we going?</h2>
+      <p class="fragment">Cosmology grapples with these questions by describing the past, explaining the present and predicting the future of the universe.</p>
+    </div>
+  </div>
+  <aside class="notes">Transition: "I am a cosmologist studying the origin and nature of the first stars in our Universe."</aside>
 </section>
 
 <section id="who-am-i">
@@ -152,10 +168,27 @@
 </section>
 
 <section id="history">
-  <h2>History of Cosmology</h2>
-  <img class="abs" src="../../figures/cosmology-norse-yggdrasil.jpg" alt="Yggdrasil, the world tree of Norse cosmology" style="left: 56px; top: 165px; width: 350px;">
-  <img class="abs" src="../../figures/cosmology-egyptian-nut-geb.jpg" alt="Egyptian cosmology: the sky goddess Nut arched over the earth god Geb" style="left: 450px; top: 372px; width: 600px;">
-  <img class="abs plate" src="../../figures/cosmology-ptolemaic-system.png" alt="The Ptolemaic system of nested spheres" style="left: 880px; top: 24px; width: 330px;">
+  <h2 style="margin-bottom: 0.15em;">History of Cosmology</h2>
+  <p class="aside">Every cosmology was an attempt to explain what people observed.</p>
+  <!-- one column per cosmology; its observation and model appear on a click -->
+  <div class="cols history" style="gap: 48px; align-items: start; margin-top: 18px;">
+    <div>
+      <img src="../../figures/cosmology-egyptian-nut-geb.jpg" alt="Egyptian cosmology: the sky goddess Nut arched over the earth god Geb">
+      <h3>Egyptian</h3>
+      <div class="fragment">
+        <p><b>Seen:</b> desert plains stretching away from the Nile valley, and the blue sky overhead.</p>
+        <p><b>Model:</b> a flat Earth (the god Geb) covered by a solid dome (the sky goddess Nut); the sun god Ra carries the disk of the Sun from east to west.</p>
+      </div>
+    </div>
+    <div>
+      <img class="plate" src="../../figures/cosmology-ptolemaic-system.png" alt="The Ptolemaic system of nested spheres">
+      <h3>Greek (Aristotle, Ptolemy)</h3>
+      <div class="fragment">
+        <p><b>Seen:</b> the Earth and Moon are spherical; the Sun is much farther away than the Moon; the stars are much farther away than the Earth's diameter.</p>
+        <p><b>Model:</b> the "two-sphere" model: a spherical Earth inside a much larger celestial sphere carrying the stars; Sun, Moon and planets move on epicycles in between.</p>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section id="meet-your-neighbour">
@@ -164,8 +197,8 @@
     <div class="fig"><img src="../../figures/who-are-you-note.jpg" alt="A note pinned to a cork board: Who are you?"></div>
     <ol class="steps">
       <li><b>Think</b> Which other historical cosmologies do you know? Any culture, any era.</li>
-      <li><b>Pair</b> Introduce yourselves to your neighbour: short background, why cosmology, expectations for the course. Then compare your cosmologies.</li>
-      <li><b>Share</b> Tell the class who you are, and one interesting cosmology you discussed. One or both of you can speak.</li>
+      <li><b>Pair</b> Introduce yourselves to your neighbour, then discuss your cosmologies.</li>
+      <li><b>Share</b> Tell the class who both of you are, and one interesting cosmology you discussed.</li>
     </ol>
   </div>
 </section>
@@ -173,18 +206,6 @@
 <section id="historical-cosmologies">
   <h2>More historical Cosmologies</h2>
   <div class="wall" data-wall="historical-cosmologies"></div>
-</section>
-
-<section id="great-debate">
-  <h2>~100 years ago: Shapley-Curtis Great Debate</h2>
-  <div class="cols" style="grid-template-columns: 1.15fr 1fr;">
-    <div class="fig"><img src="../../figures/shapley-curtis.jpg" alt="Harlow Shapley and Heber Curtis"></div>
-    <div>
-      <p>Central question: the scale of the Universe.</p>
-      <p>Shapley was arguing that the Milky Way Galaxy was the entire universe, and that “spiral nebulae” were contained within the Milky Way.</p>
-      <p>Curtis was arguing that these “nebulae” were galaxies like our own.</p>
-    </div>
-  </div>
 </section>
 
 <section id="hot-big-bang">
@@ -197,50 +218,205 @@
 <section id="dark-sky">
   <p class="kicker">Fundamental observation #1</p>
   <h2>The night sky is dark</h2>
-  <p>Imagine a Universe that is infinite, uniform, eternal and static.<br>Filled with stars, with a space density $n_*$.</p>
-  <p>Every line of sight will eventually intercept a star, at an average distance
-    $$\lambda = \frac{1}{n_* \pi R_*^2}$$</p>
-  <div class="fill" style="align-items: flex-end; min-height: 240px;">
-    <img class="plate" src="../../figures/olbers-line-of-sight-cylinder.png" alt="An observer looking along a cylinder of radius R* that ends on a star" style="width: 560px;">
+  <!-- click 1: the forest (shown, then hidden by click 2); clicks 2–5: the steps derived on the board -->
+  <div class="cols" style="grid-template-columns: 1fr 1fr; align-items: start;">
+    <div>
+      <p>Imagine a Universe that is <strong>infinite</strong>, <strong>uniform</strong>, <strong>transparent</strong>, <strong>eternal</strong> and <strong>static</strong>. Filled with stars, with a space density $n_*$.</p>
+      <p><strong>How far, on average, can we look before our line of sight hits a star?</strong></p>
+      <div class="mark-wrap" style="margin-top: 10px;">
+        <img class="plate" src="../../figures/olbers-line-of-sight-cylinder.png" alt="An observer looking along a cylinder of radius R* and length lambda that ends on a star">
+        <span class="overlay-label" style="left: 52%; top: 46%;">$\lambda$</span>
+      </div>
+    </div>
+    <div>
+      <p class="fragment">Cylinder of length $\lambda$ around the line of sight:<br>$V = \lambda \pi R_*^2$</p>
+      <p class="fragment">Stars inside it: $N = n_* V = n_* \lambda \pi R_*^2$.<br>One star is enough to block the view: $N = 1$</p>
+      <p class="fragment">$$\lambda = \frac{1}{n_* \pi R_*^2}$$</p>
+      <p class="fragment">With $n_* \sim 10^9\,\mathrm{Mpc^{-3}}$ and $\pi R_*^2 \sim \pi R_\odot^2 \sim 10^{-27}\,\mathrm{Mpc^2}$:
+        $$\lambda \sim 10^{18}\,\mathrm{Mpc}$$
+        Very large (about $3\times10^{19}$ times the diameter of our Galaxy), but <em>finite</em>.</p>
+    </div>
   </div>
-  <img class="abs fragment shadow" src="../../figures/forest-line-of-sight.jpg" alt="A forest: every line of sight ends on a tree trunk" style="left: 380px; top: 150px; width: 520px; border-radius: 8px;">
+  <img class="abs fragment fade-in-then-out shadow" data-fragment-index="0" src="../../figures/forest-line-of-sight.jpg" alt="A forest: every line of sight ends on a tree trunk" style="left: 660px; top: 150px; width: 520px; border-radius: 8px;">
+  <aside class="notes">
+    Forest: in a deep forest, every line of sight ends on a trunk.<br>
+    Derivation: cylinder of radius R* and length λ around the line of sight, volume V = λπR*².
+    Number of stars inside: N = n* V = n* λ π R*². One star blocks the view, so N = 1 gives λ = 1/(n* π R*²).
+    With n* ~ 10⁹ Mpc⁻³ and πR*² ~ πR☉² ~ 10⁻²⁷ Mpc²: λ ~ 10¹⁸ Mpc (Milky Way ~ 0.03 Mpc across, so ~3×10¹⁹ Galaxies).
+    Very large but finite: in such a universe the sky is paved with stars.<br>
+    Transition: so how much of the sky is covered by stars? Try it.
+  </aside>
+</section>
+
+<section id="olbers-try">
+  <h2>Try it: how far must we see?</h2>
+  <div class="cols" style="grid-template-columns: auto 1fr; gap: 44px;">
+    <canvas class="olbers-sky" width="480" height="480" aria-label="Simulated sky: each point lights up if its line of sight meets a star within the distance we can see"></canvas>
+    <div class="olbers-panel">
+      <p>Each point of this sky is one line of sight. It lights up if it meets a star closer than the distance $D$ we can see.</p>
+      <label class="olbers-label">How far we can see, $D/\lambda$</label>
+      <input class="olbers-slider" type="range" min="-16" max="1" step="0.05" value="-3">
+      <p class="olbers-out"></p>
+      <!-- shown by olbers.js once D ≥ λ -->
+      <p class="olbers-paradox">This is <strong>Olbers' paradox</strong> (Heinrich Olbers, 1823): in an infinite, eternal universe full of stars, every line of sight ends on a star, so the night sky should be as bright as the surface of a star.</p>
+      <p class="aside">Fraction of the sky covered by stars: $F = 1 - e^{-D/\lambda} \approx D/\lambda$ when $D \ll \lambda$.</p>
+    </div>
+  </div>
+  <aside class="notes">Transition: at D ≈ λ the whole sky is covered with stars. But distant stars look faint: is a sky full of distant stars still bright?</aside>
 </section>
 
 <section id="surface-brightness">
   <h2>The night sky is dark</h2>
-  <p>The surface brightness $\Sigma_*$ of each star is defined as the flux arriving from the star, per angular area.</p>
-  <p>$f_* = \dfrac{L_*}{4\pi r^2}$, where $L_*$ is the luminosity of the star, and $r$ is the distance.</p>
-  <p>$\Omega_* = \dfrac{\pi R_*^2}{4\pi r^2}$</p>
-  <p>$\Sigma_* = \dfrac{f_*}{\Omega_*} = \dfrac{L_*}{\pi R_*^2}$, <em>independent of distance</em></p>
-  <div class="callout fragment">Since every line of sight leads to a star, every point on the sky should have a surface brightness $\Sigma_*$, and we must conclude that the sky should be uniformly bright.</div>
+  <p><strong>But distant stars look faint: is a sky full of distant stars still bright?</strong></p>
+  <p>The surface brightness $\Sigma_*$ of a star is the flux arriving from it, per angular area.</p>
+  <!-- derive on the board; each click then shows the step on the slide -->
+  <p class="fragment">Flux from a star of luminosity $L_*$ at distance $r$: $f_* = \dfrac{L_*}{4\pi r^2}$</p>
+  <p class="fragment">Angular area of the star (in steradians): $\Omega_* = \dfrac{\pi R_*^2}{r^2}$</p>
+  <p class="fragment">$\Sigma_* = \dfrac{f_*}{\Omega_*} = \dfrac{L_*}{4\pi^2 R_*^2}$, <em>independent of distance</em></p>
+  <div class="callout fragment" style="position: static; transform: none; width: auto; margin-top: 0.5em; font-size: 1em;">Since every line of sight leads to a star, every point on the sky should have a surface brightness $\Sigma_*$, and we must conclude that the sky should be uniformly bright.</div>
+  <aside class="notes">
+    Question: distant stars look faint, so is a sky full of distant stars still bright?<br>
+    Flux falls with distance: f* = L*/(4πr²). But the star's angular area falls the same way: Ω* = πR*²/r².
+    So the surface brightness Σ* = f*/Ω* = L*/(4π²R*²) does not depend on r: a distant star covers less sky but is just as bright per steradian.<br>
+    Every line of sight ends on a star, so every point of the sky has surface brightness Σ*: the sky should be as bright as the surface of the Sun.
+    It is not, so one of our assumptions is wrong (next: Think-Pair-Share).
+  </aside>
 </section>
 
-<section id="which-assumption">
-  <h2>Which assumption was wrong?</h2>
-  <div class="fill" style="align-items: center;">
-    <img src="../../figures/night-sky.jpg" alt="A dark night sky full of stars above a tree line" style="height: 470px; border-radius: 8px;">
-    <div style="display: grid; grid-template-columns: repeat(4, 1fr); width: 760px; margin-top: 18px; text-align: center; font-family: var(--f-ui); font-weight: 600;">
-      <span>Infinite</span><span>Uniform</span><span>Eternal</span><span>Static</span>
+<section id="which-assumption" data-text-size="1">
+  <p class="kicker">Think-Pair-Share</p>
+  <h2 style="margin-bottom: 0.15em;">Which assumption was wrong?</h2>
+  <p class="aside">Think alone, discuss with your neighbour, then share. Click an assumption to see why.</p>
+  <div class="cols" style="grid-template-columns: 0.8fr 1.2fr; gap: 36px; margin-top: 12px;">
+    <div class="fig"><img src="../../figures/night-sky.jpg" alt="A dark night sky full of stars above a tree line" style="border-radius: 8px;"></div>
+    <div class="choices">
+      <details class="no">
+        <summary>Infinite <span>in size</span></summary>
+        <p><b>Possible, but not the answer.</b> If stars only fill a region of size $r_{\rm max} \ll \lambda$, only a fraction $F \sim r_{\rm max}/\lambda$ of the sky is covered. But we do not need this: even an infinite universe has a dark sky if it has a finite age.</p>
+      </details>
+      <details class="no">
+        <summary>Uniform <span>stars everywhere</span></summary>
+        <p><b>No.</b> On large scales the Universe <em>is</em> homogeneous and isotropic (the next observation), so the stars cannot hide in clumps.</p>
+      </details>
+      <details class="no">
+        <summary>Transparent <span>nothing in the way</span></summary>
+        <p><b>No.</b> Olbers' own idea: dust absorbs the starlight. But the dust heats up until it glows as brightly as the stars.</p>
+      </details>
+      <details class="yes">
+        <summary>Eternal <span>infinitely old</span></summary>
+        <p><b>Yes, the main reason.</b> The Universe has a finite age $t_0$, so we only see stars out to $r \sim c t_0$ (the horizon); their light has not reached us from farther. Then $F \sim c t_0/\lambda$: with $c t_0 \approx 4000$ Mpc, $D/\lambda \approx 4\times10^{-15}$. Try that on the slider!</p>
+      </details>
+      <details class="partly">
+        <summary>Static <span>not expanding</span></summary>
+        <p><b>Partly.</b> In an expanding universe the surface brightness of distant sources is lower than in a static one. This helps, but the finite age matters most.</p>
+      </details>
     </div>
   </div>
 </section>
 
-<section id="isotropic">
+<section id="iso-words">
   <p class="kicker">Fundamental observation #2</p>
-  <h2 style="margin-bottom: 0.2em;">The universe is isotropic and homogeneous*</h2>
-  <p class="aside">* on scales ~100 Mpc and larger</p>
-  <div class="fill center">
-    <img class="plate" src="../../figures/scales-earth-to-large-scale-structure.png" alt="From the Earth to the Solar neighbourhood, the Milky Way, galaxy groups and the large-scale structure">
+  <h2>The universe is isotropic and homogeneous</h2>
+  <div class="cols" style="grid-template-columns: 1fr 1.25fr; align-items: start; gap: 40px;">
+    <div>
+      <p><strong>What do isotropic and homogeneous mean?</strong></p>
+      <p><strong>Isotropic:</strong> no preferred <em>direction</em>. It looks the same whichever way you look.</p>
+      <p><strong>Homogeneous:</strong> no preferred <em>location</em>. It looks the same wherever you are.</p>
+      <p class="fragment" data-fragment-index="1">Example: still water. It looks the same everywhere and in every direction, but only on scales much larger than a molecule (0.3 nm). Up close it is lumpy.</p>
+    </div>
+    <div>
+      <p class="aside" style="margin-bottom: 10px;">Which of these is homogeneous? Which is isotropic?</p>
+      <div class="patterns">
+        <figure><canvas class="pattern" data-kind="stripes"></canvas>
+          <figcaption class="fragment" data-fragment-index="2">Homogeneous (on scales larger than a stripe), <b>not isotropic</b>: the stripes point a way</figcaption></figure>
+        <figure><canvas class="pattern" data-kind="bullseye"></canvas>
+          <figcaption class="fragment" data-fragment-index="3">Isotropic around the centre only, <b>not homogeneous</b>: the rings tell you where you are</figcaption></figure>
+        <figure><canvas class="pattern" data-kind="random"></canvas>
+          <figcaption class="fragment" data-fragment-index="4"><b>Both</b>, on scales larger than the spacing between dots (like water)</figcaption></figure>
+      </div>
+    </div>
   </div>
+  <aside class="notes">Ryden 2.2 and Fig. 2.3 (stripes, bullseye). Ask the class first, then click to reveal each answer.</aside>
+</section>
+
+<section id="isotropic" data-text-size="0.9">
+  <h2 style="margin-bottom: 0.2em;">The universe is isotropic and homogeneous?</h2>
+  <p class="aside">Zoom out: is there still a preferred direction?</p>
+  <!-- one row per click: the picture and its text appear together -->
+  <table class="scales">
+    <thead><tr><th></th><th>Scale</th><th>Preferred direction</th></tr></thead>
+    <tbody>
+      <tr class="fragment"><td><img src="../../figures/scale-1-earth.jpg" alt="The Earth"></td><td>Earth<br><span>~10<sup>4</sup> km</span></td><td>“down”, towards the centre of the Earth</td></tr>
+      <tr class="fragment"><td><img src="../../figures/scale-2-pleiades.jpg" alt="The Pleiades star cluster"></td><td>Stars (Pleiades)<br><span>~10 pc</span></td><td>towards the nearest bright stars (the Sun, for us)</td></tr>
+      <tr class="fragment"><td><img src="../../figures/scale-3-spiral-galaxy.jpg" alt="A spiral galaxy"></td><td>A galaxy<br><span>~30 kpc</span></td><td>towards the centre and along the disc (the Milky Way band)</td></tr>
+      <tr class="fragment"><td><img src="../../figures/scale-4-galaxy-group.jpg" alt="A group of galaxies"></td><td>Group of galaxies<br><span>~1–3 Mpc</span></td><td>towards the big members (for us: M31 in the Local Group)</td></tr>
+      <tr class="fragment"><td><img class="plate" src="../../figures/scale-5-cfa-redshift-slice.png" alt="A slice of the CfA galaxy redshift survey, with its position on the sky"></td><td>Galaxy survey<br><span>~200 Mpc</span></td><td><strong>none</strong>: clusters, filaments and voids, the same pattern everywhere</td></tr>
+    </tbody>
+  </table>
+  <div class="callout fragment" style="position: static; transform: none; width: auto; margin-top: 14px; padding: 14px 24px; font-size: 1em;">Isotropic and homogeneous on scales of <strong>~100 Mpc and larger</strong></div>
+  <aside class="notes">Transition to the next slide: "Let's look at a galaxy survey properly and investigate if it is indeed isotropic and homogeneous."<br>Ryden 2.2 uses spheres centred on your navel: 3 m ("down"; density ~10²⁸ × average), 3 AU (the Sun; ~10²² ×), 3 Mpc (M31; ~10 ×), 200 Mpc (no preferred direction; ≈ average). Last row: a slice of the CfA redshift survey (de Lapparent, Geller & Huchra 1986), out to ~15 000 km/s. Superclusters ~100 Mpc long, voids ~100 Mpc across; no larger structures.</aside>
+</section>
+
+<section id="iso-try">
+  <h2>Try it: how big must the sphere be?</h2>
+  <div class="cols" style="grid-template-columns: auto 1fr; gap: 40px;">
+    <canvas class="cluster-map" aria-label="Simulated map of clustered galaxies, with circles of the chosen size"></canvas>
+    <div class="cluster-panel">
+      <p>A toy map of clustered galaxies, 1000 Mpc across. We count galaxies in 40 circles placed at random.</p>
+      <p><strong>How big must the circles be before they differ by less than 10%?</strong></p>
+      <label class="olbers-label">Circle diameter</label>
+      <input class="cluster-slider" type="range" min="0.7" max="2.6" step="0.02" value="1">
+      <p class="cluster-out"></p>
+      <p class="aside">Small circles: the counts differ wildly (clusters vs. empty space). Large circles: every circle holds about the same number, so the map is homogeneous.</p>
+    </div>
+  </div>
+  <aside class="notes">Toy model (2D, made up): groups of galaxies (~2 Mpc) in superclusters (~20 Mpc), plus field galaxies; circles differ by ~±100% at 10 Mpc, ~±16% at 100 Mpc, ~±8% at 200 Mpc. Not real data; the real thing is the 2dF survey on the next slide.</aside>
 </section>
 
 <section id="isotropic-2dfgrs">
-  <h2 style="margin-bottom: 0.2em;">The universe is isotropic and homogeneous*</h2>
-  <p class="aside">* on scales ~100 Mpc and larger</p>
+  <h2 style="margin-bottom: 0.3em;">A galaxy survey: 2dFGRS</h2>
+  <!-- marks over the map, one per click; positions in % of the 800×478 image (us at the centre: 50%, 50%) -->
   <div class="fill center">
-    <img class="plate" src="../../figures/2dfgrs-redshift-cone.gif" alt="The 2dF Galaxy Redshift Survey: two cones of galaxies looking uniform on large scales">
+    <div class="mark-wrap" style="width: 880px;">
+      <img class="plate" src="../../figures/2dfgrs-redshift-cone.gif" alt="The 2dF Galaxy Redshift Survey: two wedges of galaxies seen from our position at the tip" style="width: 100%;">
+      <!-- distances of the redshift ticks (comoving, Ryden's benchmark model); always shown -->
+      <span class="tag dist" style="left: 61%; top: 42%;">≈ 220 Mpc</span>
+      <span class="tag dist" style="left: 69.4%; top: 31.6%;">≈ 430 Mpc</span>
+      <span class="tag dist" style="left: 77.9%; top: 21.1%;">≈ 640 Mpc</span>
+      <span class="tag dist" style="left: 86.6%; top: 10.5%;">≈ 840 Mpc</span>
+      <div class="fragment" data-fragment-index="1">
+        <span class="pin" style="left: 50%; top: 50.2%;"></span>
+        <span class="tag" style="left: 50%; top: 58%;">us</span>
+      </div>
+      <div class="fragment" data-fragment-index="2">
+        <span class="tag" style="left: 17%; top: 8%;">one direction on the sky</span>
+        <span class="tag" style="left: 80%; top: 92%;">the opposite direction</span>
+      </div>
+      <div class="fragment" data-fragment-index="3">
+        <span class="ring" style="left: 32%; top: 56%; width: 3%;"></span>
+        <span class="ring" style="left: 60.5%; top: 51%; width: 3%;"></span>
+        <span class="tag" style="left: 32%; top: 66%;">~50 Mpc: clusters, filaments, voids</span>
+      </div>
+      <div class="fragment" data-fragment-index="4">
+        <span class="ring box" style="left: 16%; top: 33%; width: 5.08%;"></span>
+        <span class="ring box" style="left: 18%; top: 80%; width: 5.08%;"></span>
+        <span class="ring box" style="left: 78%; top: 30%; width: 5.08%;"></span>
+        <span class="ring box" style="left: 83%; top: 66%; width: 5.08%;"></span>
+        <span class="tag" style="left: 83%; top: 78%;">~100 Mpc patches look alike</span>
+      </div>
+    </div>
   </div>
-  <div class="callout fragment">Note this is based on the <em>assumption</em> that our location in the universe is not special (Copernican principle).<br>We cannot observe the Universe from any location.</div>
+  <aside class="notes">
+    Point out: (1) we sit at the apex; the two wedges look in opposite directions on the sky, yet they look statistically alike: isotropic.
+    (2) Near us the map is lumpy: clusters, filaments, voids of tens of Mpc. (3) Further out, every ~100 Mpc patch looks like every other; there is no structure bigger than ~100 Mpc: homogeneous.
+    (Optional) The points thin out with distance only because faint galaxies are too faint to measure (the survey is magnitude limited), not because there are fewer galaxies.
+    Redshift 0.1 ≈ 400 Mpc; the outer edge is z ≈ 0.25, about 1000 Mpc.<br>
+    If asked why there are only two wedges: 2dF observed two strips of sky, around the north and south Galactic poles, i.e. looking out of the disc of the Milky Way.
+    The empty directions point into the Galactic plane, where dust and stars of our own Galaxy hide the distant galaxies (the "zone of avoidance"). Each wedge is also a thin slice (a few degrees thick) of a 3D volume.
+  </aside>
+  <div class="callout fragment" data-fragment-index="5">Note this is based on the <em>assumption</em> that our location in the universe is not special (Copernican principle).<br>We cannot observe the Universe from any location.
+    <p class="fragment aside" data-fragment-index="6" style="margin: 0.7em 0 0;">Isotropic around us + Copernican principle → isotropic around every point → homogeneous.<br>This is the <strong>cosmological principle</strong>.</p>
+  </div>
 </section>
 
 <section id="cmb">
@@ -290,7 +466,7 @@
 <section id="before-next-time">
   <h2>Before next time</h2>
   <ul>
-    <li>Visit the Canvas site (and answer the anonymous poll on exam times)</li>
+    <li>Visit the Canvas site. Make sure you can find the documents in the "Modules" section</li>
     <li>Get the book (if you haven’t already), and read Chapters 1+2</li>
     <li>Read the instructions for the literature assignment, and let me know if you have any questions</li>
   </ul>

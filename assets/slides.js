@@ -83,6 +83,13 @@ function wall(box) {
 }
 document.querySelectorAll(".reveal .wall").forEach(wall);
 
+// Clickable options (<details>): one open at a time per group, and after a click the keyboard
+// goes back to the slides (Space, arrows).
+document.querySelectorAll(".reveal details").forEach((d) => d.addEventListener("toggle", () => {
+  d.querySelector("summary").blur();
+  if (d.open) d.parentElement.querySelectorAll(":scope > details[open]").forEach((o) => o !== d && (o.open = false));
+}));
+
 Reveal.initialize({
   width: 1280,
   height: 720,

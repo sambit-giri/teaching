@@ -10,6 +10,7 @@ Most were taken from Sambit's Keynote decks (Lecture 1: `Lecture1_26Nov03.key`).
 | File | Content | Source | Status |
 |---|---|---|---|
 | `history-of-universe-timeline.jpg` | Timeline of the Universe | NASA / WMAP Science Team | free |
+| `flammarion-engraving-colour.jpg` | Flammarion engraving (1888), coloured | coloured by Hugo Heikenwaelder (1998), Wikimedia Commons *Universum.jpg*, CC BY-SA 2.5 | credit |
 | `cosmology-word-of-the-day.jpg` | "cosmology" definition card | Dictionary.com Word of the Day, 19 Feb 2016 | check |
 | `book-ryden-introduction-to-cosmology.jpg` | Book cover | B. Ryden, *Introduction to Cosmology*, 2nd ed., Cambridge University Press | check |
 | `book-bergstrom-goobar-cosmology-and-particle-astrophysics.jpg` | Book cover | L. Bergström & A. Goobar, Springer | check |
@@ -19,7 +20,6 @@ Most were taken from Sambit's Keynote decks (Lecture 1: `Lecture1_26Nov03.key`).
 | `book-weinberg-the-first-three-minutes.jpg` | Book cover | S. Weinberg, Basic Books | check |
 | `book-mack-the-end-of-everything.jpg` | Book cover | K. Mack, Scribner / Penguin | check |
 | `who-are-you-note.jpg` | "Who are you?" note on a cork board | Depositphotos stock photo 30730141 | check |
-| `cosmology-norse-yggdrasil.jpg` | Yggdrasil, Norse world tree | Poster by Haukur Halldórsson | check |
 | `cosmology-egyptian-nut-geb.jpg` | Egyptian cosmology: Nut over Geb | unknown | check |
 | `cosmology-ptolemaic-system.png` | Ptolemaic system of spheres | P. Apian, *Cosmographia* (1539) | free |
 | `think-pair-share-historical-cosmologies-ht22.png` | Students' answers, HT22 class | own course (HT22) | free |
@@ -27,7 +27,11 @@ Most were taken from Sambit's Keynote decks (Lecture 1: `Lecture1_26Nov03.key`).
 | `olbers-line-of-sight-cylinder.png` | Line of sight as a cylinder of radius R* | screenshot, source unknown (stray label removed) | check |
 | `forest-line-of-sight.jpg` | Forest: every line of sight ends on a tree | unknown stock photo | check |
 | `night-sky.jpg` | Night sky above a tree line | unknown | check |
-| `scales-earth-to-large-scale-structure.png` | Earth → Pleiades → galaxy → group → large-scale structure | screenshot, source unknown | check |
+| `scale-1-earth.jpg` | The Earth | cropped from a slide montage, source unknown (probably NASA) | check |
+| `scale-2-pleiades.jpg` | The Pleiades star cluster | cropped from a slide montage, source unknown | check |
+| `scale-3-spiral-galaxy.jpg` | A spiral galaxy | cropped from a slide montage, source unknown | check |
+| `scale-4-galaxy-group.jpg` | A compact group of galaxies | cropped from a slide montage, source unknown | check |
+| `scale-5-cfa-redshift-slice.png` | CfA redshift survey slice and its position on the sky | de Lapparent, Geller & Huchra (1986), via a slide montage | check |
 | `2dfgrs-redshift-cone.gif` | 2dF Galaxy Redshift Survey cone | 2dFGRS team (Colless et al. 2001) | credit |
 | `cmb-spectrum-cobe-firas.png` | CMB spectrum, COBE/FIRAS | Wikimedia Commons, *Cmbr.svg* | free |
 | `bbn-light-element-abundances.jpg` | Light-element abundances vs. density | NASA / WMAP Science Team | free |
