@@ -1,0 +1,52 @@
+/* Colour and font tokens shared by every page in the repo (sambit-giri.github.io look: slate + cyan).
+   Dark by default; theme.js sets data-theme="light" on <html> to switch. */
+
+:root {
+  --bg: #0b1120;
+  --glow-a: rgba(34, 211, 238, 0.10);
+  --glow-b: rgba(129, 140, 248, 0.12);
+  --ink: #e2e8f0;
+  --ink-soft: #94a3b8;
+  --panel: rgba(15, 23, 42, 0.72);
+  --card: rgba(255, 255, 255, 0.04);
+  --edge: rgba(148, 163, 184, 0.18);
+  --line: rgba(148, 163, 184, 0.14);
+  --accent: #22d3ee;
+  --accent-soft: rgba(34, 211, 238, 0.12);
+  --stars: 0.55;
+  --grid: rgba(148, 163, 184, 0.18);
+  /* data colours for figures */
+  --hot: #fb923c;
+  --cool: #60a5fa;
+  --good: #4ade80;
+  --gold: #facc15;
+  --violet: #a78bfa;
+  --pink: #f472b6;
+  --f-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --f-mono: Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  /* as on sambit-giri.github.io: sans for headings and controls, serif for prose, mono for labels */
+  --f-serif: Charter, "Bitstream Charter", Georgia, serif;
+  color-scheme: dark;
+}
+:root[data-theme="light"] {
+  --bg: #f8fafc;
+  --glow-a: rgba(14, 116, 144, 0.06);
+  --glow-b: rgba(99, 102, 241, 0.05);
+  --ink: #0f172a;
+  --ink-soft: #475569;
+  --panel: rgba(255, 255, 255, 0.92);
+  --card: #ffffff;
+  --edge: #cbd5e1;
+  --line: #e2e8f0;
+  --accent: #0e7490;
+  --accent-soft: rgba(14, 116, 144, 0.08);
+  --stars: 0;
+  --grid: rgba(15, 23, 42, 0.10);
+  --hot: #c2410c;
+  --cool: #1d4ed8;
+  --good: #15803d;
+  --gold: #a16207;
+  --violet: #6d28d9;
+  --pink: #be185d;
+  color-scheme: light;
+}

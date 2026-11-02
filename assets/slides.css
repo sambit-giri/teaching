@@ -1,0 +1,224 @@
+/* Look of the lecture slide decks (reveal.js), matching the rest of the site: colours and fonts
+   from tokens.css, bold sans titles, serif text, mono labels. Slides are 1280×720 and reveal.js
+   scales them to the window, so sizes below are in slide pixels (1em = 30px). */
+
+html, body { background: var(--bg); }
+.reveal-viewport {
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(55% 50% at 70% 30%, var(--glow-b), transparent 70%),
+    radial-gradient(45% 45% at 15% 85%, var(--glow-a), transparent 70%);
+}
+
+.reveal {
+  font: 400 30px/1.4 var(--f-serif);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+.reveal .slides { text-align: left; }
+.reveal .slides > section {
+  height: 100%;
+  flex-direction: column;
+  padding: 34px 56px 46px;
+  box-sizing: border-box;
+}
+
+.reveal h1, .reveal h2 {
+  margin: 0 0 0.6em;
+  font-family: var(--f-ui);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  text-wrap: balance;
+  color: var(--ink);
+}
+/* titles in px so that slides.js only resizes the text below them */
+.reveal h1 { font-size: 102px; }
+.reveal h2 { font-size: 54px; }
+.reveal .kicker {
+  margin: 0 0 10px;
+  font: 500 20px var(--f-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.reveal .kicker + h2 { margin-top: 0; }
+
+.reveal p { margin: 0 0 0.6em; }
+.reveal ul { margin: 0; padding-left: 1.1em; }
+.reveal li { margin: 0 0 0.55em; }
+.reveal li::marker { color: var(--accent); }
+.reveal strong { font-weight: 700; }
+.reveal a { color: var(--accent); text-decoration: none; }
+.reveal a:hover { text-decoration: underline; }
+.reveal img { display: block; max-width: 100%; }
+.reveal .katex { font-size: 1.1em; }
+
+/* small grey asides: "(from course plan)", "Will be discussed in Chapter 8", captions */
+.reveal .aside { font: 400 22px/1.4 var(--f-ui); color: var(--ink-soft); }
+.reveal .credit { font: 400 14px var(--f-mono); color: var(--ink-soft); margin-top: 6px; }
+
+/* Layout: the part below the title fills the rest of the slide */
+.reveal .fill { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.reveal .center { align-items: center; justify-content: center; text-align: center; }
+.reveal .cols {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: minmax(0, 1fr);
+  gap: 48px;
+  align-items: center;
+}
+.reveal .fig { height: 100%; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.reveal .fig > img, .reveal .fill > img { max-height: 100%; object-fit: contain; min-height: 0; }
+
+/* figures with a white or transparent background sit on a white plate, so they read in dark mode */
+.reveal .plate { box-sizing: border-box; background: #fff; border-radius: 10px; padding: 10px; }
+:root[data-theme="light"] .reveal .plate { box-shadow: 0 0 0 1px var(--edge); }
+
+/* free placement (collages): position with inline left/top/width in slide pixels */
+.reveal .abs { position: absolute; margin: 0; }
+.reveal .shadow { box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35); }
+
+/* a boxed statement that appears over the slide */
+.reveal .callout {
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  width: 84%;
+  transform: translate(-50%, -50%);
+  padding: 26px 36px;
+  font-size: 34px;
+  line-height: 1.35;
+  text-align: center;
+  color: var(--ink);
+  background: var(--bg);
+  border: 2px solid var(--accent);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+/* reveal.js animates "all" on fragments, which would also animate font-size while slides.js fits the text */
+.reveal .slides section .fragment { transition-property: opacity, visibility, transform; }
+
+/* highlight that appears on a click (class="fragment hl") */
+.reveal .slides section .fragment.hl { opacity: 1; visibility: inherit; border-radius: 0.3em; transition: background-color 0.2s, box-shadow 0.2s; }
+.reveal .slides section .fragment.hl.visible {
+  background: color-mix(in srgb, var(--gold) 24%, transparent);
+  box-shadow: 0 0 0 3px var(--gold);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+/* a box drawn over part of a figure (inline left/top/width/height in %) */
+.reveal .mark-wrap { position: relative; }
+.reveal .mark { position: absolute; border: 4px solid var(--gold); border-radius: 10px; box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.4); }
+
+/* Cover: title, date, then two figures filling the rest (the history-of-the-Universe timeline in
+   every lecture, and one picked for the lecture's theme) */
+.reveal .cover h1 { font-size: 76px; margin-bottom: 0.1em; }
+.reveal .cover .sub { margin: 0; font: 600 36px var(--f-ui); color: var(--ink-soft); letter-spacing: -0.01em; }
+.reveal .cover-figs { flex: 1; min-height: 0; display: flex; gap: 32px; padding-top: 26px; }
+.reveal .cover-figs figure { height: 100%; margin: 0; display: grid; grid-template-rows: minmax(0, 1fr) auto; }
+.reveal .cover-figs img { height: 100%; width: auto; max-width: none; border-radius: 6px; }
+
+/* Answer wall: type a phrase and press Enter to add it; click a phrase to remove it.
+   Phrases are kept in this browser until "Clear". */
+.reveal .wall { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 14px; }
+.reveal .wall-items {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 12px;
+  padding: 16px;
+  overflow: hidden;
+  border: 1px dashed var(--edge);
+  border-radius: 14px;
+}
+.reveal .wall-items button {
+  padding: 8px 18px;
+  font: 500 26px var(--f-ui);
+  color: var(--ink);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  cursor: pointer;
+}
+.reveal .wall-items button:hover { text-decoration: line-through; }
+.reveal .wall-bar { display: flex; gap: 10px; }
+.reveal .wall-bar input {
+  flex: 1;
+  padding: 8px 14px;
+  font: 400 22px var(--f-ui);
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--edge);
+  border-radius: 10px;
+}
+.reveal .wall-bar input:focus { outline: 2px solid var(--accent); }
+.reveal .wall-bar button {
+  padding: 0 14px;
+  font: 500 14px var(--f-mono);
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid var(--edge);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.reveal .wall-bar button:hover { color: var(--accent); border-color: var(--accent); }
+
+/* numbered steps for an activity */
+.reveal .steps { margin: 0; padding-left: 0; list-style: none; }
+.reveal .steps li { margin: 0 0 0.6em; }
+.reveal .steps b { font: 700 0.8em var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-right: 0.4em; }
+
+/* reveal.js chrome */
+.reveal .controls { color: var(--accent); }
+.reveal .progress { color: var(--accent); }
+.reveal .slide-number {
+  right: 16px;
+  bottom: 16px;
+  padding: 0;
+  font: 500 13px var(--f-mono);
+  color: var(--ink-soft);
+  background: transparent;
+}
+.reveal .controls { right: 52px; bottom: 10px; }
+
+/* the course link and the light/dark button sit bottom-left */
+.deck-home {
+  position: fixed;
+  left: 60px;
+  bottom: 22px;
+  z-index: 30;
+  font: 400 12px var(--f-mono);
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+.deck-home:hover { color: var(--accent); }
+#themeToggle {
+  position: fixed;
+  left: 16px;
+  bottom: 14px;
+  z-index: 30;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--edge);
+  border-radius: 8px;
+  cursor: pointer;
+}
+#themeToggle:hover { border-color: var(--accent); }
+#themeToggle svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+:root[data-theme="light"] #themeToggle .sun, :root:not([data-theme="light"]) #themeToggle .moon { display: none; }
+
+@media print {
+  .deck-home, #themeToggle { display: none; }
+}

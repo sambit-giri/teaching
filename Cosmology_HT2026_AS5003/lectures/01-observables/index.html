@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lecture 1 · Introduction and the fundamental observations · Cosmology AS5003</title>
+<script src="../../../assets/theme.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<link rel="stylesheet" href="../../../assets/tokens.css">
+<link rel="stylesheet" href="../../../assets/slides.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/notes/notes.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<script defer src="../../../assets/slides.js"></script>
+</head>
+<body>
+<a class="deck-home" href="../../">&larr; AS5003</a>
+<div class="reveal"><div class="slides">
+<!-- One <section> per slide, in the order of Lecture1_26Nov03.key; the id is the slide's link (#/id).
+     Figures live in ../../figures/ (credits in figures/CREDITS.md).
+     class="fragment"          appears on the next click, like a Keynote build
+     <section data-text-size="1.2">   fixes the text size of a slide (1 = 30px) instead of the automatic fit
+     style="font-size: 0.8em" on a <p>, <li> or <ul>   makes that part smaller (or larger) than the rest
+     $...$ and $$...$$          maths (LaTeX)
+     Edit and see the result:  ./build.sh --edit, then reload the page after saving. -->
+
+
+<section id="title" class="cover">
+  <p class="kicker">Stockholm University · Department of Astronomy</p>
+  <h1>AS5003 (Cosmology) HT26</h1>
+  <p class="sub">Lecture 1 (3 Nov 2026)</p>
+  <!-- every lecture: the timeline first, then one figure for the lecture's theme -->
+  <div class="cover-figs">
+    <figure>
+      <img src="../../figures/history-of-universe-timeline.jpg" alt="Timeline of the Universe from the Big Bang to today">
+      <p class="credit">Image credit: NASA</p>
+    </figure>
+    <figure>
+      <img src="../../figures/cosmology-word-of-the-day.jpg" alt="Cosmology: the branch of philosophy dealing with the origin and general structure of the universe">
+      <p class="credit">&nbsp;</p>
+    </figure>
+  </div>
+</section>
+
+<section id="who-am-i">
+  <h2>Who am I?</h2>
+  <div class="cols" style="grid-template-columns: 0.9fr 1.1fr;">
+    <div>
+      <p><strong>Sambit Kumar Giri</strong><br>Researcher at the Department of Astronomy</p>
+      <p><a href="mailto:sambit.giri@astro.su.se">sambit.giri@astro.su.se</a><br>
+        <span class="aside">Email is the best way to reach me. I generally try to respond within one working day.</span></p>
+      <p>Office C6:3064 (AlbaNova)</p>
+    </div>
+    <div class="fig">
+      <div class="mark-wrap">
+        <img src="../../figures/history-of-universe-timeline.jpg" alt="Timeline of the Universe" style="width: 620px;">
+        <div class="mark fragment" style="left: 25.6%; top: 22.3%; width: 8.3%; height: 51.4%;"></div>
+      </div>
+      <p class="credit">Image credit: NASA</p>
+    </div>
+  </div>
+</section>
+
+<section id="plan">
+  <h2>Today’s plan</h2>
+  <ul>
+    <li>Course information, schedule, examination, etc.</li>
+    <li>Introductions</li>
+    <li>Fundamental Observations</li>
+  </ul>
+</section>
+
+<section id="course-website">
+  <h2>Course website</h2>
+  <div class="fill center">
+    <p><a href="https://canvas.su.se/">https://canvas.su.se/</a></p>
+    <p>Log in with SU credentials<br>Select tab Cosmology HT 26<br>Most information is found under “Modules”</p>
+  </div>
+</section>
+
+<section id="learning-objectives">
+  <h2 style="margin-bottom: 0.1em;">Learning Objectives</h2>
+  <p class="aside">(from course plan)</p>
+  <ul style="margin-top: 0.4em;">
+    <li class="fragment" data-fragment-index="1">Describe the theoretical background of modern cosmology, the main outlines of the history of the universe, and contemporary presentations of problems in cosmology</li>
+    <li class="fragment" data-fragment-index="2">Describe and <span class="fragment hl" data-fragment-index="5">do calculations</span> regarding the dynamics of the universe, the energy content in different components, the cosmic microwave background, nucleosynthesis and thermodynamics in the early universe, and the inflation model</li>
+    <li class="fragment" data-fragment-index="3">Describe and <span class="fragment hl" data-fragment-index="5">do calculations</span> regarding the observational methods that can be used to determine the properties of the Universe</li>
+    <li class="fragment" data-fragment-index="4"><span class="fragment hl" data-fragment-index="6">Show in-depth knowledge of modern research results and methods within some area of cosmology, and express this knowledge in written and oral form</span></li>
+  </ul>
+</section>
+
+<section id="examination">
+  <h2>Course Examination</h2>
+  <ul>
+    <li>Graded homework problems (weekly, total 20% of total grade)</li>
+    <li>Literature Project (15%). Consists of a written report and an oral presentation in class</li>
+    <li>Written exam (65%), scheduled for <strong>January 12, 2027.</strong></li>
+  </ul>
+  <p style="margin-top: 1.2em;">Note, each component needs a passing grade (&gt;50%) in order to pass the course!</p>
+</section>
+
+<section id="homework">
+  <h2>Homework Policy</h2>
+  <ul>
+    <li>Problem sets due every Tuesday (except the last one) before class. <strong>Late homework not accepted.</strong></li>
+    <li>6 regular sets during the term, however <strong>only best 5 will count towards your grade</strong>. (So, you can miss one without any consequences.)</li>
+    <li>Working together is encouraged, but everyone must write up and hand in their own solutions.</li>
+  </ul>
+</section>
+
+<section id="literature-assignment">
+  <h2>Literature Assignment</h2>
+  <ul>
+    <li>Instructions and some topic suggestions are up on canvas.</li>
+    <li>Initial topics due end of next week - take a look, and start thinking. Goal is to have everyone set up with topics and papers selected by November 19 at the latest.</li>
+    <li>Written report due December 15, oral presentations will be held on December 17 and 18.</li>
+  </ul>
+</section>
+
+<section id="ai">
+  <h2>On using AI</h2>
+  <ul>
+    <li>Acceptable use: for initially researching/brainstorming topics (although definitely check the output!), and for improving text that you write (grammar/spelling, etc.)</li>
+    <li>Not acceptable: using AI to generate original text, such as summarising your articles or writing parts of your report.</li>
+    <li>If you use AI tools for any part of the assignment, it must be clearly stated in an acknowledgment, including how and for what parts.</li>
+    <li>Using AI incorrectly is considered equivalent to plagiarism/cheating by the University and could be subject to disciplinary action.</li>
+  </ul>
+</section>
+
+<section id="course-book">
+  <h2>Course Book</h2>
+  <div class="cols" style="grid-template-columns: auto 1fr;">
+    <div class="fig"><img src="../../figures/book-ryden-introduction-to-cosmology.jpg" alt="Cover of Introduction to Cosmology by Barbara Ryden" style="height: 500px;"></div>
+    <div>
+      <p>“Introduction to Cosmology”<br>Barbara Ryden<br>2nd edition</p>
+      <p>ISBN 9781107154834</p>
+      <p>Note, we will cover chapters 1-10<br>(not the structure formation parts)</p>
+    </div>
+  </div>
+</section>
+
+<section id="more-books">
+  <img class="abs shadow" src="../../figures/book-bergstrom-goobar-cosmology-and-particle-astrophysics.jpg" alt="Cosmology and Particle Astrophysics, Bergström and Goobar" style="left: 838px; top: 1px; width: 329px;">
+  <img class="abs shadow" src="../../figures/book-peebles-principles-of-physical-cosmology.jpg" alt="Principles of Physical Cosmology, Peebles" style="left: 940px; top: 330px; width: 255px;">
+  <img class="abs shadow" src="../../figures/book-heacox-the-expanding-universe.jpg" alt="The Expanding Universe, Heacox" style="left: 1px; top: 0; width: 293px;">
+  <img class="abs shadow" src="../../figures/book-ryden-introduction-to-cosmology.jpg" alt="Introduction to Cosmology, Ryden" style="left: 489px; top: 21px; width: 248px;">
+  <img class="abs shadow" src="../../figures/book-liddle-introduction-to-modern-cosmology.jpg" alt="An Introduction to Modern Cosmology, Liddle" style="left: 366px; top: 341px; width: 242px;">
+  <img class="abs shadow fragment" src="../../figures/book-weinberg-the-first-three-minutes.jpg" alt="The First Three Minutes, Weinberg" style="left: 118px; top: 144px; width: 308px;" data-fragment-index="1">
+  <img class="abs shadow fragment" src="../../figures/book-mack-the-end-of-everything.jpg" alt="The End of Everything, Mack" style="left: 711px; top: 175px; width: 297px;" data-fragment-index="1">
+</section>
+
+<section id="history">
+  <h2>History of Cosmology</h2>
+  <img class="abs" src="../../figures/cosmology-norse-yggdrasil.jpg" alt="Yggdrasil, the world tree of Norse cosmology" style="left: 56px; top: 165px; width: 350px;">
+  <img class="abs" src="../../figures/cosmology-egyptian-nut-geb.jpg" alt="Egyptian cosmology: the sky goddess Nut arched over the earth god Geb" style="left: 450px; top: 372px; width: 600px;">
+  <img class="abs plate" src="../../figures/cosmology-ptolemaic-system.png" alt="The Ptolemaic system of nested spheres" style="left: 880px; top: 24px; width: 330px;">
+</section>
+
+<section id="meet-your-neighbour">
+  <h2>More historical Cosmologies<br>(Think-Pair-Share)</h2>
+  <div class="cols" style="grid-template-columns: 0.8fr 1.2fr;">
+    <div class="fig"><img src="../../figures/who-are-you-note.jpg" alt="A note pinned to a cork board: Who are you?"></div>
+    <ol class="steps">
+      <li><b>Think</b> Which other historical cosmologies do you know? Any culture, any era.</li>
+      <li><b>Pair</b> Introduce yourselves to your neighbour: short background, why cosmology, expectations for the course. Then compare your cosmologies.</li>
+      <li><b>Share</b> Tell the class who you are, and one interesting cosmology you discussed. One or both of you can speak.</li>
+    </ol>
+  </div>
+</section>
+
+<section id="historical-cosmologies">
+  <h2>More historical Cosmologies</h2>
+  <div class="wall" data-wall="historical-cosmologies"></div>
+</section>
+
+<section id="great-debate">
+  <h2>~100 years ago: Shapley-Curtis Great Debate</h2>
+  <div class="cols" style="grid-template-columns: 1.15fr 1fr;">
+    <div class="fig"><img src="../../figures/shapley-curtis.jpg" alt="Harlow Shapley and Heber Curtis"></div>
+    <div>
+      <p>Central question: the scale of the Universe.</p>
+      <p>Shapley was arguing that the Milky Way Galaxy was the entire universe, and that “spiral nebulae” were contained within the Milky Way.</p>
+      <p>Curtis was arguing that these “nebulae” were galaxies like our own.</p>
+    </div>
+  </div>
+</section>
+
+<section id="hot-big-bang">
+  <h2>Today: the hot Big Bang model</h2>
+  <div class="fill center">
+    <img src="../../figures/history-of-universe-timeline.jpg" alt="Timeline of the Universe from the Big Bang to today">
+  </div>
+</section>
+
+<section id="dark-sky">
+  <p class="kicker">Fundamental observation #1</p>
+  <h2>The night sky is dark</h2>
+  <p>Imagine a Universe that is infinite, uniform, eternal and static.<br>Filled with stars, with a space density $n_*$.</p>
+  <p>Every line of sight will eventually intercept a star, at an average distance
+    $$\lambda = \frac{1}{n_* \pi R_*^2}$$</p>
+  <div class="fill" style="align-items: flex-end; min-height: 240px;">
+    <img class="plate" src="../../figures/olbers-line-of-sight-cylinder.png" alt="An observer looking along a cylinder of radius R* that ends on a star" style="width: 560px;">
+  </div>
+  <img class="abs fragment shadow" src="../../figures/forest-line-of-sight.jpg" alt="A forest: every line of sight ends on a tree trunk" style="left: 380px; top: 150px; width: 520px; border-radius: 8px;">
+</section>
+
+<section id="surface-brightness">
+  <h2>The night sky is dark</h2>
+  <p>The surface brightness $\Sigma_*$ of each star is defined as the flux arriving from the star, per angular area.</p>
+  <p>$f_* = \dfrac{L_*}{4\pi r^2}$, where $L_*$ is the luminosity of the star, and $r$ is the distance.</p>
+  <p>$\Omega_* = \dfrac{\pi R_*^2}{4\pi r^2}$</p>
+  <p>$\Sigma_* = \dfrac{f_*}{\Omega_*} = \dfrac{L_*}{\pi R_*^2}$, <em>independent of distance</em></p>
+  <div class="callout fragment">Since every line of sight leads to a star, every point on the sky should have a surface brightness $\Sigma_*$, and we must conclude that the sky should be uniformly bright.</div>
+</section>
+
+<section id="which-assumption">
+  <h2>Which assumption was wrong?</h2>
+  <div class="fill" style="align-items: center;">
+    <img src="../../figures/night-sky.jpg" alt="A dark night sky full of stars above a tree line" style="height: 470px; border-radius: 8px;">
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); width: 760px; margin-top: 18px; text-align: center; font-family: var(--f-ui); font-weight: 600;">
+      <span>Infinite</span><span>Uniform</span><span>Eternal</span><span>Static</span>
+    </div>
+  </div>
+</section>
+
+<section id="isotropic">
+  <p class="kicker">Fundamental observation #2</p>
+  <h2 style="margin-bottom: 0.2em;">The universe is isotropic and homogeneous*</h2>
+  <p class="aside">* on scales ~100 Mpc and larger</p>
+  <div class="fill center">
+    <img class="plate" src="../../figures/scales-earth-to-large-scale-structure.png" alt="From the Earth to the Solar neighbourhood, the Milky Way, galaxy groups and the large-scale structure">
+  </div>
+</section>
+
+<section id="isotropic-2dfgrs">
+  <h2 style="margin-bottom: 0.2em;">The universe is isotropic and homogeneous*</h2>
+  <p class="aside">* on scales ~100 Mpc and larger</p>
+  <div class="fill center">
+    <img class="plate" src="../../figures/2dfgrs-redshift-cone.gif" alt="The 2dF Galaxy Redshift Survey: two cones of galaxies looking uniform on large scales">
+  </div>
+  <div class="callout fragment">Note this is based on the <em>assumption</em> that our location in the universe is not special (Copernican principle).<br>We cannot observe the Universe from any location.</div>
+</section>
+
+<section id="cmb">
+  <p class="kicker">Fundamental observation #3</p>
+  <h2>The Universe contains an isotropic background of microwave radiation (CMB)</h2>
+  <div class="cols" style="grid-template-columns: 1.1fr 1fr;">
+    <div>
+      <p>Famously discovered by Penzias &amp; Wilson in 1965, awarded Nobel Prize in 1978.</p>
+      <p>Extremely well described by a blackbody spectrum, with a temperature $T = 2.7255\,\mathrm{K}$.</p>
+      <p>Implies that the universe started in a hot, dense state.</p>
+    </div>
+    <div class="fig">
+      <img class="plate" src="../../figures/cmb-spectrum-cobe-firas.png" alt="The CMB spectrum measured by COBE/FIRAS, matching a blackbody curve">
+      <p class="aside" style="margin-top: 14px;">Will be discussed in more detail in Chapter 8</p>
+    </div>
+  </div>
+</section>
+
+<section id="light-elements">
+  <p class="kicker">Fundamental observation #4</p>
+  <h2>Proportions of light elements</h2>
+  <div class="cols" style="grid-template-columns: 1.2fr 1fr;">
+    <div class="fig"><img class="plate" src="../../figures/bbn-light-element-abundances.jpg" alt="Predicted abundances of helium, helium-3, lithium and deuterium against density" style="height: 440px;"></div>
+    <p>In line with predictions from Big Bang Nucleosynthesis; to be discussed in detail in Chapter 9</p>
+  </div>
+</section>
+
+<section id="hubble">
+  <p class="kicker">Fundamental observation #5</p>
+  <h2>Galaxies are receding from each other, with a velocity proportional to their distance</h2>
+  <div class="cols" style="grid-template-columns: 1.4fr 1fr;">
+    <div class="fig">
+      <img class="plate" src="../../figures/hubble-1929-velocity-distance.gif" alt="Hubble's 1929 velocity–distance diagram" style="width: 600px;">
+      <p class="aside" style="margin-top: 12px;">Hubble’s original diagram from 1929.</p>
+    </div>
+    <p>We will discuss this observation and its implications in detail in the next lecture!</p>
+  </div>
+</section>
+
+<section id="explained">
+  <h2>All of these observations are naturally explained in the Hot Big Bang Model</h2>
+  <div class="fill center">
+    <img src="../../figures/history-of-universe-timeline.jpg" alt="Timeline of the Universe from the Big Bang to today">
+  </div>
+</section>
+
+<section id="before-next-time">
+  <h2>Before next time</h2>
+  <ul>
+    <li>Visit the Canvas site (and answer the anonymous poll on exam times)</li>
+    <li>Get the book (if you haven’t already), and read Chapters 1+2</li>
+    <li>Read the instructions for the literature assignment, and let me know if you have any questions</li>
+  </ul>
+</section>
+
+</div></div>
+</body>
+</html>

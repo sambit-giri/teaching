@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notation · Cosmology AS5003</title>
+<meta name="description" content="Symbols, distance names and the benchmark model used in Cosmology (AS5003), following Ryden.">
+<script src="../assets/theme.js"></script>
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]})"></script>
+</head>
+<body>
+<main class="wide">
+  <a class="back" href="./">&larr; Cosmology</a>
+  <p class="kicker">AS5003 · Reference</p>
+  <h1>Notation and conventions</h1>
+  <p class="meta">Following Ryden, <em>Introduction to Cosmology</em>, 2nd edition</p>
+  <div class="about">
+    <p>The lectures, homework and exam all use the symbols below. If something you read uses a different name,
+      look it up here. This page grows as the course goes on.</p>
+  </div>
+
+  <div class="prose">
+    <h2>Basic quantities</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Symbol</th><th>Name</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>$t_0$</td><td>present time</td><td>The age of the Universe today. A subscript 0 always means "today".</td></tr>
+        <tr><td>$a(t)$</td><td>scale factor</td><td>The size of the Universe relative to today, $a(t_0) = 1$.</td></tr>
+        <tr><td>$z$</td><td>redshift</td><td>$z = (\lambda_\text{obs} - \lambda_\text{em})/\lambda_\text{em}$; for cosmological redshift $1 + z = 1/a(t_\text{em})$.</td></tr>
+        <tr><td>$H(t)$</td><td>Hubble parameter</td><td>$H = \dot a / a$.</td></tr>
+        <tr><td>$H_0$</td><td>Hubble constant</td><td>$H(t_0)$. Benchmark value 68 km s⁻¹ Mpc⁻¹.</td></tr>
+        <tr><td>$H_0^{-1}$</td><td>Hubble time</td><td>≈ 14.4 Gyr for $H_0 = 68$ km s⁻¹ Mpc⁻¹.</td></tr>
+        <tr><td>$c/H_0$</td><td>Hubble distance</td><td>≈ 4400 Mpc for $H_0 = 68$ km s⁻¹ Mpc⁻¹.</td></tr>
+        <tr><td>$\Omega$</td><td>density parameter</td><td>$\varepsilon / \varepsilon_c$, energy density relative to the critical density (Lecture 4).</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2>Distances</h2>
+    <p>Ryden uses the following names; we use exactly these. Their definitions come in Lectures 3 and 7.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Symbol</th><th>Ryden's name</th><th>Also called elsewhere</th></tr></thead>
+      <tbody>
+        <tr><td>$d_p(t)$</td><td>proper distance</td><td>physical distance</td></tr>
+        <tr><td>$d_p(t_0)$</td><td>proper distance today</td><td>comoving distance (radial), line-of-sight comoving distance</td></tr>
+        <tr><td>$d_\text{hor}(t)$</td><td>horizon distance</td><td>particle horizon</td></tr>
+        <tr><td>$d_L$</td><td>luminosity distance</td><td></td></tr>
+        <tr><td>$d_A$</td><td>angular-diameter distance</td><td></td></tr>
+      </tbody>
+    </table></div>
+
+    <h2>Benchmark model (Ryden Table 2.1)</h2>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>$H_0$</td><td>68 km s⁻¹ Mpc⁻¹</td></tr>
+        <tr><td>$\Omega_{r,0}$</td><td>9.0 × 10⁻⁵</td></tr>
+        <tr><td>$\Omega_{m,0}$</td><td>0.31</td></tr>
+        <tr><td>$\Omega_{\Lambda,0}$</td><td>0.69</td></tr>
+        <tr><td>$T_0$ (CMB)</td><td>2.7255 K</td></tr>
+        <tr><td>$t_0$</td><td>13.7 Gyr</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <footer>Sambit Kumar Giri · Department of Astronomy, Stockholm University</footer>
+</main>
+</body>
+</html>

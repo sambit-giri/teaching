@@ -218,3 +218,12 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+/.quarto/
+**/*.quarto_ipynb
+
+# Build output (_site) and the archived Quarto version
+/.quarto/
+/_site/
+*_files/
+*/ztest/
