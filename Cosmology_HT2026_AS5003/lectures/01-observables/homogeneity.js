@@ -2,7 +2,8 @@
 // 1. canvas.pattern[data-kind]: stripes (homogeneous, not isotropic), bullseye (isotropic about
 //    the centre, not homogeneous) and random dots (both), after Ryden Fig. 2.3.
 // 2. canvas.cluster-map: a toy 2D map of clustered galaxies; the slider sets the diameter of 40
-//    circles placed at random, and the panel shows how much the galaxy counts in them differ.
+//    circles placed at random ("Shuffle circles" places them anew), and the panel shows how much
+//    the galaxy counts in them differ.
 
 // small seeded random generator, so the map is the same on every load
 function rng(seed) {
@@ -36,6 +37,7 @@ for (const map of document.querySelectorAll("canvas.cluster-map")) {
   const panel = map.parentElement.querySelector(".cluster-panel");
   const slider = panel.querySelector(".cluster-slider");
   const out = panel.querySelector(".cluster-out");
+  const shuffle = panel.querySelector(".cluster-shuffle");
   const L = 1000, px = 500; // box size in Mpc, canvas size in pixels
   map.width = map.height = px;
   const ctx = map.getContext("2d");
@@ -56,7 +58,7 @@ for (const map of document.querySelectorAll("canvas.cluster-map")) {
   for (let g = 0; g < nField; g++) add(r() * L, r() * L);
 
   // fixed random centres in units of the box; scaled so every circle stays inside the map
-  const centres = Array.from({ length: 40 }, () => [r(), r()]);
+  let centres = Array.from({ length: 40 }, () => [r(), r()]);
 
   function draw() {
     const d = 10 ** Number(slider.value), rad = d / 2;
@@ -88,6 +90,11 @@ for (const map of document.querySelectorAll("canvas.cluster-map")) {
       `<br><span class="cluster-key"><i style="color:#fb923c">○</i> denser than average · <i style="color:#60a5fa">○</i> emptier</span>`;
   }
   slider.addEventListener("input", draw);
+  shuffle?.addEventListener("click", () => {
+    centres = centres.map(() => [Math.random(), Math.random()]);
+    draw();
+    shuffle.blur(); // arrow keys go back to changing slides
+  });
   slider.addEventListener("change", () => slider.blur()); // arrow keys go back to changing slides
   draw();
 }

@@ -238,6 +238,16 @@ html, body { background: var(--bg); }
 .reveal table.scales td:nth-child(2) span { font-weight: 400; color: var(--ink-soft); }
 .reveal .cluster-map { width: 500px; height: 500px; border-radius: 8px; box-shadow: 0 0 0 1px var(--edge); }
 .reveal .cluster-slider { width: 100%; margin: 10px 0 14px; accent-color: var(--accent); }
+.reveal .cluster-shuffle {
+  padding: 6px 14px;
+  font: 500 16px var(--f-mono);
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--edge);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.reveal .cluster-shuffle:hover { color: var(--accent); border-color: var(--accent); }
 .reveal .cluster-out { font-family: var(--f-ui); font-size: 0.8em; }
 .reveal .cluster-key { font-size: 0.8em; color: var(--ink-soft); }
 .reveal .cluster-ok { margin-left: 0.3em; padding: 1px 8px; font-weight: 700; color: #fff; background: var(--good); border-radius: 999px; }
