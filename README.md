@@ -30,7 +30,6 @@ Cosmology_HT2026_AS5003/       one folder per course, served at /teaching/<folde
     public/                    data used by the lecture and its playground (CSV)
     playground.py              marimo notebook, exported to playground/ at build time
 build.sh                       builds the site into _site/
-archive/quarto-v1/             earlier Quarto/reveal.js version (not published)
 ```
 
 Links for Canvas:
