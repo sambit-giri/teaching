@@ -54,7 +54,10 @@
     </div>
     <div>
       <h2 style="font-size: 46px; line-height: 1.3;">Where do we come from?<br>What are we?<br>Where are we going?</h2>
-      <p class="fragment">Cosmology grapples with these questions by describing the past, explaining the present and predicting the future of the universe.</p>
+      <div class="fragment">
+        <p>“Cosmology grapples with these questions by describing the past, explaining the present, and predicting the future of the universe.”</p>
+        <p class="credit">Questions after Paul Gauguin · quote from B. Ryden, <em>Introduction to Cosmology</em> (2nd ed.), Ch. 1</p>
+      </div>
     </div>
   </div>
   <aside class="notes">Transition: "I am a cosmologist studying the origin and nature of the first stars in our Universe."</aside>
@@ -64,7 +67,7 @@
   <h2>Who am I?</h2>
   <div class="cols" style="grid-template-columns: 0.9fr 1.1fr;">
     <div>
-      <p><strong>Sambit Kumar Giri</strong><br>Researcher at the Department of Astronomy</p>
+      <p><strong>Sambit Giri</strong><br>Researcher at the Department of Astronomy</p>
       <p><a href="mailto:sambit.giri@astro.su.se">sambit.giri@astro.su.se</a><br>
         <span class="aside">Email is the best way to reach me. I generally try to respond within one working day.</span></p>
       <p>Office C6:3064 (AlbaNova)</p>
@@ -93,18 +96,25 @@
   <div class="fill center">
     <p><a href="https://canvas.su.se/">https://canvas.su.se/</a></p>
     <p>Log in with SU credentials<br>Select tab Cosmology HT 26<br>Most information is found under “Modules”</p>
+    <p>Keep an eye on the announcements: I will post reminders and urgent information there.</p>
   </div>
 </section>
 
 <section id="learning-objectives">
   <h2 style="margin-bottom: 0.1em;">Learning Objectives</h2>
   <p class="aside">(from course plan)</p>
+  <div class="cols" style="grid-template-columns: 1fr 300px; gap: 32px; align-items: start;">
   <ul style="margin-top: 0.4em;">
     <li class="fragment" data-fragment-index="1">Describe the theoretical background of modern cosmology, the main outlines of the history of the universe, and contemporary presentations of problems in cosmology</li>
     <li class="fragment" data-fragment-index="2">Describe and <span class="fragment hl" data-fragment-index="5">do calculations</span> regarding the dynamics of the universe, the energy content in different components, the cosmic microwave background, nucleosynthesis and thermodynamics in the early universe, and the inflation model</li>
     <li class="fragment" data-fragment-index="3">Describe and <span class="fragment hl" data-fragment-index="5">do calculations</span> regarding the observational methods that can be used to determine the properties of the Universe</li>
-    <li class="fragment" data-fragment-index="4"><span class="fragment hl" data-fragment-index="6">Show in-depth knowledge of modern research results and methods within some area of cosmology, and express this knowledge in written and oral form</span></li>
+    <li class="fragment" data-fragment-index="6"><span class="fragment hl" data-fragment-index="6">Show in-depth knowledge of modern research results and methods within some area of cosmology, and express this knowledge in written and oral form</span></li>
   </ul>
+    <div class="fig">
+      <img src="../../figures/history-of-universe-timeline.jpg" alt="Timeline of the Universe" style="width: 300px;">
+      <p class="credit">Image credit: NASA / WMAP</p>
+    </div>
+  </div>
 </section>
 
 <section id="examination">
@@ -114,7 +124,7 @@
     <li>Literature Project (15%). Consists of a written report and an oral presentation in class</li>
     <li>Written exam (65%), scheduled for <strong>January 12, 2027.</strong></li>
   </ul>
-  <p style="margin-top: 1.2em;">Note, each component needs a passing grade (&gt;50%) in order to pass the course!</p>
+  <p class="fragment" style="margin-top: 1.2em;">Note, each component needs a passing grade (&gt;50%) in order to pass the course!</p>
 </section>
 
 <section id="homework">
@@ -218,21 +228,21 @@
 <section id="dark-sky">
   <p class="kicker">Fundamental observation #1</p>
   <h2>The night sky is dark</h2>
-  <!-- click 1: the forest (shown, then hidden by click 2); clicks 2–5: the steps derived on the board -->
+  <!-- click 1: the forest (shown, then hidden by click 2); click 2: the cylinder; clicks 2–5: the steps derived on the board -->
   <div class="cols" style="grid-template-columns: 1fr 1fr; align-items: start;">
     <div>
       <p>Imagine a Universe that is <strong>infinite</strong>, <strong>uniform</strong>, <strong>transparent</strong>, <strong>eternal</strong> and <strong>static</strong>. Filled with stars, with a space density $n_*$.</p>
       <p><strong>How far, on average, can we look before our line of sight hits a star?</strong></p>
-      <div class="mark-wrap" style="margin-top: 10px;">
+      <div class="mark-wrap fragment" data-fragment-index="1" style="margin-top: 10px;">
         <img class="plate" src="../../figures/olbers-line-of-sight-cylinder.png" alt="An observer looking along a cylinder of radius R* and length lambda that ends on a star">
         <span class="overlay-label" style="left: 52%; top: 46%;">$\lambda$</span>
       </div>
     </div>
     <div>
-      <p class="fragment">Cylinder of length $\lambda$ around the line of sight:<br>$V = \lambda \pi R_*^2$</p>
-      <p class="fragment">Stars inside it: $N = n_* V = n_* \lambda \pi R_*^2$.<br>One star is enough to block the view: $N = 1$</p>
-      <p class="fragment">$$\lambda = \frac{1}{n_* \pi R_*^2}$$</p>
-      <p class="fragment">With $n_* \sim 10^9\,\mathrm{Mpc^{-3}}$ and $\pi R_*^2 \sim \pi R_\odot^2 \sim 10^{-27}\,\mathrm{Mpc^2}$:
+      <p class="fragment" data-fragment-index="1">Cylinder of length $\lambda$ around the line of sight:<br>$V = \lambda \pi R_*^2$</p>
+      <p class="fragment" data-fragment-index="2">Stars inside it: $N = n_* V = n_* \lambda \pi R_*^2$.<br>One star is enough to block the view: $N = 1$</p>
+      <p class="fragment" data-fragment-index="3">$$\lambda = \frac{1}{n_* \pi R_*^2}$$</p>
+      <p class="fragment" data-fragment-index="4">With $n_* \sim 10^9\,\mathrm{Mpc^{-3}}$ and $\pi R_*^2 \sim \pi R_\odot^2 \sim 10^{-27}\,\mathrm{Mpc^2}$:
         $$\lambda \sim 10^{18}\,\mathrm{Mpc}$$
         Very large (about $3\times10^{19}$ times the diameter of our Galaxy), but <em>finite</em>.</p>
     </div>
@@ -286,7 +296,7 @@
 <section id="which-assumption" data-text-size="1">
   <p class="kicker">Think-Pair-Share</p>
   <h2 style="margin-bottom: 0.15em;">Which assumption must we drop to solve Olbers’ paradox?</h2>
-  <p class="aside">Think alone, discuss with your neighbour, then share. Click an assumption to see whether dropping it works.</p>
+  <p class="aside">Think alone, discuss with your neighbour, then share.</p>
   <div class="cols" style="grid-template-columns: 0.8fr 1.2fr; gap: 36px; margin-top: 12px;">
     <div class="fig"><img src="../../figures/night-sky.jpg" alt="A dark night sky full of stars above a tree line" style="border-radius: 8px;"></div>
     <div class="choices">
@@ -320,23 +330,23 @@
   <div class="cols" style="grid-template-columns: 1fr 1.25fr; align-items: start; gap: 40px;">
     <div>
       <p><strong>What do isotropic and homogeneous mean?</strong></p>
-      <p><strong>Isotropic:</strong> no preferred <em>direction</em>. It looks the same whichever way you look.</p>
-      <p><strong>Homogeneous:</strong> no preferred <em>location</em>. It looks the same wherever you are.</p>
-      <p class="fragment" data-fragment-index="1">Example: still water. It looks the same everywhere and in every direction, but only on scales much larger than a molecule (0.3 nm). Up close it is lumpy.</p>
+      <p class="fragment" data-fragment-index="1"><strong>Isotropic:</strong> no preferred <em>direction</em>. It looks the same whichever way you look.</p>
+      <p class="fragment" data-fragment-index="2"><strong>Homogeneous:</strong> no preferred <em>location</em>. It looks the same wherever you are.</p>
+      <p class="fragment" data-fragment-index="3">Example: still water. It looks the same everywhere and in every direction, but only on scales much larger than a molecule (0.3 nm). Up close it is lumpy.</p>
     </div>
     <div>
       <p class="aside" style="margin-bottom: 10px;">Which of these is homogeneous? Which is isotropic?</p>
       <div class="patterns">
+        <figure><canvas class="pattern" data-kind="bullseye"></canvas>
+          <figcaption class="fragment" data-fragment-index="1">Isotropic around the centre only, <b>not homogeneous</b>: the rings tell you where you are</figcaption></figure>
         <figure><canvas class="pattern" data-kind="stripes"></canvas>
           <figcaption class="fragment" data-fragment-index="2">Homogeneous (on scales larger than a stripe), <b>not isotropic</b>: the stripes point a way</figcaption></figure>
-        <figure><canvas class="pattern" data-kind="bullseye"></canvas>
-          <figcaption class="fragment" data-fragment-index="3">Isotropic around the centre only, <b>not homogeneous</b>: the rings tell you where you are</figcaption></figure>
         <figure><canvas class="pattern" data-kind="random"></canvas>
-          <figcaption class="fragment" data-fragment-index="4"><b>Both</b>, on scales larger than the spacing between dots (like water)</figcaption></figure>
+          <figcaption class="fragment" data-fragment-index="3"><b>Both</b>, on scales larger than the spacing between dots (like water)</figcaption></figure>
       </div>
     </div>
   </div>
-  <aside class="notes">Ryden 2.2 and Fig. 2.3 (stripes, bullseye). Ask the class first, then click to reveal each answer.</aside>
+  <aside class="notes">Ryden 2.2 and Fig. 2.3 (stripes, bullseye). Ask the class first. Click 1: isotropic + bullseye; click 2: homogeneous + stripes; click 3: water + random dots (both).</aside>
 </section>
 
 <section id="isotropic" data-text-size="0.9">
