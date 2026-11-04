@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lecture 2 · Measuring distances and velocities; cosmic expansion · Cosmology AS5003</title>
+<script src="../../../assets/theme.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<link rel="stylesheet" href="../../../assets/tokens.css">
+<link rel="stylesheet" href="../../../assets/slides.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/notes/notes.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<script defer src="../../../assets/slides.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.16/dist/plot.umd.min.js"></script>
+<script defer src="survey.js"></script>
+<script type="module" src="widgets.js"></script>
+</head>
+<body>
+<a class="deck-home" href="../../">&larr; AS5003</a>
+<div class="reveal"><div class="slides">
+<!-- One <section> per slide, in the order of Lecture2_22Nov03.key; the id is the slide's link (#/id).
+     Figures live in ../../figures/ (credits in figures/CREDITS.md).
+     class="fragment"          appears on the next click, like a Keynote build
+     <section data-text-size="1.2">   fixes the text size of a slide (1 = 30px) instead of the automatic fit
+     style="font-size: 0.8em" on a <p>, <li> or <ul>   makes that part smaller (or larger) than the rest
+     $...$ and $$...$$          maths (LaTeX)
+     "Try it" slides: <div class="w-fig" data-widget="..."> is drawn by widgets.js from the inputs with data-k.
+     Edit and see the result:  ./build.sh --edit, then reload the page after saving. -->
+
+<section id="title" class="cover">
+  <p class="kicker">Stockholm University · Department of Astronomy</p>
+  <h1>AS5003 (Cosmology) HT26</h1>
+  <p class="sub">Lecture 2 (5 Nov 2026)</p>
+  <!-- every lecture: the timeline first, then one figure for the lecture's theme -->
+  <div class="cover-figs">
+    <figure>
+      <img src="../../figures/history-of-universe-timeline.jpg" alt="Timeline of the Universe from the Big Bang to today">
+      <p class="credit">Image credit: NASA</p>
+    </figure>
+    <figure>
+      <img class="plate" src="../../figures/hubble-1929-velocity-distance.gif" alt="Hubble's 1929 diagram: velocity against distance for nearby galaxies" style="width: 450px; height: auto; align-self: start;">
+      <p class="credit">E. Hubble (1929), PNAS 15, 168</p>
+    </figure>
+  </div>
+</section>
+
+<section id="admin">
+  <h2>Practical information</h2>
+  <ul>
+    <li><strong>Problem set 1</strong> is online in Canvas: under <em>Homework Assignments</em> in <em>Modules</em>, or under <em>Assignments</em>.
+      <br>Due <strong>Tuesday 10 November, 10:00</strong>.
+      <ul>
+        <li>Upload your answers in Canvas before the deadline, as a single file (preferably PDF).</li>
+        <li>Scanned, handwritten work is acceptable, but needs to be clearly legible (I can only grade what I can read).</li>
+      </ul></li>
+    <li><strong>Literature review:</strong> the topic choice is posted as an assignment under <em>Literature Assignment</em>, titled <em>"Literature Topic Selection"</em>.
+      <br>First topic choice due <strong>Thursday 12 November</strong>.</li>
+  </ul>
+</section>
+
+<section id="units">
+  <h2>Relevant units</h2>
+  <ul>
+    <li><strong>Distance:</strong> 1 megaparsec (Mpc) $\approx 3\times10^{22}$ m
+      <br><span class="aside">distance to Andromeda $\approx 0.75$ Mpc</span></li>
+    <li><strong>Time:</strong> 1 gigayear (Gyr) $= 10^9$ yr $\approx 3\times10^{16}$ s
+      <br><span class="aside">age of the Sun $\approx 4.57$ Gyr</span></li>
+    <li><strong>Mass:</strong> 1 solar mass ($M_\odot$) $\approx 2\times10^{30}$ kg
+      <br><span class="aside">mass of the Milky Way $\approx 10^{12}\,M_\odot$</span></li>
+  </ul>
+  <aside class="notes">As today is the more formal beginning of the subject, let me introduce some units that are more relevant for us.</aside>
+</section>
+
+<section id="recap">
+  <h2>Recap: fundamental observations</h2>
+  <ul>
+    <li><span class="fragment hl" data-fragment-index="1">The night sky is dark</span>
+      <p class="fragment aside" data-fragment-index="1" style="margin: 0.2em 0 0;">The Universe has a finite age, so we only see stars out to $r \sim c t_0 \ll \lambda$.</p></li>
+    <li><span class="fragment hl" data-fragment-index="2">The universe is isotropic and homogeneous on large scales</span></li>
+    <li>Cosmic Microwave Background</li>
+    <li>Proportions of light elements (H, D, He, Li)</li>
+    <li>Galaxies are receding from each other with a velocity proportional to their distance</li>
+  </ul>
+  <aside class="notes">Last time: why the night sky is dark (Olbers' paradox). The main reason: the Universe has a finite age.<br>
+    Then: the question from last time about the 2dF map, next slide.</aside>
+</section>
+
+<section id="recap-2dfgrs" data-text-size="0.8">
+  <p class="kicker">Recap</p>
+  <h2 style="margin-bottom: 0.2em;">Try it: is the real Universe homogeneous?</h2>
+  <div class="cols" style="grid-template-columns: auto 1fr; gap: 32px;">
+    <div class="fig">
+      <canvas class="survey-map" style="width: 620px; border-radius: 8px;" data-src="2dfgrs-slices.bin" aria-label="2dF galaxy survey: two wedges of galaxies, with circles at the chosen redshift"></canvas>
+      <p class="credit">Data: 2dFGRS (Colless et al. 2001), both strips, projected</p>
+    </div>
+    <div class="cluster-panel">
+      <p>Far away the survey only sees the brightest galaxies, so we only compare circles at the <strong>same redshift</strong>.</p>
+      <label class="olbers-label">Redshift of the circles</label>
+      <input class="survey-z cluster-slider" type="range" min="0.03" max="0.12" step="0.005" value="0.08">
+      <label class="olbers-label">Circle diameter</label>
+      <input class="survey-d cluster-slider" type="range" min="1" max="2.6" step="0.02" value="1.3">
+      <button class="survey-shuffle cluster-shuffle" type="button">Shuffle circles</button>
+      <p class="survey-out cluster-out"></p>
+    </div>
+  </div>
+  <aside class="notes">
+    Answer to the L1 question "why did near patches look lumpy and far ones smooth?": far away the survey sees only bright galaxies, so fewer dots; structure is there at all distances.
+    Pick a redshift, grow the circles: small circles differ a lot, ~100–200 Mpc circles agree to ~10%.
+    Real data (2dF, z ≈ 0.08–0.1): ~±25% at 100 Mpc, ~±10% at 200 Mpc, ~±7% at 300 Mpc. Same idea at every redshift; far away the counts are smaller, so counting noise (√N) adds to the spread.
+    The redshift slider stops at z = 0.12: beyond that the spread grows again because of the survey itself (patchy completeness, small changes of the magnitude limit across the sky matter a lot when we only see the brightest galaxies), not because the Universe is lumpier.<br>
+    Homogeneous ≠ smooth: each big circle still has filaments and voids inside, just the same amount.
+    From one place we measure isotropy (two opposite strips alike); homogeneity needs the Copernican principle, tested indirectly (distant clusters see an isotropic CMB).
+  </aside>
+</section>
+
+<section id="recap-question">
+  <h2>Recap: fundamental observations</h2>
+  <ul>
+    <li>The night sky is dark</li>
+    <li>The universe is isotropic and homogeneous on large scales</li>
+    <li>Cosmic Microwave Background</li>
+    <li>Proportions of light elements (H, D, He, Li)</li>
+    <li><span class="hl">Galaxies are receding from each other with a velocity proportional to their distance</span></li>
+  </ul>
+  <p class="fragment" style="margin-top: 0.8em;"><strong>How do we measure velocity? How do we measure distance?</strong></p>
+</section>
+
+<section id="doppler">
+  <p class="kicker">Measuring velocities</p>
+  <h2>The Doppler effect</h2>
+  <div class="cols" style="grid-template-columns: 1fr 1fr; gap: 36px;">
+    <div class="fig">
+      <img src="../../figures/doppler-shift-light.png" alt="A moving light source: the waves are bunched up in front of it (blueshift) and stretched behind it (redshift)" style="border-radius: 6px;">
+    </div>
+    <div>
+      <p>A source moving away from (or towards) us at speed $v \ll c$ shifts the wavelength:</p>
+      <p>$$\lambda_\text{obs} = \lambda_\text{em}\left(1 + \frac{v}{c}\right)$$</p>
+      <p>$$\frac{\lambda_\text{obs} - \lambda_\text{em}}{\lambda_\text{em}} = \frac{v}{c}$$</p>
+      <ul>
+        <li>Moving <strong>away</strong>: longer wavelength, <strong>redshift</strong></li>
+        <li>Moving <strong>towards</strong> us: shorter wavelength, <strong>blueshift</strong></li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes">The next thing that we want to measure is the velocities of the galaxies.</aside>
+</section>
+
+<section id="warmup">
+  <h2>Warm-up exercise: Doppler effect</h2>
+  <div class="cols" style="grid-template-columns: 1.5fr 0.6fr; gap: 40px;">
+    <div>
+      <p>You are pulled over by the police for not stopping at a red light. Having just learned about the Doppler effect, you try this defence: <strong>"At the speed I was going, the red light appeared green!"</strong></p>
+      <p>How fast would you have to be driving for red light to appear green?</p>
+      <p class="aside">(Take green light as 500 nm and red light as 600 nm.)</p>
+      <!-- the answer stays hidden; a click on the traffic light shows it (and hides it again) -->
+      <p id="warmup-answer" class="click-reveal">$$\frac{v}{c} = \frac{\lambda_\text{obs} - \lambda_\text{em}}{\lambda_\text{em}} = \frac{500 - 600}{600} = -\frac{1}{6} \;\Rightarrow\; |v| \approx 5\times10^4\ \text{km/s}$$
+        About $1.8\times10^8$ km/h: you get a speeding ticket instead.</p>
+    </div>
+    <div class="fig"><img src="../../figures/traffic-light.png" alt="A traffic light" data-reveals="warmup-answer" style="max-height: 440px;"></div>
+  </div>
+  <aside class="notes">The point of this exercise is to both do a practical calculation, and to illustrate why we don't usually observe Doppler shift of light in everyday situations. The speeds involved need to be very big.
+    (Speed of sound on the other hand is comparable to the speed of a car, so you hear Doppler effects in sirens, etc., all the time.)<br>
+    Click the traffic light to show the answer: v/c = (500 − 600)/600 = −1/6, |v| ≈ 5×10⁴ km/s ≈ 1.8×10⁸ km/h.</aside>
+</section>
+
+<section id="warmup-try" data-text-size="0.9">
+  <h2>Try it: drive through the red light</h2>
+  <div class="cols" style="grid-template-columns: auto 1fr; gap: 60px;">
+    <div class="w-fig" data-widget="traffic-light"></div>
+    <div>
+      <p>The three lamps of a traffic light (630, 590 and 505 nm), seen by a driver moving at speed $v$. Negative $v$: driving towards the light.</p>
+      <label class="olbers-label">Speed $v/c$</label>
+      <input class="olbers-slider" data-k="v" type="range" min="-0.25" max="0.25" step="0.005" value="0">
+      <p class="w-out olbers-out"></p>
+    </div>
+  </div>
+</section>
+
+<section id="lines">
+  <h2>Such a line shift is visible in galaxy spectra</h2>
+  <div class="cols" style="grid-template-columns: 1fr 1fr; gap: 36px;">
+    <div class="fig"><img src="../../figures/spectrum-redshift-blueshift.png" alt="Absorption lines in a spectrum: unshifted, shifted to the red, and shifted to the blue" style="border-radius: 6px;">
+      <p class="credit">Wavelength increases to the right (violet → red): redshifted lines move right, blueshifted lines left</p></div>
+    <div>
+      <p>By measuring the observed wavelengths of identifiable spectral features (e.g. the Balmer lines of hydrogen), and comparing them with the rest wavelengths, we can calculate the relative velocities.</p>
+      <div class="fragment">
+        <p>This is described by the <strong>redshift</strong> $z$:</p>
+        <p class="callout inline">$$z \equiv \frac{\lambda_\text{obs} - \lambda_\text{em}}{\lambda_\text{em}} \quad \left(= \frac{v}{c}\right)$$</p>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">Example: Lyman α (1216 Å) observed at 1460 Å: z = (1460 − 1216)/1216 = 0.2.</aside>
+</section>
+
+<section id="spectrum-try" data-text-size="0.85">
+  <h2>Try it: redshift a spectrum</h2>
+  <div class="cols" style="grid-template-columns: auto 1fr; gap: 32px;">
+    <div class="w-fig" data-widget="spectrum"></div>
+    <div>
+      <p>Slide the redshift and watch the emission lines move to longer wavelengths.</p>
+      <label class="olbers-label">Redshift $z$</label>
+      <input class="olbers-slider" data-k="z" type="range" min="0" max="7" step="0.01" value="0">
+      <p class="w-out olbers-out"></p>
+      <p class="aside"><em>Schematic</em> spectrum built from real rest wavelengths, not a real object. The rainbow bar marks visible light.</p>
+    </div>
+  </div>
+  <aside class="notes">Good question to ask: at z = 3.5, Lyα (1216 Å) lands at 1216 × 4.5 ≈ 5470 Å, visible green light. Can we see the galaxy by eye?
+    No: visible is not bright enough. Such galaxies have apparent magnitude ~25; the eye's limit on a dark night is ~6. That is 19 magnitudes, about 4×10⁷ times too faint (and it is one narrow line). Big telescopes and long exposures.</aside>
+</section>
+
+<section id="quasars">
+  <h2 style="margin-bottom: 0.1em;">Example: observed quasar spectra</h2>
+  <p><strong>Which of these is furthest away? Which is closest?</strong></p>
+  <div class="cols" style="grid-template-columns: 1fr 0.8fr; gap: 36px;">
+    <div class="mark-wrap">
+      <img class="plate" src="../../figures/quasar-spectra-three.png" alt="Spectra of three quasars, each with a strong Lyman-alpha emission line at a different observed wavelength">
+      <!-- hide the redshift labels until the answer -->
+      <span class="fragment fade-out z-hide" data-fragment-index="1" style="top: 7.4%;">z = ?</span>
+      <span class="fragment fade-out z-hide" data-fragment-index="1" style="top: 34.2%;">z = ?</span>
+      <span class="fragment fade-out z-hide" data-fragment-index="1" style="top: 60.5%;">z = ?</span>
+      <span class="ring" style="left: 63.5%; top: 9%; width: 8%;"></span>
+      <span class="ring" style="left: 38%; top: 34%; width: 8%;"></span>
+      <span class="ring" style="left: 15%; top: 67%; width: 8%;"></span>
+    </div>
+    <div>
+      <p>The circled emission line is the <strong>Lyα</strong> (2→1) transition of hydrogen in all three spectra, i.e. at the same rest wavelength (1216 Å).</p>
+      <p class="fragment" data-fragment-index="1">The top one is furthest: its Lyα is shifted the most ($z = 6.3$). Then $z = 4.4$ and $z = 2.8$.</p>
+    </div>
+  </div>
+  <aside class="notes">These are real spectra of three quasars, and the Lyα line can be identified in each. Ask: which is farthest away? Let them answer, then click to show the redshifts.</aside>
+</section>
+
+<section id="slipher">
+  <h2>All but the very closest galaxies show a positive redshift</h2>
+  <div class="cols" style="grid-template-columns: auto 1fr; gap: 36px;">
+    <div class="fig">
+      <img src="../../figures/slipher-portrait.gif" alt="Portrait of Vesto Slipher" style="height: 360px; border-radius: 6px;">
+      <p class="credit">Vesto Slipher, director of Lowell Observatory in Arizona</p>
+    </div>
+    <div>
+      <img src="../../figures/slipher-1917-velocities-table.jpg" alt="Slipher's 1917 table of the radial velocities of 25 spiral nebulae, most of them positive" style="height: 300px; border-radius: 6px;">
+      <p class="credit">Velocities of 25 spiral nebulae (Slipher 1917)</p>
+      <p>These are the <strong>spiral nebulae</strong>: inside or outside our Galaxy?</p>
+      <p class="fragment">Most are <strong>redshifted</strong>, some by more than 1000 km/s. A few, such as Andromeda (NGC 224), are blueshifted.</p>
+      <p class="fragment">Slipher had the velocities. What was missing was the <strong>distances</strong>.</p>
+    </div>
+  </div>
+  <aside class="notes">Slipher measured these between 1912 and 1917, before the 1920 debate. Speeds of hundreds to over 1000 km/s: are such fast objects really bound to the Milky Way? That was the big question of the time (next slide).<br>
+    The blueshifted ones (Andromeda): we come back to them later in the lecture, after peculiar velocities.</aside>
+</section>
+
+<section id="debate">
+  <p class="kicker">Measuring distances</p>
+  <h2>The Shapley–Curtis Great Debate (1920)</h2>
+  <div class="cols" style="grid-template-columns: 1fr 1fr; gap: 40px;">
+    <div class="fig">
+      <img src="../../figures/shapley-curtis.jpg" alt="Portraits of Harlow Shapley and Heber Curtis" style="border-radius: 6px;">
+      <p class="credit">Harlow Shapley (left) and Heber Curtis (right)</p>
+    </div>
+    <div>
+      <p>The <strong>spiral nebulae</strong>, seen since 1845, were still a mystery. In 1920 the question came to a head in the <strong>Great Debate</strong>.</p>
+      <p>Central question: <strong>how big is our Universe?</strong> Is the Milky Way all there is?</p>
+      <p><strong>Shapley</strong> argued that the Milky Way Galaxy was the entire universe, and that "spiral nebulae" were inside the Milky Way.</p>
+      <p><strong>Curtis</strong> argued that these "nebulae" were galaxies like our own: Slipher's speeds were too fast for objects bound to the Milky Way.</p>
+      <p class="fragment">It could not be settled in 1920: nobody could measure the <strong>distance</strong> to a nebula.</p>
+    </div>
+  </div>
+  <aside class="notes">Slipher's spirals raise the question: are they part of the Milky Way? In 1920 the open question was how big the Universe is. To settle it we need distances.<br>
+    Slipher's speeds (1912–17) were the new evidence.<br>
+    Nebulae: "nebula" meant any fuzzy patch on the sky (Messier 1781, Herschel). Huggins (1864) found emission lines in the Orion nebula: a glowing gas cloud.
+    But the spiral nebulae (Lord Rosse saw the spiral in M51 in 1845) had a continuous, star-like spectrum. Clouds forming stars inside the Milky Way, or "island universes" like our own (Kant 1755)?<br>
+    Great debates drive a field: two clear, opposite positions force sharp tests.
+    <ul>
+      <li>Newton vs Huygens (late 1600s): light as particles (corpuscles) or as waves. Young's double slit (1801) favoured waves; Einstein's photons (1905) brought particles back: wave–particle duality.</li>
+      <li>Bohr vs Einstein (from the Solvay conference 1927): is quantum mechanics complete? Einstein: "God does not play dice"; EPR paradox (1935). Settled by Bell's inequality (1964) and experiments (Aspect 1982; Nobel Prize 2022): quantum mechanics wins.</li>
+      <li>In cosmology itself, later: steady state (Hoyle) vs Big Bang (Gamow, Lemaître), settled by the CMB (1965). Coming up in this course.</li>
+    </ul>
+    Today: Shapley–Curtis, settled by measuring distances.</aside>
+</section>
+
+<section id="cepheids">
+  <h2>Cepheid variable stars: the first "standard candle"</h2>
+  <div class="cols" style="grid-template-columns: 1fr auto; gap: 36px;">
+    <div>
+      <div style="display: flex; gap: 22px; align-items: center;">
+        <div style="flex: none;">
+          <img src="../../figures/leavitt-portrait.jpg" alt="Henrietta Leavitt at her desk" style="height: 125px; border-radius: 6px;">
+          <p class="credit">Henrietta Leavitt (1868–1921)</p>
+        </div>
+        <p>Leavitt discovered that the <strong>luminosity of Cepheids is related to their pulsation period</strong>: bright ones pulsate slowly, faint ones fast.
+          <br><strong>Leavitt's law:</strong> $L = K\,P^{\alpha}$ <span class="aside">(slope $\alpha$ from her diagram)</span></p>
+      </div>
+      <!-- click 1 swaps the pulsating stars for the calibration and the distance formula -->
+      <div class="r-stack" style="margin-top: 4px;">
+        <div class="w-fig fragment fade-out" data-fragment-index="1" data-widget="cepheids"></div>
+        <div class="fragment" data-fragment-index="1">
+          <p><strong>Calibrate</strong> $K$ with a Cepheid of known distance (e.g. parallax). Then:</p>
+          $$f = \frac{L}{4\pi r^2} \;\Rightarrow\; r = \sqrt{\frac{L}{4\pi f}}$$
+          <p style="font-size: 0.85em;">$L$: from the period $P$ &nbsp;·&nbsp; $f$: the flux we measure</p>
+        </div>
+      </div>
+      <p class="fragment" data-fragment-index="2">The "dimness" of Cepheids in Andromeda and other "spiral nebulae" (Hubble 1925) showed that they are far outside our Galaxy. <strong>Curtis was right.</strong></p>
+    </div>
+    <div style="width: 430px; align-self: center;">
+      <img class="plate" src="../../figures/leavitt-1912-period-luminosity.jpg" alt="Leavitt's 1912 figure: magnitude against the logarithm of the period for Cepheids in the Small Magellanic Cloud" style="width: 100%;">
+      <p class="credit">Leavitt (1912): apparent magnitude (brighter is up) against the logarithm of the period. Each star twice: at its brightest and faintest.</p>
+    </div>
+  </div>
+  <aside class="notes">This is what Leavitt discovered (about 110 years ago, Cepheids in the Small Magellanic Cloud, all at about the same distance). Cepheids are stars that pulsate: they swell and shrink, getting brighter and fainter with a regular period.
+    The rate depends on their brightness: the bright one pulsates slowly, so its period is longer; the faint one pulsates fast, so its period is shorter. Leavitt's diagram shows exactly that: brighter (up) at longer period (right).<br>
+    All her stars are at the same distance, so f ∝ L: the diagram gives the shape of the law, L = K P^α (the slope α), but not the constant K.<br>
+    [click] Calibration: take a Cepheid whose distance r is known another way, measure its f and P: K = 4πr²f / P^α. Then for any Cepheid: P gives L, we measure f, so the formula gives r.<br>
+    Parallax in one line: as the Earth orbits the Sun, a nearby star shifts against the background; a shift of p arcseconds means d = 1/p parsec (that is where the parsec comes from).
+    (In 1913 no Cepheid was close enough for a direct parallax; Hertzsprung used statistical parallaxes. Direct Cepheid parallaxes came with Hipparcos (1997) and Gaia.)<br>
+    The big plot: y = apparent photographic magnitude (smaller = brighter, so brighter is up), x = log10 of the period in days. Two lines: each Cepheid at maximum and at minimum light.
+    All in the SMC, so apparent brightness ∝ luminosity.</aside>
+</section>
+
+<section id="hubble-law">
+  <h2>Combining distance and velocity<span class="fragment" data-fragment-index="1">: Hubble's law</span></h2>
+  <div class="cols" style="grid-template-columns: 1.3fr 1fr; gap: 36px;">
+    <div class="fig">
+      <img class="plate" src="../../figures/hubble-1929-velocity-distance.gif" alt="Hubble's 1929 diagram: velocity against distance for nearby galaxies" style="width: 100%;">
+      <p class="credit">E. Hubble (1929), PNAS 15, 168</p>
+    </div>
+    <div>
+      <div style="display: flex; gap: 24px; align-items: center;">
+        <div class="fig">
+          <img src="../../figures/hubble-portrait.jpg" alt="Edwin Hubble at his desk, holding a photographic plate of a galaxy" style="height: 190px; border-radius: 6px;">
+          <p class="credit">Edwin Hubble</p>
+        </div>
+        <p class="callout inline fragment" data-fragment-index="1">$$v = H_0\, D$$</p>
+      </div>
+      <ul class="fragment" data-fragment-index="1">
+        <li>$H_0$: the <strong>Hubble constant</strong>, in km/s/Mpc</li>
+        <li>$v = cz$: the velocity</li>
+        <li>$D$: the distance</li>
+      </ul>
+      <p class="fragment" data-fragment-index="2">Hubble's estimate: <span style="white-space: nowrap;">$H_0 \approx 500$ km/s/Mpc.</span></p>
+    </div>
+  </div>
+  <aside class="notes">First only the diagram: x = distance in parsecs (Cepheids and brightest stars), y = velocity from Slipher-type redshifts. The y-axis label says "km" but should be km/s: a typo in Hubble's original figure. The points scatter, but rise with distance: fit a straight line. Click: Hubble's law.
+</aside>
+</section>
+
+<section id="hubble-modern">
+  <h2>A modern Hubble diagram</h2>
+  <div class="cols" style="grid-template-columns: 1.3fr 1fr; gap: 36px;">
+    <div class="fig">
+      <img class="plate" src="../../figures/freedman-2001-hubble-diagram.png" alt="Velocity against distance for galaxies with Cepheid distances out to 22 Mpc, with lines for H0 = 67, 75 and 83 km/s/Mpc" style="width: 100%;">
+      <p class="credit">Freedman et al. (2001), ApJ 553, 47 (Ryden Fig. 2.5)</p>
+    </div>
+    <div>
+      <ul>
+        <li>Distances from <strong>Cepheids</strong> (Hubble Space Telescope)</li>
+        <li>Lines: <span style="white-space: nowrap;">$H_0 = 67$, $75$, $83$ km/s/Mpc</span></li>
+        <li>Hubble (1929): <span style="white-space: nowrap;">$H_0 \approx 500$ km/s/Mpc</span></li>
+      </ul>
+      <div class="fragment">
+        <p>All of Hubble's distances were too small. For example, galaxies with $v \approx 1000$ km/s:</p>
+        <ul>
+          <li>Hubble: $D \approx 2$ Mpc</li>
+          <li>Today: $D \approx 15$ Mpc</li>
+        </ul>
+      </div>
+      <p class="fragment callout inline">Distances about <strong>7× too small</strong> → $H_0$ about 7× too large</p>
+    </div>
+  </div>
+  <aside class="notes">Note the distance axis: tens of Mpc here, against 2 Mpc in Hubble's plot, and the velocities go to 2000 km/s.
+    Hubble's mistakes: he mixed up two types of Cepheids (found by Baade in 1952) and took glowing gas clouds for bright stars (found by Sandage in 1958).</aside>
+</section>
+
+<section id="h0-history">
+  <h2>Measurement of $H_0$ over time</h2>
+  <div class="cols" style="grid-template-columns: 1fr 1fr; gap: 36px;">
+    <div class="fig">
+      <img class="plate" src="../../figures/h0-measurements-since-1920.jpg" alt="Measurements of the Hubble constant since 1920: from about 500 down to about 70 km/s/Mpc">
+    </div>
+    <div>
+      <p>From about 500 (Hubble 1929) down to <span style="white-space: nowrap;"><strong>67–73</strong> km/s/Mpc</span> today.</p>
+      <div class="fragment">
+        <p>But the two best methods <strong>disagree</strong>:</p>
+        <ul>
+          <li><strong>Early Universe</strong> (CMB, Planck):<br>$H_0 = 67.4 \pm 0.5$</li>
+          <li><strong>Local distance ladder</strong> (Cepheids + supernovae, SH0ES):<br>$H_0 = 73.0 \pm 1.0$</li>
+        </ul>
+      </div>
+      <p class="fragment callout inline">The <strong>Hubble tension</strong> (about 5σ): an open question, and a good literature-project topic.</p>
+    </div>
+  </div>
+  <aside class="notes">The error bars shrank from ~50% to ~1%, and now the two methods no longer overlap. Either one has a hidden systematic error, or the standard cosmological model is missing something.</aside>
+</section>
+
+<section id="centre">
+  <h2>Does Hubble's law make our location special?</h2>
+  <div class="cols" style="grid-template-columns: 1fr 1fr; gap: 36px;">
+    <div>
+      <p>Almost every galaxy moves <strong>away from us</strong>, faster the further away it is.</p>
+      <p><strong>Are we at the centre of the expansion?</strong></p>
+      <p class="fragment">Think of raisins in a rising bread dough: from <strong>every</strong> raisin, all the others move away, faster when they are further.</p>
+      <p class="fragment">To check that this works for galaxies, describe the expansion with one function: the <strong>scale factor</strong> $a(t)$.</p>
+    </div>
+    <div class="fig fragment" data-fragment-index="1">
+      <div class="w-fig" data-widget="raisins"></div>
+      <p class="credit">Click a raisin to make it our galaxy: the dough then rises.</p>
+    </div>
+  </div>
+  <aside class="notes">Let the students guess first. Copernican principle: we expect not to be special. The raisin bread suggests an answer; the next slide shows it with the scale factor.</aside>
+</section>
+
+<section id="expansion">
+  <h2>Hubble's law arises naturally in a universe undergoing homogeneous &amp; isotropic expansion</h2>
+  <div class="cols" style="grid-template-columns: 0.8fr 1.2fr; gap: 30px;">
+    <svg viewBox="0 0 360 240" style="width: 100%; max-width: 420px;" aria-label="Three galaxies 1, 2 and 3 forming a triangle with sides r12, r23 and r31">
+      <g stroke="currentColor" stroke-width="2" fill="none"><polygon points="30,210 230,30 330,150"/></g>
+      <g fill="currentColor"><circle cx="30" cy="210" r="6"/><circle cx="230" cy="30" r="6"/><circle cx="330" cy="150" r="6"/></g>
+      <g fill="currentColor" font-size="22" font-family="serif" font-style="italic">
+        <text x="8" y="232">1</text><text x="224" y="18">2</text><text x="342" y="158">3</text>
+        <text x="100" y="105">r<tspan font-size="15" dy="5">12</tspan></text>
+        <text x="290" y="80">r<tspan font-size="15" dy="5">23</tspan></text>
+        <text x="180" y="208">r<tspan font-size="15" dy="5">31</tspan></text>
+      </g>
+    </svg>
+    <div>
+      <p>$$r_{12}(t) = a(t)\,r_{12}(t_0), \quad r_{23}(t) = a(t)\,r_{23}(t_0), \quad r_{31}(t) = a(t)\,r_{31}(t_0)$$</p>
+      <ul style="font-size: 0.9em;">
+        <li>$a(t)$: the <strong>scale factor</strong>, normalised to $a(t_0) = 1$ today</li>
+        <li><strong>homogeneous</strong>: $a$ is a function of $t$, but not of $\vec r$</li>
+        <li><strong>isotropic</strong>: $a$ is a scalar, the same in every direction</li>
+      </ul>
+      <div class="fragment">
+        <p>$$v_{12}(t) = \frac{dr_{12}}{dt} = \frac{da}{dt}\,r_{12}(t_0) = \frac{\dot a}{a}\,r_{12}(t)$$</p>
+        <p class="callout inline">$$v = H(t)\,r, \qquad H(t) \equiv \frac{\dot a}{a}$$
+          $H(t)$: the "Hubble parameter"; $H_0 = H(t_0)$: the "Hubble constant"</p>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">From here, move to the blackboard to show that this gives a relation between velocity and distance.
+    Answer to the previous slide: the same a(t) for every side of the triangle, so from any galaxy we derive the same law. No centre: everything moves away from everything else.</aside>
+</section>
+
+<section id="hubble-time">
+  <h2>Hubble time</h2>
+  <p>$$H_0 \approx 70\ \text{km/s/Mpc}$$</p>
+  <div class="fragment">
+    <p>$H_0$ is today's <strong>rate of expansion</strong>, with units 1/time:</p>
+    <p>$$H_0 \approx 70\,\frac{\text{km}}{\text{s Mpc}} \times \frac{10^3\,\text{m}}{1\,\text{km}} \times \frac{1\,\text{Mpc}}{3.1\times10^{22}\,\text{m}} \approx 2.2\times10^{-18}\,\text{s}^{-1}$$</p>
+    <p class="aside">Every second, all distances between galaxies grow by a fraction $2.2\times10^{-18}$.</p>
+  </div>
+  <p class="fragment">$$\frac{1}{H_0} \approx 4.4\times10^{17}\,\text{s} \approx 1.4\times10^{10}\ \text{years} \approx 14\ \text{Gyr}$$</p>
+  <p class="fragment">So if the Universe has been expanding at a constant rate $H_0$, it is about <strong>14 billion years old</strong>.</p>
+  <aside class="notes">If the galaxies are forever moving away from each other, then there must be a time when they were all very close to each other.
+    If there are no forces that are accelerating or decelerating the expansion, then we can estimate this time.
+    In Lectures 4–6 we will see why the true age (13.7 Gyr in the benchmark model) is so close.</aside>
+</section>
+
+<section id="hubble-time-try" data-text-size="0.85">
+  <h2>Try it: Hubble time</h2>
+  <div class="cols" style="grid-template-columns: auto 1fr; gap: 30px;">
+    <div class="w-fig" data-widget="hubble-time"></div>
+    <div>
+      <label class="olbers-label">$H_0$ (km s⁻¹ Mpc⁻¹)</label>
+      <input class="olbers-slider" data-k="H0" type="range" min="40" max="600" step="1" value="70">
+      <p class="w-out olbers-out"></p>
+      <p class="aside">Try Hubble's 500 km/s/Mpc.</p>
+    </div>
+  </div>
+</section>
+
+<section id="scale-factor" data-text-size="0.85">
+  <h2>Relation between redshift and scale factor</h2>
+  <div class="cols" style="grid-template-columns: auto 1fr; gap: 30px;">
+    <div>
+      <div class="w-fig" data-widget="stretch"></div>
+      <label class="olbers-label">Scale factor when the light was emitted, $a(t_\text{em})$</label>
+      <input class="olbers-slider" data-k="a" type="range" min="0.1" max="1" step="0.01" value="0.5">
+      <p class="w-out olbers-out"></p>
+    </div>
+    <div>
+      <p>Think of the redshift of galaxies as the wavelength being "stretched" as space expands. The ratio of observed and emitted wavelengths is the ratio of scale factors:</p>
+      <p>$$\frac{\lambda_\text{obs}}{\lambda_\text{em}} = \frac{a(t_\text{obs})}{a(t_\text{em})} = \frac{1}{a(t_\text{em})}$$</p>
+      <p class="fragment">From the definition of redshift:</p>
+      <p class="fragment callout inline">$$1 + z = \frac{1}{a(t_\text{em})}$$</p>
+      <p class="aside">(We derive this properly from the Robertson–Walker metric next week; see also Ryden §3.5.)</p>
+    </div>
+  </div>
+</section>
+
+<section id="quasars-again">
+  <h2>Example: back to our quasars</h2>
+  <div class="cols" style="grid-template-columns: 1fr 1fr; gap: 36px;">
+    <div class="mark-wrap">
+      <img class="plate" src="../../figures/quasar-spectra-three.png" alt="Spectra of three quasars at redshifts 6.3, 4.4 and 2.8" data-reveals="quasar-answer">
+      <span class="z-mark" style="top: 36.7%;"></span>
+    </div>
+    <div>
+      <p><strong>How small was our Universe when the light from the middle quasar was emitted?</strong></p>
+      <!-- the answer stays hidden; a click on the figure shows it (and hides it again) -->
+      <div id="quasar-answer" class="click-reveal">
+        <p>$$a = \frac{1}{1+z} = \frac{1}{1 + 4.4} \approx 0.19$$</p>
+        <p>The Universe was about <strong>5.4× smaller</strong>: all distances between galaxies were shorter by this factor.</p>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">Click the figure to show the answer. The other two: z = 2.8 gives a ≈ 0.26 (3.8× smaller), z = 6.3 gives a ≈ 0.14 (7.3× smaller).</aside>
+</section>
+
+<section id="relativistic">
+  <h2>Common confusion: relativistic Doppler effect and redshift</h2>
+  <img class="abs" src="../../figures/warning-sign.jpg" alt="Warning sign" style="right: 56px; top: 24px; width: 110px;">
+  <div style="max-width: 1000px;">
+    <p>For large enough $D$, Hubble's law gives velocities greater than $c$. Should we use the special-relativistic Doppler formula instead?</p>
+    <div class="cols" style="grid-template-columns: 1fr 1fr; gap: 30px; text-align: center;">
+      <div><p>Doppler ($v \ll c$)</p><p>$$\frac{\lambda_\text{obs}}{\lambda_\text{em}} = 1 + \frac{v}{c}$$</p></div>
+      <div><p>Special relativity</p><p>$$\frac{\lambda_\text{obs}}{\lambda_\text{em}} = \sqrt{\frac{1 + v/c}{1 - v/c}} \quad ?$$</p></div>
+    </div>
+    <div class="fragment">
+      <p><strong>No.</strong> The redshifts of galaxies come from the <strong>expansion of space</strong>, not from motion through space. We define</p>
+      <p class="callout inline">$$\frac{\lambda_\text{obs}}{\lambda_\text{em}} = 1 + z$$</p>
+      <p>… and $v = cz$ can be larger than $c$ when $z &gt; 1$.</p>
+    </div>
+  </div>
+  <aside class="notes">On the board, a rough estimate: a galaxy with λ_obs = 3 λ_em has z = 2, so v = cz = 2c, faster than light. Special relativity would instead give v/c = (9 − 1)/(9 + 1) = 0.8.
+    Neither is the right picture: z is not a velocity through space. (For z ≳ 1, Hubble's law with a constant H₀ also breaks down; the expansion rate changes with time, H(z). Later lectures.)
+    Bridge to the next slide: galaxies do also move through space. That motion, the peculiar velocity, obeys special relativity and never exceeds c.</aside>
+</section>
+
+<section id="peculiar-motion">
+  <h2>Expansion and peculiar motion</h2>
+  <div class="cols" style="grid-template-columns: 0.85fr 1.3fr; gap: 30px;">
+    <div>
+      <p>Hubble: the Universe is <strong>expanding</strong>, so galaxies farther away recede from us faster.</p>
+      <!-- the animation adds the Sun and the Earth when this fragment (class "orbits-on") is shown -->
+      <p class="fragment orbits-on">But gravity also moves things: the Earth orbits the Sun, the Sun orbits the centre of the Milky Way.</p>
+      <p class="fragment">This motion through space is called <strong>peculiar motion</strong>.</p>
+    </div>
+    <div class="w-fig" data-widget="motion"></div>
+  </div>
+  <aside class="notes">Hubble's observations revealed that the Universe is expanding, so galaxies farther away recede faster (the statement we started the lecture with).
+    But structures also move because of gravity: the Earth goes around the Sun (30 km/s), the Sun around the centre of the Galaxy (~220 km/s). This motion is known as peculiar motion.
+    Animation: sizes and speeds are not to scale.</aside>
+</section>
+
+<section id="peculiar">
+  <h2>Peculiar velocities and redshifts</h2>
+  <div class="cols" style="grid-template-columns: 1.15fr 0.85fr; gap: 36px;">
+    <div>
+      <p>The velocity we measure from the Doppler shift has two parts:</p>
+      <ul>
+        <li><strong>cosmological redshift</strong>, due to the expansion of the universe</li>
+        <li>an extra <strong>Doppler shift</strong>, due to the <strong>peculiar velocity</strong>: real motion through space, so never faster than $c$</li>
+      </ul>
+      <p>$$z \approx z_\text{cosmological} + \frac{v_\text{peculiar}}{c}$$</p>
+      <p class="fragment" data-fragment-index="3">Peculiar velocities are $\lesssim 3000$ km/s, so the expansion dominates beyond $z \gtrsim 0.01$.</p>
+    </div>
+    <div class="r-stack">
+      <!-- toy cluster: real positions and velocities; click 1 adds the survey positions; click 2 swaps in the CfA slice -->
+      <div class="fig fragment fade-out" data-fragment-index="2">
+        <div style="position: relative;">
+          <div class="w-fig" data-widget="fog"></div>
+          <div class="w-fig fragment" data-fragment-index="1" data-widget="fog" data-layer="red" style="position: absolute; inset: 0;"></div>
+        </div>
+        <p class="credit"><span style="color: var(--cool);">●</span> real positions, arrows: velocities. <span class="fragment" data-fragment-index="1"><span style="color: var(--hot);">●</span> where a survey puts them</span></p>
+      </div>
+      <div class="fig fragment" data-fragment-index="2">
+        <div class="mark-wrap">
+          <img class="plate" src="../../figures/scale-5-cfa-redshift-slice.png" alt="CfA redshift survey slice: clusters look stretched along the line of sight because of their galaxies' peculiar velocities">
+          <!-- the radial axis is cz in km/s; distances from D = cz/H0 with H0 = 70 -->
+          <span class="tag dist" style="left: 72%; top: 93%; font-size: 11px; padding: 1px 5px;">z ≈ 0.017, ≈ 70 Mpc</span>
+          <span class="tag dist" style="left: 85%; top: 76%; font-size: 11px; padding: 1px 5px;">z ≈ 0.033, ≈ 140 Mpc</span>
+          <span class="ring box" style="left: 46%; top: 61%; width: 8%; aspect-ratio: auto; height: 32%; border-color: var(--hot);"></span>
+          <span class="tag" style="left: 20%; top: 82%;">Coma cluster: a "finger"<br>pointing at us</span>
+        </div>
+        <p class="credit">CfA redshift slice (de Lapparent, Geller &amp; Huchra 1986). We are at the bottom tip; radial axis cz in km/s, out to z ≈ 0.05 (≈ 210 Mpc, ≈ 0.7 Gyr ago)</p>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">The velocities measured with the Doppler effect have two parts: one gives the cosmological redshift, the other is an extra term from the peculiar motion.
+    Toy cluster (made up): galaxies orbit at random, ~800 km/s. A survey turns redshift into distance, D = cz/H₀, so each galaxy is pushed nearer or farther by v/H₀ ≈ 11 Mpc, but only along our line of sight; sideways motion changes nothing. The round cluster becomes a finger pointing at us: "fingers of God".
+    Then the real thing: Coma in the CfA slice. The CfA slice is a zoom into the nearby Universe: its outer edge (cz = 15 000 km/s, z ≈ 0.05) is the first arc of the 2dF map. The numbers on the curved edge are right ascension in hours.</aside>
+</section>
+
+<section id="slipher-again">
+  <h2>Back to Slipher's spirals</h2>
+  <div class="cols" style="grid-template-columns: 1.3fr 1fr; gap: 36px;">
+    <div class="fig">
+      <img src="../../figures/slipher-1917-velocities-table.jpg" alt="Slipher's 1917 table of the radial velocities of 25 spiral nebulae, most of them positive" data-reveals="slipher-answer" style="width: 100%; border-radius: 6px;">
+      <p class="credit">Velocities of 25 spiral nebulae (Slipher 1917)</p>
+    </div>
+    <div>
+      <p><strong>Can you now guess why a few of these spirals, such as Andromeda (NGC 224), are blueshifted?</strong></p>
+      <p class="aside">$z \approx z_\text{cosmological} + v_\text{peculiar}/c$</p>
+      <!-- the answer stays hidden; a click on the table shows it (and hides it again) -->
+      <div id="slipher-answer" class="click-reveal">
+        <p>They are <strong>very close</strong>. For Andromeda ($D \approx 0.8$ Mpc) the expansion gives only $H_0 D \approx 55$ km/s.</p>
+        <p>Its peculiar velocity towards us is a few hundred km/s, so close by the <strong>peculiar velocity wins</strong>.</p>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">Click the table to show the answer. Slipher's −300 km/s for NGC 224 is measured from the Sun, so it includes the Sun's orbit around the Milky Way (~220 km/s); relative to the Milky Way, Andromeda approaches at about 110 km/s and will merge with us in ~4.5 Gyr.</aside>
+</section>
+
+<section id="exercises">
+  <h2>Exercise session</h2>
+  <p>Exercises on redshifts: available on Canvas under the Lecture 2 module.</p>
+</section>
+
+<section id="before-next-time">
+  <h2>Before next time</h2>
+  <ul>
+    <li><strong>Homework 1</strong> is due <strong>Tuesday 10 November, 10:00</strong>, in Canvas</li>
+    <li>Read <strong>Ryden chapter 3</strong>: curvature and the Robertson–Walker metric</li>
+    <li>Literature project: first topic choice due <strong>Thursday 12 November</strong></li>
+  </ul>
+</section>
+
+</div></div>
+</body>
+</html>

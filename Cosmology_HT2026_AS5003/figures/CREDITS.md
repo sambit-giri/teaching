@@ -1,7 +1,7 @@
 # Figures
 
 Figures used in the lecture slides, named by content so they can be reused across lectures.
-Most were taken from Sambit's Keynote decks (Lecture 1: `Lecture1_26Nov03.key`).
+Most were taken from Sambit's Keynote decks (Lecture 1: `Lecture1_26Nov03.key`, Lecture 2: `Lecture2_22Nov03.key`).
 
 **Status** says whether a figure is safe to publish on the public site:
 *free* = public domain or openly licensed; *credit* = usable with the credit shown;
@@ -36,3 +36,16 @@ Most were taken from Sambit's Keynote decks (Lecture 1: `Lecture1_26Nov03.key`).
 | `cmb-spectrum-cobe-firas.png` | CMB spectrum, COBE/FIRAS | Wikimedia Commons, *Cmbr.svg* | free |
 | `bbn-light-element-abundances.jpg` | Light-element abundances vs. density | NASA / WMAP Science Team | free |
 | `hubble-1929-velocity-distance.gif` | Hubble's velocity–distance diagram | E. Hubble (1929), PNAS 15, 168, Fig. 1 | free |
+| `freedman-2001-hubble-diagram.png` | Modern Hubble diagram (Cepheid distances, HST Key Project) | Freedman et al. (2001), ApJ 553, 47; as Fig. 2.5 in Ryden, *Introduction to Cosmology*, 2nd ed. | check |
+| `leavitt-portrait.jpg` | Henrietta Leavitt at her desk | Harvard College Observatory (public domain) | free |
+| `leavitt-1912-period-luminosity.jpg` | Leavitt's period–luminosity diagram (Fig. 2) | Leavitt & Pickering (1912), Harvard College Observatory Circular 173 | free |
+| `cepheid-light-curve.jpg` | Schematic Cepheid light curve | unknown | check |
+| `doppler-shift-light.png` | Doppler shift of a moving light source | unknown | check |
+| `traffic-light.png` | Traffic light | stock vector, unknown | check |
+| `spectrum-redshift-blueshift.png` | Unshifted, redshifted and blueshifted absorption lines | unknown | check |
+| `slipher-portrait.gif` | Vesto Slipher | Lowell Observatory (historical photograph) | check |
+| `hubble-portrait.jpg` | Edwin Hubble at his desk with a galaxy plate | press photograph (probably AP, 1930s), via Google image search | check |
+| `slipher-1917-velocities-table.jpg` | Radial velocities of 25 spiral nebulae | V. Slipher (1917), Proc. Am. Phil. Soc. 56, 403, Table I | free |
+| `warning-sign.jpg` | Warning sign | iStock 1064145390 | check |
+| `h0-measurements-since-1920.jpg` | Measurements of H0 since 1920 | from a review figure, source unknown (Keynote HT22) | check |
+| `quasar-spectra-three.png` | Spectra of three quasars (z = 2.8, 4.4, 6.3) | unknown (Keynote HT22) | check |

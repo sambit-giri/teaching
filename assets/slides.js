@@ -38,6 +38,14 @@ function fit(section) {
   section.style.fontSize = `${lo}em`;
 }
 
+// Hidden answer (<p id="x" class="click-reveal">) shown or hidden again by a click on an element
+// with data-reveals="x" (e.g. an image), so it never appears by stepping through the slides.
+for (const el of document.querySelectorAll("[data-reveals]")) {
+  el.style.cursor = "pointer";
+  el.title = "Click to show or hide the answer";
+  el.addEventListener("click", () => document.getElementById(el.dataset.reveals)?.classList.toggle("revealed"));
+}
+
 // Answer wall (<div class="wall" data-wall="name">): type a phrase, Enter adds it, a click on a
 // phrase removes it. Kept in this browser's storage until "Clear". PageDown/PageUp (a clicker)
 // still change slide while typing, and Esc leaves the text box.

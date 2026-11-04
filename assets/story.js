@@ -119,7 +119,7 @@ export function story(cfg) {
   const app = $("#app"), storyBox = $("#story"), txt = $("#txt"), fig = $("#fig"), ctl = $("#controls"), readout = $("#readout");
   const footer = cfg.footer ||
     "<kbd>←</kbd> <kbd>→</kbd> move · <kbd>F</kbd> full screen · <kbd>H</kbd> hide text · <kbd>T</kbd> light/dark";
-  // the footer's links (all lectures, playground) stay reachable from the bar on every chapter
+  // the footer's links (all lectures, slides) stay reachable from the bar on every chapter
   const links = $("#bar .links");
   links.innerHTML = footer;
   links.replaceChildren(...[...links.querySelectorAll("a")].flatMap((a, k) => (k ? [" · ", a] : [a])));

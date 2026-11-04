@@ -170,7 +170,7 @@ story({
       text: `<ul><li>Pick a topic in modern cosmology, read research papers, write a short report and give a short talk.</li>
         <li>Instructions and topic suggestions are on Canvas.</li></ul>
         <table><tr><th>Milestone</th><th>Date</th></tr>
-        <tr><td>First topic choice</td><td>Tue 17 November</td></tr>
+        <tr><td>First topic choice</td><td>Thu 12 November</td></tr>
         <tr><td>Final topic and papers</td><td>Tue 24 November</td></tr>
         <tr><td>Written report</td><td>Tue 15 December</td></tr>
         <tr><td>Presentations</td><td>Thu 17 and Fri 18 December</td></tr></table>
@@ -445,7 +445,7 @@ story({
       id: "next", part: "Summary", title: "Before next time",
       text: `<ul><li>Log in to <b>Canvas</b> and find Homework 1 (due <b>Tue 10 Nov</b>, before class).</li>
         <li>Get the book. Read <b>Ryden chapters 1 and 2</b>.</li>
-        <li>Read the literature project instructions. First topic choice is due <b>17 Nov</b>.</li></ul>`,
+        <li>Read the literature project instructions. First topic choice is due <b>12 Nov</b>.</li></ul>`,
     },
   ],
 });

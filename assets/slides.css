@@ -98,13 +98,18 @@ html, body { background: var(--bg); }
   border-radius: 16px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
 }
+/* a callout box in the flow of the text, e.g. a key equation */
+.reveal .callout.inline { position: static; transform: none; width: auto; margin: 0.4em 0; padding: 8px 22px; font-size: 1em; }
 
 /* reveal.js animates "all" on fragments, which would also animate font-size while slides.js fits the text */
 .reveal .slides section .fragment { transition-property: opacity, visibility, transform; }
 
+/* answer hidden until a click on its trigger (data-reveals) shows it; its space is kept */
+.reveal .click-reveal:not(.revealed) { visibility: hidden; }
+
 /* highlight that appears on a click (class="fragment hl") */
 .reveal .slides section .fragment.hl { opacity: 1; visibility: inherit; border-radius: 0.3em; transition: background-color 0.2s, box-shadow 0.2s; }
-.reveal .slides section .fragment.hl.visible {
+.reveal .slides section .fragment.hl.visible, .reveal .slides section .hl:not(.fragment) {
   background: color-mix(in srgb, var(--gold) 24%, transparent);
   box-shadow: 0 0 0 3px var(--gold);
   -webkit-box-decoration-break: clone;
@@ -119,6 +124,10 @@ html, body { background: var(--bg); }
 .reveal .mark-wrap .pin { width: 18px; height: 18px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.5); }
 .reveal .mark-wrap .ring { aspect-ratio: 1; border: 3px solid var(--hot); border-radius: 50%; }
 .reveal .mark-wrap .ring.box { border-color: #15803d; border-radius: 4px; }
+/* a white patch with "z = ?" that hides one label of a figure until a click (inline top in %) */
+.reveal .mark-wrap .z-hide { position: absolute; left: 72%; width: 19%; height: 6.5%; background: #fff; color: #64748b; font: 600 22px var(--f-ui); display: flex; align-items: center; justify-content: center; }
+/* a box around one label of the quasar figure (inline top in %) */
+.reveal .mark-wrap .z-mark { position: absolute; left: 72%; width: 19%; height: 7.5%; transform: translateY(-50%); border: 3px solid var(--hot); border-radius: 8px; pointer-events: none; }
 .reveal .mark-wrap .tag.dist { font-size: 15px; background: rgba(14, 116, 144, 0.92); }
 .reveal .mark-wrap .tag {
   padding: 3px 10px;
@@ -220,6 +229,11 @@ html, body { background: var(--bg); }
 .reveal .olbers-out { font-family: var(--f-ui); font-size: 0.8em; }
 .reveal .olbers-paradox { margin-top: 0.4em; padding: 12px 16px; font-size: 0.8em; border: 2px solid var(--accent); border-radius: 12px; background: var(--accent-soft); }
 .reveal .olbers-out sup { font-size: 0.7em; }
+
+/* Lecture 2 widgets: a figure drawn by widgets.js, its on/off switches */
+.reveal .w-fig svg { display: block; overflow: visible; }
+.reveal .w-toggle { display: flex; align-items: center; gap: 10px; margin: 6px 0; font: 500 21px var(--f-ui); color: var(--ink); cursor: pointer; }
+.reveal .w-toggle input { width: 20px; height: 20px; margin: 0; accent-color: var(--accent); }
 
 /* Isotropy and homogeneity (lectures/01-observables/homogeneity.js) */
 .reveal .patterns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }

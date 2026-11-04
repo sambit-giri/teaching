@@ -3,8 +3,8 @@
 Lecture material and teaching tools by Sambit Kumar Giri, published to
 <https://sambit-giri.github.io/teaching/>.
 
-Plain HTML, CSS and JavaScript with no site generator. The only build step exports the
-Python playgrounds ([marimo](https://marimo.io) notebooks) so that they run in the browser.
+Plain HTML, CSS and JavaScript with no site generator and no build step beyond copying the
+files into `_site/`.
 
 Lectures are slide decks rebuilt from the Keynote lectures: [reveal.js](https://revealjs.com) loaded
 from a CDN, one hand-written `index.html` per lecture, so text can be edited directly.
@@ -27,8 +27,8 @@ Cosmology_HT2026_AS5003/       one folder per course, served at /teaching/<folde
   lectures/NN-topic/
     index.html                 the slides: one <section> per slide, in Keynote order
     interactive.html, lecture.js  the interactive lecture (chapters, figures, controls), if any
-    public/                    data used by the lecture and its playground (CSV)
-    playground.py              marimo notebook, exported to playground/ at build time
+    *.js                       the slides' interactive widgets ("Try it" slides)
+    public/, *.bin             data used by the widgets; make_*.py rebuilds a data file from its source
 build.sh                       builds the site into _site/
 ```
 
@@ -36,11 +36,8 @@ Links for Canvas:
 
 - course page: `https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/`
 - a lecture: `.../Cosmology_HT2026_AS5003/lectures/01-observables/`
-- its playground: `.../Cosmology_HT2026_AS5003/lectures/01-observables/playground/`
 
 ## Work locally
-
-Install marimo once (`uv tool install marimo==0.25.2` or `pip install marimo==0.25.2`), then:
 
 ```sh
 ./build.sh --open    # build, serve _site/ at http://localhost:8000 and open it; Ctrl+C stops
@@ -51,9 +48,6 @@ shows the new version.
 
 Pages must be served over HTTP (not opened as files) because the lectures load modules and data.
 
-To edit a playground with live Python, run `marimo edit playground.py` inside the lecture folder.
-The exported playground loads Python (Pyodide) in the browser, which takes 10–30 s the first time.
-`build.sh` switches the exported notebooks to run all cells as soon as they load.
 
 ## Deploy
 
@@ -65,9 +59,9 @@ Pages → Source must be set to "GitHub Actions".
 
 - **Lecture:** create `lectures/NN-topic/index.html` by copying an existing deck, put its figures
   in the course's `figures/` (and add them to `CREDITS.md`), optionally add an interactive page
-  (`interactive.html`, `lecture.js`, `public/`) and a `playground.py`. Then add a card to the course's `index.html`.
+  (`interactive.html`, `lecture.js`, `public/`). Then add a card to the course's `index.html`.
 - **Course:** create a new top-level folder with its own `index.html` lecture list, and add a card
-  to the landing page. `build.sh` finds `*/lectures/*/playground.py` automatically.
+  to the landing page.
 
 ## Slides
 
