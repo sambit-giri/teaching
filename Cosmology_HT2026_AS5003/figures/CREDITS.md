@@ -33,6 +33,7 @@ Most were taken from Sambit's Keynote decks (Lecture 1: `Lecture1_26Nov03.key`, 
 | `scale-4-galaxy-group.jpg` | A compact group of galaxies | cropped from a slide montage, source unknown | check |
 | `scale-5-cfa-redshift-slice.png` | CfA redshift survey slice and its position on the sky | de Lapparent, Geller & Huchra (1986), via a slide montage | check |
 | `2dfgrs-redshift-cone.gif` | 2dF Galaxy Redshift Survey cone | 2dFGRS team (Colless et al. 2001) | credit |
+| `planck-cmb-map.jpg` | All-sky CMB map, Planck | ESA and the Planck Collaboration, via Wikimedia Commons, *Cosmic Microwave Background (CMB).jpeg* (CC BY 4.0) | free |
 | `cmb-spectrum-cobe-firas.png` | CMB spectrum, COBE/FIRAS | Wikimedia Commons, *Cmbr.svg* | free |
 | `bbn-light-element-abundances.jpg` | Light-element abundances vs. density | NASA / WMAP Science Team | free |
 | `hubble-1929-velocity-distance.gif` | Hubble's velocity–distance diagram | E. Hubble (1929), PNAS 15, 168, Fig. 1 | free |
