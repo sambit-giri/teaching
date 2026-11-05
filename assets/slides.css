@@ -115,6 +115,8 @@ html, body { background: var(--bg); }
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
+/* label next to a highlighted line, e.g. "← Today's topic!" */
+.reveal .hl-tag { font: 700 0.75em var(--f-ui); color: var(--gold); white-space: nowrap; margin-left: 0.5em; }
 /* a box drawn over part of a figure (inline left/top/width/height in %) */
 .reveal .mark-wrap { position: relative; }
 /* a label placed over a figure (inside .mark-wrap) with inline left/top in % */
