@@ -24,9 +24,9 @@ if [ "$SERVE" = _site ]; then  # build (skipped by --edit)
   rm -rf _site
   mkdir _site
   rsync -a \
-    --exclude '.*' --exclude archive --exclude _site --exclude ztest \
+    --exclude '.*' --exclude _site --exclude ztest \
     --exclude README.md --exclude build.sh --exclude LICENSE \
-    --exclude __marimo__ --exclude __pycache__ --exclude '*.py' \
+    --exclude __pycache__ --exclude '*.py' \
     ./ _site/
 
   touch _site/.nojekyll

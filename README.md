@@ -18,7 +18,6 @@ assets/
   site.css                     style of the hand-written pages (landing, lecture lists, notation)
   theme.js                     light/dark switch (button, or press T)
   slides.css, slides.js        look and set-up of the slide decks (reveal.js, KaTeX, text fitting)
-  story.css, story.js          engine for the interactive lectures ("story apps")
 Cosmology_HT2026_AS5003/       one folder per course, served at /teaching/<folder>/
   index.html                   the lecture list (hand-written)
   notation.html                reference page: Ryden's notation and benchmark model
@@ -26,9 +25,8 @@ Cosmology_HT2026_AS5003/       one folder per course, served at /teaching/<folde
   _shared/cosmo.js             cosmology functions shared by the lectures
   lectures/NN-topic/
     index.html                 the slides: one <section> per slide, in Keynote order
-    interactive.html, lecture.js  the interactive lecture (chapters, figures, controls), if any
     *.js                       the slides' interactive widgets ("Try it" slides)
-    public/, *.bin             data used by the widgets; make_*.py rebuilds a data file from its source
+    *.bin                      data used by the widgets; make_*.py rebuilds a data file from its source
 build.sh                       builds the site into _site/
 ```
 
@@ -58,8 +56,7 @@ Pages → Source must be set to "GitHub Actions".
 ## Add a lecture or a course
 
 - **Lecture:** create `lectures/NN-topic/index.html` by copying an existing deck, put its figures
-  in the course's `figures/` (and add them to `CREDITS.md`), optionally add an interactive page
-  (`interactive.html`, `lecture.js`, `public/`). Then add a card to the course's `index.html`.
+  in the course's `figures/` (and add them to `CREDITS.md`). Then add a card to the course's `index.html`.
 - **Course:** create a new top-level folder with its own `index.html` lecture list, and add a card
   to the landing page.
 
