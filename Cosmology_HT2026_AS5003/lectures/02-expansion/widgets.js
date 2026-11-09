@@ -55,6 +55,9 @@ const toyCluster = (() => {
     return { x: rad * Math.cos(phi), y: 60 + rad * Math.sin(phi), vx: 800 * n(), vy: 800 * n() };
   });
 })();
+// an animation draws only on the slide being shown, or on every slide in the PDF layout (?print-pdf)
+const shown = (box) => box.closest("section")?.classList.contains("present") || document.documentElement.classList.contains("print-pdf");
+
 const widgets = {
   // red, amber and green LED wavelengths, seen at speed v/c
   "traffic-light": (box, s, out) => {
@@ -195,7 +198,7 @@ const widgets = {
     let raf;
     const frame = (ms) => {
       raf = requestAnimationFrame(frame);
-      if (!box.closest("section")?.classList.contains("present")) return;
+      if (!shown(box)) return;
       const t = ms / 1000;
       g.clearRect(0, 0, W, H);
       g.font = `600 15px ${css("--f-ui")}`; g.textAlign = "center"; g.textBaseline = "middle";
@@ -249,7 +252,7 @@ const widgets = {
     let raf;
     const frame = (ms) => {
       raf = requestAnimationFrame(frame);
-      if (!box.closest("section")?.classList.contains("present")) return;
+      if (!shown(box)) return;
       const t = ms / 1000, orbits = box.closest("section").querySelector(".orbits-on")?.classList.contains("visible");
       g.clearRect(0, 0, W, H);
       g.font = `600 14px ${css("--f-ui")}`; g.textAlign = "center"; g.textBaseline = "middle";

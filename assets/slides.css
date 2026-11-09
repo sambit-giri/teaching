@@ -231,6 +231,13 @@ html, body { background: var(--bg); }
 .reveal .olbers-out { font-family: var(--f-ui); font-size: 0.8em; }
 .reveal .olbers-paradox { margin-top: 0.4em; padding: 12px 16px; font-size: 0.8em; border: 2px solid var(--accent); border-radius: 12px; background: var(--accent-soft); }
 .reveal .olbers-out sup { font-size: 0.7em; }
+.reveal .w-list { list-style: none; margin: 0.4em 0 0.6em; padding: 0; font: 600 0.72em/1.35 var(--f-ui); }
+.reveal .w-list li { margin: 0.35em 0; }
+.reveal .w-list li::before { content: none; }
+.reveal .w-select { font: 600 20px var(--f-ui); color: var(--ink); background: var(--bg); border: 1px solid var(--edge); border-radius: 8px; padding: 4px 8px; margin: 6px 0 4px; }
+.reveal table.w-table { border-collapse: collapse; font-size: 0.9em; align-self: center; }
+.reveal table.w-table th { padding: 6px 14px; text-align: left; font: 500 15px var(--f-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); border-bottom: 1px solid var(--edge); }
+.reveal table.w-table td { padding: 8px 14px; border-bottom: 1px solid var(--line); }
 
 /* Lecture 2 widgets: a figure drawn by widgets.js, its on/off switches */
 .reveal .w-fig svg { display: block; overflow: visible; }
@@ -290,7 +297,7 @@ html, body { background: var(--bg); }
 /* the course link and the light/dark button sit bottom-left */
 .deck-home {
   position: fixed;
-  left: 60px;
+  left: 100px;
   bottom: 22px;
   z-index: 30;
   font: 400 12px var(--f-mono);
@@ -299,7 +306,7 @@ html, body { background: var(--bg); }
   text-decoration: none;
 }
 .deck-home:hover { color: var(--accent); }
-#themeToggle {
+#themeToggle, #pdfButton {
   position: fixed;
   left: 16px;
   bottom: 14px;
@@ -315,10 +322,16 @@ html, body { background: var(--bg); }
   border-radius: 8px;
   cursor: pointer;
 }
-#themeToggle:hover { border-color: var(--accent); }
-#themeToggle svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+#pdfButton { left: 56px; }
+#themeToggle:hover, #pdfButton:hover { border-color: var(--accent); }
+#themeToggle svg, #pdfButton svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
 :root[data-theme="light"] #themeToggle .sun, :root:not([data-theme="light"]) #themeToggle .moon { display: none; }
 
 @media print {
-  .deck-home, #themeToggle { display: none; }
+  .deck-home, #themeToggle, #pdfButton { display: none; }
 }
+/* PDF layout (?print-pdf): each slide keeps the slide size (the cover's figures size to it), answers
+   that wait for a click on a figure are shown, and what a click fades out stays hidden */
+html.print-pdf .reveal .slides .pdf-page > section { display: flex !important; flex-direction: column; height: 720px; padding: 34px 56px 46px; box-sizing: border-box; }
+html.print-pdf .reveal .click-reveal { visibility: visible; }
+html.print-pdf .reveal .slides section .fragment.fade-out { visibility: hidden; }

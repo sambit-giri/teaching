@@ -1,7 +1,7 @@
 // Set-up shared by the lecture slide decks: renders $...$ and $$...$$ with KaTeX, starts
 // reveal.js on a 1280×720 slide, sizes each slide's text to fill it, and runs answer walls.
 // Keys: arrows / space / clicker to step, F full screen, Esc overview, S speaker view, T light/dark.
-// Add ?print-pdf to the URL and print to save a PDF (one page per slide).
+// The PDF button (or ?print-pdf in the URL, then print) saves a PDF: one page per slide, all clicks shown.
 
 renderMathInElement(document.querySelector(".reveal .slides"), {
   delimiters: [
@@ -25,9 +25,10 @@ function fit(section) {
     : section.querySelector("img") ? 1.25 : 1.5;
   const fits = (k) => {
     section.style.fontSize = `${k}em`;
-    // a column (.cols) centres its content, so it can overflow at the top as well as the bottom
+    // a column (.cols) centres its content, so it can overflow at the top as well as the bottom;
+    // an <svg> column has no offsetHeight, so it is skipped rather than counted as overflowing
     return section.scrollHeight <= section.clientHeight + 1 &&
-      [...section.querySelectorAll(".cols > *")].every((c) => c.offsetHeight <= c.parentElement.clientHeight + 1);
+      [...section.querySelectorAll(".cols > *")].every((c) => (c.offsetHeight ?? 0) <= c.parentElement.clientHeight + 1);
   };
   if (fits(max)) return;
   let lo = 0.7, hi = max;
@@ -112,9 +113,28 @@ Reveal.initialize({
   backgroundTransition: "none",
   controlsTutorial: false,
   pdfSeparateFragments: false,
+  pdfMaxPagesPerSlide: 1,
   plugins: [RevealNotes],
 }).then(() => {
   document.querySelectorAll(".reveal .slides > section").forEach(fit);
   Reveal.on("slidechanged", (e) => fit(e.currentSlide));
   document.fonts?.ready.then(() => fit(Reveal.getCurrentSlide()));
+  // the PDF layout is made after the slides are sized: size them again in it
+  Reveal.on("pdf-ready", () => document.querySelectorAll(".reveal .slides section").forEach(fit));
+  // opened by the PDF button: print once the fonts, figures and widgets have drawn
+  if (printing && /[?&]print=1/.test(location.search)) {
+    Promise.all([document.fonts?.ready, new Promise((r) => (document.readyState === "complete" ? r() : addEventListener("load", r)))])
+      .then(() => setTimeout(() => print(), 1500));
+  }
 });
+
+// PDF button, bottom left next to the light/dark button: opens the deck in reveal's print layout
+// in a new tab, which then opens the print dialog (choose "Save as PDF").
+const printing = /print-pdf/.test(location.search);
+if (!printing) {
+  const b = Object.assign(document.createElement("button"), { id: "pdfButton", type: "button", title: "Save the slides as a PDF" });
+  b.setAttribute("aria-label", "Save the slides as a PDF");
+  b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14"/></svg>';
+  b.addEventListener("click", () => open(`${location.pathname}?print-pdf&print=1`, "_blank"));
+  document.body.appendChild(b);
+}
