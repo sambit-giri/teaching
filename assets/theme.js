@@ -6,6 +6,8 @@
   let saved = null;
   try { saved = localStorage.getItem("theme"); } catch (e) {}
   root.dataset.theme = saved || (system.matches ? "light" : "dark");
+  // a PDF export of the slides (?print-pdf) is always light: dark pages need "background graphics"
+  if (/print-pdf/.test(location.search)) { root.dataset.theme = "light"; return; }
   system.addEventListener("change", (e) => {
     if (!saved) root.dataset.theme = e.matches ? "light" : "dark";
   });

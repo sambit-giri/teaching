@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lecture 3 · Curvature of space; the Robertson–Walker metric · Cosmology AS5003</title>
+<script src="../../../assets/theme.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<link rel="stylesheet" href="../../../assets/tokens.css">
+<link rel="stylesheet" href="../../../assets/slides.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/notes/notes.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<script defer src="../../../assets/slides.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.16/dist/plot.umd.min.js"></script>
+<script type="module" src="widgets.js"></script>
+</head>
+<body>
+<a class="deck-home" href="../../">&larr; AS5003</a>
+<div class="reveal"><div class="slides">
+<!-- One <section> per slide, in the order of Lecture3_22Nov8.key (with HT25's curvature tilings); the id is the slide's link (#/id).
+     Figures live in ../../figures/ (credits in figures/CREDITS.md).
+     class="fragment"          appears on the next click, like a Keynote build
+     <section data-text-size="1.2">   fixes the text size of a slide (1 = 30px) instead of the automatic fit
+     style="font-size: 0.8em" on a <p>, <li> or <ul>   makes that part smaller (or larger) than the rest
+     $...$ and $$...$$          maths (LaTeX)
+     "Try it" slides: <div class="w-fig" data-widget="..."> is drawn by widgets.js from the inputs with data-k.
+     Edit and see the result:  ./build.sh --edit, then reload the page after saving. -->
+
+<section id="title" class="cover">
+  <p class="kicker">Stockholm University · Department of Astronomy</p>
+  <h1>AS5003 (Cosmology) HT26</h1>
+  <p class="sub">Lecture 3 (10 Nov 2026)</p>
+  <!-- every lecture: the timeline first, then one figure for the lecture's theme -->
+  <div class="cover-figs">
+    <figure>
+      <img src="../../figures/history-of-universe-timeline.jpg" alt="Timeline of the Universe from the Big Bang to today">
+      <p class="credit">Image credit: NASA</p>
+    </figure>
+    <figure>
+      <img class="plate" src="../../figures/universe-geometry-wmap.jpg" alt="Triangles drawn on a sphere, a saddle and a flat sheet: closed, open and flat space" style="width: 400px; height: auto; align-self: start;">
+      <p class="credit">Image credit: NASA / WMAP Science Team</p>
+    </figure>
+  </div>
+</section>
+
+<section id="admin">
+  <h2>Practical information</h2>
+  <ul>
+    <li><strong>Home assignments:</strong>
+      <ul>
+        <li><a href="https://canvas.su.se/courses/12102/assignments/13068" target="_blank"><em>Problem set 1</em></a> was due today, 10:00.</li>
+        <li><a href="https://canvas.su.se/courses/12102/modules/items/204283" target="_blank"><em>Problem set 2</em></a> is online in Canvas, due <strong>Tuesday 17 November, 10:00</strong>.</li>
+      </ul>
+    </li>
+    <li><strong>Lecture slides:</strong> the lectures are also available as PDFs in Canvas.</li>
+  </ul>
+</section>
+
+<section id="recap">
+  <p class="kicker">Recap</p>
+  <h2>From last time</h2>
+  <div class="cols" style="grid-template-columns: 1.1fr 1fr; gap: 36px;">
+    <div class="fig">
+      <img class="plate" src="../../figures/hubble-1929-velocity-distance.gif" alt="Hubble's 1929 diagram: velocity against distance for nearby galaxies" style="width: 100%;">
+      <p class="credit">E. Hubble (1929), PNAS 15, 168</p>
+    </div>
+    <div>
+      <ul>
+        <li><strong>Hubble's law:</strong> galaxies show a redshift (recession velocity) proportional to their distance:
+          $$v = H_0 D$$</li>
+        <li>Such a relation arises naturally in a universe that is expanding in a <strong>homogeneous and isotropic</strong> way, described by a <strong>scale factor</strong> $a(t)$:
+          $$H_0 = \left.\frac{\dot a}{a}\right|_{t_0}, \qquad 1 + z = \frac{1}{a(t_\text{em})}$$</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="goals">
+  <h2>Goals of this week</h2>
+  <ul>
+    <li>The concept of <strong>distance in an expanding universe</strong>: how to think about and calculate distances, given a function $a(t)$ <span class="hl-tag fragment" data-fragment-index="1">← today</span></li>
+    <li>How to solve for $a(t)$ for a given universe: the <strong>Friedmann equations</strong> <span class="hl-tag fragment" data-fragment-index="1">← Thursday</span></li>
+  </ul>
+</section>
+
+<section id="plan">
+  <h2>Today's plan</h2>
+  <ol>
+    <li>The concept of a <strong>metric</strong></li>
+    <li><strong>Special relativity:</strong> space and time are not independent</li>
+    <li><strong>General relativity</strong> and the curvature of spacetime</li>
+    <li>The <strong>Robertson–Walker metric</strong> for an expanding universe</li>
+    <li>Using the Robertson–Walker metric to calculate <strong>distances</strong></li>
+  </ol>
+</section>
+
+<section id="metric" data-text-size="0.9">
+  <p class="kicker">1 · Metric</p>
+  <h2>A metric defines how to measure distances</h2>
+  <div class="cols" style="grid-template-columns: 1fr auto; gap: 36px;">
+    <div>
+      <p>For example, Euclidean (flat) space:</p>
+      $$d\ell^2 = dx^2 + dy^2 + dz^2$$
+      <p>or, in spherical coordinates:</p>
+      $$d\ell^2 = dr^2 + r^2\left(d\theta^2 + \sin^2\theta\, d\phi^2\right) = dr^2 + r^2 d\Omega^2$$
+      <p class="callout inline" style="font-size: 0.85em; display: inline-block;">Notation: $dx^2 = (dx)^2$, not $d(x^2)$</p>
+    </div>
+    <div class="fig" style="align-items: stretch;">
+      <svg viewBox="-40 30 420 350" width="410" height="342" role="img" aria-label="Two points A and B on a city grid, joined by a straight line, a path along the streets and a staircase path">
+        <g style="fill: var(--edge); opacity: 0.55;">
+          <rect x="-31" y="39" width="52" height="52" rx="4"/>
+          <rect x="39" y="39" width="52" height="52" rx="4"/>
+          <rect x="109" y="39" width="52" height="52" rx="4"/>
+          <rect x="179" y="39" width="52" height="52" rx="4"/>
+          <rect x="249" y="39" width="52" height="52" rx="4"/>
+          <rect x="319" y="39" width="52" height="52" rx="4"/>
+          <rect x="-31" y="109" width="52" height="52" rx="4"/>
+          <rect x="39" y="109" width="52" height="52" rx="4"/>
+          <rect x="109" y="109" width="52" height="52" rx="4"/>
+          <rect x="179" y="109" width="52" height="52" rx="4"/>
+          <rect x="249" y="109" width="52" height="52" rx="4"/>
+          <rect x="319" y="109" width="52" height="52" rx="4"/>
+          <rect x="-31" y="179" width="52" height="52" rx="4"/>
+          <rect x="39" y="179" width="52" height="52" rx="4"/>
+          <rect x="109" y="179" width="52" height="52" rx="4"/>
+          <rect x="179" y="179" width="52" height="52" rx="4"/>
+          <rect x="249" y="179" width="52" height="52" rx="4"/>
+          <rect x="319" y="179" width="52" height="52" rx="4"/>
+          <rect x="-31" y="249" width="52" height="52" rx="4"/>
+          <rect x="39" y="249" width="52" height="52" rx="4"/>
+          <rect x="109" y="249" width="52" height="52" rx="4"/>
+          <rect x="179" y="249" width="52" height="52" rx="4"/>
+          <rect x="249" y="249" width="52" height="52" rx="4"/>
+          <rect x="319" y="249" width="52" height="52" rx="4"/>
+          <rect x="-31" y="319" width="52" height="52" rx="4"/>
+          <rect x="39" y="319" width="52" height="52" rx="4"/>
+          <rect x="109" y="319" width="52" height="52" rx="4"/>
+          <rect x="179" y="319" width="52" height="52" rx="4"/>
+          <rect x="249" y="319" width="52" height="52" rx="4"/>
+          <rect x="319" y="319" width="52" height="52" rx="4"/>
+        </g>
+        <line x1="30" y1="310" x2="310" y2="100" style="stroke: var(--accent);" stroke-width="4" stroke-dasharray="10 7"/>
+        <path class="fragment" data-fragment-index="1" d="M30 310 H310 V100" fill="none" style="stroke: var(--hot);" stroke-width="5" stroke-linejoin="round"/>
+        <path class="fragment" data-fragment-index="1" d="M30 310 H100 V240 H170 V170 H240 V100 H310" fill="none" style="stroke: var(--cool);" stroke-width="5" stroke-linejoin="round"/>
+        <g font-family="var(--f-ui)" font-weight="700" font-size="16" text-anchor="middle">
+          <circle cx="30" cy="310" r="14" style="fill: var(--ink);"/><text x="30" y="316" style="fill: var(--bg);">A</text>
+          <circle cx="310" cy="100" r="14" style="fill: var(--ink);"/><text x="310" y="106" style="fill: var(--bg);">B</text>
+        </g>
+      </svg>
+      <p style="font-size: 0.8em; margin: 0.3em 0 0;"><span style="color: var(--accent);">Straight line: $\sqrt{4^2 + 3^2} = 5$ blocks</span></p>
+      <p class="fragment" data-fragment-index="1" style="font-size: 0.8em; margin: 0.2em 0 0;"><span style="color: var(--hot);">Along the streets: $4 + 3 = 7$ blocks</span>
+        <br><span style="color: var(--cool);">Any other route without detours: also $7$</span>
+        <br>Manhattan metric: $d\ell = |dx| + |dy|$</p>
+    </div>
+  </div>
+  <aside class="notes">The figure is in 2D, but the equations are for 3D space.
+    The metric is the rule that turns small coordinate steps (dx, dy, dz) into a distance dℓ. The space itself sets the rule: in a city you can only walk along the streets, so the straight line is not a path you can take.
+    Click: along the streets A to B is 4 + 3 = 7 blocks (red), and the staircase route (blue) is also 7 blocks, as is every route that never turns back. In this space the shortest path is not unique.
+    The Manhattan (taxicab) metric is named after the street grid of Manhattan.
+    Same coordinates, different metric, different distance. Later the Robertson–Walker metric is the rule for our expanding, possibly curved, universe.</aside>
+</section>
+
+<section id="special-relativity">
+  <p class="kicker">2 · Special relativity</p>
+  <h2>Special relativity: time and space are not independent</h2>
+  <div class="cols" style="grid-template-columns: 1fr 0.8fr; gap: 36px;">
+    <div>
+      <p>Based on two postulates<span class="fragment" data-fragment-index="1">:</span></p>
+      <ol>
+        <li class="fragment" data-fragment-index="1">The laws of physics are the same in all <strong>inertial</strong> (non-accelerating) frames of reference.</li>
+        <li class="fragment" data-fragment-index="2">The <strong>speed of light</strong> in a vacuum is the same for all observers, regardless of their relative motion.</li>
+      </ol>
+    </div>
+    <div class="fig">
+      <img class="plate" src="../../figures/frames-of-reference.png" alt="Two frames of reference: O' moves at speed v along the x axis of O" style="width: 100%;">
+      <p class="credit">Krea, Wikimedia Commons (CC BY-SA 3.0)</p>
+    </div>
+  </div>
+  <aside class="notes">On arrival: special relativity says that space and time are not independent.
+    Click 1: example of a non-inertial frame: a rotating frame is accelerating.
+    Click 2: Maxwell's equations give light a fixed speed c; if they hold in every inertial frame (postulate 1), c must be the same for everyone.
+    Michelson and Morley (1887) found no change in c with the Earth's motion, consistent with this. Michelson won the 1907 Nobel Prize, for his precision optical instruments and measurements; Morley did not share it.
+    If asked, the transformations from frame O to O' (O' moving at v along x):
+    Galilean (Newton): x' = x − vt, y' = y, z' = z, t' = t. Time is the same for everyone, and speeds add, so light would move at c − v in O'.
+    Lorentz (special relativity): x' = γ(x − vt), y' = y, z' = z, t' = γ(t − vx/c²), with γ = 1/√(1 − v²/c²). Light moves at c in both frames; for v ≪ c, γ → 1 and it reduces to Galilean.</aside>
+</section>
+
+<section id="light-clock" data-text-size="0.85">
+  <h2>Light clock experiment</h2>
+  <div class="cols" style="grid-template-columns: auto 1fr; gap: 30px;">
+    <div class="fig">
+      <svg viewBox="0 0 540 400" width="540" height="400" role="img" aria-label="A light clock at rest: light goes straight up and down between mirrors L apart. The same clock moving at v: light follows a diagonal path, forming a right triangle with sides L, v delta t prime over 2 and c delta t prime over 2" style="color: var(--ink);">
+        <defs><marker id="lc-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+        <g font-family="var(--f-ui)" font-size="19" fill="currentColor" text-anchor="middle">
+          <!-- clock at rest -->
+          <line x1="40" y1="80" x2="110" y2="80" stroke="currentColor" stroke-width="5"/>
+          <line x1="40" y1="300" x2="110" y2="300" stroke="currentColor" stroke-width="5"/>
+          <line x1="66" y1="296" x2="66" y2="86" stroke="#f59e0b" stroke-width="3" marker-end="url(#lc-arr)" style="color: #f59e0b;"/>
+          <line x1="84" y1="84" x2="84" y2="294" stroke="#f59e0b" stroke-width="3" marker-end="url(#lc-arr)" style="color: #f59e0b;"/>
+          <text x="22" y="196" font-style="italic" font-family="var(--f-serif, serif)" font-size="24">L</text>
+          <text x="75" y="340">at rest</text>
+          <text x="75" y="370" font-style="italic" font-family="var(--f-serif, serif)" font-size="22">Δt = 2L/c</text>
+          <!-- the same clock moving at v -->
+          <g opacity="0.35">
+            <line x1="185" y1="80" x2="255" y2="80" stroke="currentColor" stroke-width="5"/>
+            <line x1="185" y1="300" x2="255" y2="300" stroke="currentColor" stroke-width="5"/>
+            <line x1="445" y1="80" x2="515" y2="80" stroke="currentColor" stroke-width="5"/>
+            <line x1="445" y1="300" x2="515" y2="300" stroke="currentColor" stroke-width="5"/>
+          </g>
+          <line x1="315" y1="80" x2="385" y2="80" stroke="currentColor" stroke-width="5"/>
+          <line x1="315" y1="300" x2="385" y2="300" stroke="currentColor" stroke-width="5"/>
+          <path d="M220 296 L350 84 L480 296" fill="none" stroke="#f59e0b" stroke-width="3" stroke-linejoin="round"/>
+          <line x1="300" y1="40" x2="400" y2="40" stroke="currentColor" stroke-width="2.5" marker-end="url(#lc-arr)"/>
+          <text x="415" y="46" font-style="italic" font-family="var(--f-serif, serif)" font-size="24" text-anchor="start">v</text>
+          <text x="440" y="340">moving at v</text>
+          <!-- the right triangle, with the derivation -->
+          <g class="fragment" data-fragment-index="2">
+            <line x1="350" y1="84" x2="350" y2="300" stroke="currentColor" stroke-width="2" stroke-dasharray="6 5"/>
+            <line x1="220" y1="318" x2="350" y2="318" stroke="currentColor" stroke-width="2" marker-start="url(#lc-arr)" marker-end="url(#lc-arr)"/>
+            <text x="362" y="196" font-style="italic" font-family="var(--f-serif, serif)" font-size="24" text-anchor="start">L</text>
+            <text x="285" y="350" font-style="italic" font-family="var(--f-serif, serif)" font-size="22">vΔt′/2</text>
+            <text x="262" y="180" font-style="italic" font-family="var(--f-serif, serif)" font-size="22" text-anchor="end" style="fill: #d97706;">cΔt′/2</text>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div>
+      <p>A clock: light bounces between two mirrors a distance $L$ apart.</p>
+      <p class="fragment" data-fragment-index="1">At rest: $\Delta t = \dfrac{2L}{c}$</p>
+      <p class="fragment" data-fragment-index="2">Moving at $v$: the light travels a longer, diagonal path, at the same speed $c$:
+        $$\left(\frac{c\,\Delta t'}{2}\right)^2 = L^2 + \left(\frac{v\,\Delta t'}{2}\right)^2$$</p>
+      <p class="fragment" data-fragment-index="3">$$\Delta t' = \frac{\Delta t}{\sqrt{1 - v^2/c^2}} = \gamma\,\Delta t$$</p>
+      <p class="fragment" data-fragment-index="4">Observer 1 sees Observer 2's clock ticking slowly. Any other clock of Observer 2 must agree with the light clock, so <strong>time itself passes more slowly</strong> for Observer 2 (as seen by 1): <strong>time dilation</strong>.</p>
+    </div>
+  </div>
+  <aside class="notes">Transition from the last slide: if the speed of light is the same for everyone, time must change in a moving frame.
+    Left: the clock at rest, one tick is up and down, Δt = 2L/c. Right: the same clock moving at v, seen by Observer 1: the light goes along the diagonal, still at speed c.
+    Click 2 shows the right triangle: half a tick, the light covers cΔt′/2 while the mirrors move vΔt′/2. Derive Δt′ in terms of Δt (on the board, or step by step here).
+    If the other clocks of Observer 2 disagreed with the light clock, Observer 2 could tell that they were moving, which postulate 1 forbids.</aside>
+</section>
+
+<section id="sr-metric">
+  <h2>Special relativity metric</h2>
+  <p>Observers in special relativity will not agree on the time or space separation of events (and sometimes not even on which event happened first).</p>
+  <p>What they will agree on is the <strong>spacetime interval</strong> between events:</p>
+  $$ds^2 = -c^2 dt^2 + dx^2 + dy^2 + dz^2 = -c^2 dt^2 + d\ell^2$$
+  <p class="fragment">Light travels along paths with $ds = 0$ (<strong>null geodesics</strong>). We will use this for distances.</p>
+  <aside class="notes">This is the Minkowski metric: flat spacetime. The minus sign is what links time and space.</aside>
+</section>
+
+<section id="equivalence">
+  <p class="kicker">3 · General relativity</p>
+  <h2>General relativity: the equivalence principle</h2>
+  <div class="cols" style="grid-template-columns: auto 1fr; gap: 36px;">
+    <div class="fig">
+      <svg viewBox="0 0 440 300" width="560" height="382" role="img" aria-label="Two boxes: one accelerated by a rocket, one at rest on a planet; a light ray bends downwards in both" style="color: var(--ink);">
+        <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
+        <!-- left: box in space, pushed up by a rocket -->
+        <rect x="20" y="40" width="170" height="170" fill="none" stroke="currentColor" stroke-width="3"/>
+        <path d="M20 95 Q 110 98 190 125" fill="none" stroke="#f59e0b" stroke-width="3.5"/>
+        <path d="M80 210 L105 255 L130 210" fill="#f97316" opacity="0.85"/>
+        <path d="M95 210 L105 238 L115 210" fill="#facc15"/>
+        <line x1="105" y1="32" x2="105" y2="4" stroke="currentColor" stroke-width="2.5" marker-end="url(#arr)"/>
+        <text x="115" y="20" font-size="17" fill="currentColor" font-family="var(--f-ui)">accelerating, a = g</text>
+        <text x="105" y="290" font-size="16" fill="currentColor" text-anchor="middle" font-family="var(--f-ui)">rocket in empty space</text>
+        <!-- right: box at rest on a planet -->
+        <rect x="250" y="40" width="170" height="170" fill="none" stroke="currentColor" stroke-width="3"/>
+        <path d="M250 95 Q 340 98 420 125" fill="none" stroke="#f59e0b" stroke-width="3.5"/>
+        <rect x="235" y="210" width="200" height="22" fill="currentColor" opacity="0.25"/>
+        <line x1="335" y1="120" x2="335" y2="170" stroke="currentColor" stroke-width="2.5" marker-end="url(#arr)"/>
+        <text x="345" y="152" font-size="17" fill="currentColor" font-family="var(--f-ui)">g</text>
+        <text x="335" y="290" font-size="16" fill="currentColor" text-anchor="middle" font-family="var(--f-ui)">at rest on a planet</text>
+      </svg>
+    </div>
+    <div>
+      <p>Special relativity only deals with no acceleration, i.e. no gravity.</p>
+      <p>The <strong>equivalence principle</strong>: there is no difference between the behaviour in a box being accelerated (left) and under the influence of gravity (right).</p>
+      <p class="fragment">Light follows the shortest path (a <strong>geodesic</strong>). If the two pictures are equivalent, <strong>spacetime must be curved</strong>.</p>
+      <p class="fragment aside">"Mass-energy tells spacetime how to curve. Curvature tells mass-energy how to move." (J. Wheeler)</p>
+    </div>
+  </div>
+  <aside class="notes">In box 1 the light path curves because the floor accelerates up towards the photons.
+    As boxes 1 and 2 are indistinguishable, the light must curve in box 2 too, in the presence of gravity. So spacetime is curved where there is mass (gravity).</aside>
+</section>
+
+<section id="bun">
+  <h2>Describing curvature</h2>
+  <div class="fig">
+    <div style="width: 620px; height: 520px; overflow: hidden; border-radius: 6px; margin: 0 auto; position: relative;">
+      <img src="../../figures/cinnamon-bun.jpg" alt="A Swedish cinnamon bun" style="position: absolute; width: 720px; max-width: none; max-height: none; left: -79px; top: -462px;">
+      <svg viewBox="0 0 620 520" width="620" height="520" style="position: absolute; left: 0; top: 0;" font-family="var(--f-ui)" font-size="19" font-weight="700">
+        <g class="fragment">
+          <ellipse cx="400" cy="235" rx="58" ry="48" fill="none" stroke="#dc2626" stroke-width="4" stroke-dasharray="9 6"/>
+          <rect x="430" y="140" width="170" height="34" rx="17" fill="#fff" opacity="0.92"/>
+          <text x="515" y="163" text-anchor="middle" fill="#dc2626">positive: a dome</text>
+        </g>
+        <g class="fragment">
+          <ellipse cx="314" cy="250" rx="34" ry="32" fill="none" stroke="#2563eb" stroke-width="4" stroke-dasharray="9 6"/>
+          <rect x="96" y="185" width="176" height="34" rx="17" fill="#fff" opacity="0.92"/>
+          <text x="184" y="208" text-anchor="middle" fill="#2563eb">negative: a saddle</text>
+        </g>
+        <g class="fragment">
+          <ellipse cx="80" cy="460" rx="55" ry="34" fill="none" stroke="#15803d" stroke-width="4" stroke-dasharray="9 6"/>
+          <rect x="12" y="372" width="146" height="34" rx="17" fill="#fff" opacity="0.92"/>
+          <text x="85" y="395" text-anchor="middle" fill="#15803d">flat: the plate</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <aside class="notes">How would you describe the curvature of this surface? Clicks mark three kinds: positive on top of a rounded roll (curves the same way in every direction, like a sphere), negative in the hollow where the strands loop inwards, like the inside of a doughnut (curves up one way and down the other, like a saddle), zero on the plate. It changes from place to place: the surface is not homogeneous and isotropic. For the Universe we only need the simple cases.</aside>
+</section>
+
+<section id="curvature" data-text-size="0.85">
+  <h2>Describing curvature: three homogeneous and isotropic cases</h2>
+  <div class="w-fig" data-widget="curvature"></div>
+  <label class="olbers-label">Size of the triangle</label>
+  <input class="olbers-slider" data-k="size" type="range" min="0.05" max="1" step="0.01" value="0.5">
+  <p>Angles of a triangle: $\alpha + \beta + \gamma = \pi + \kappa\,\dfrac{A}{R_0^2}$ &nbsp; with $\kappa = +1, 0, -1$ and $R_0$ the radius of curvature</p>
+  <aside class="notes">All three surfaces are homogeneous and isotropic: the same everywhere and in every direction. Only three types of homogeneous and isotropic curved space are possible: flat, positively curved and negatively curved.
+    Small triangles always look flat (sum close to 180°); the difference grows with the area compared with R0². That is how, in principle, you could measure the curvature of space from inside it.</aside>
+</section>
+
+<section id="three-metrics">
+  <h2>For homogeneous and isotropic 3D space, only 3 metrics are possible</h2>
+  <ol>
+    <li><strong>Flat</strong> (no curvature anywhere): $\;d\ell^2 = dr^2 + r^2 d\Omega^2$</li>
+    <li><strong>Positively curved</strong> everywhere: $\;d\ell^2 = dr^2 + R_0^2 \sin^2(r/R_0)\, d\Omega^2$</li>
+    <li><strong>Negatively curved</strong> everywhere: $\;d\ell^2 = dr^2 + R_0^2 \sinh^2(r/R_0)\, d\Omega^2$</li>
+  </ol>
+  <p>where $d\Omega^2 = d\theta^2 + \sin^2\theta\, d\phi^2$, $R_0$ is the radius of curvature, and $\sinh x = \tfrac12\left(e^x - e^{-x}\right)$.</p>
+  <aside class="notes">Only the term multiplying dΩ² changes. For r much smaller than R0, sin(r/R0) ≈ sinh(r/R0) ≈ r/R0, and all three look flat: the small-triangle limit again.</aside>
+</section>
+
+<section id="robertson-walker">
+  <p class="kicker">4 · Robertson–Walker metric</p>
+  <h2>The Robertson–Walker metric</h2>
+  <p>Combine homogeneous and isotropic <strong>curved space</strong> with homogeneous and isotropic <strong>expansion</strong>:</p>
+  $$ds^2 = -c^2 dt^2 + a(t)^2\left[dr^2 + S_\kappa(r)^2\, d\Omega^2\right]$$
+  $$S_\kappa(r) = \begin{cases} R_0 \sin(r/R_0) & \kappa = +1 \text{ (positively curved)}\\ r & \kappa = 0 \text{ (flat)}\\ R_0 \sinh(r/R_0) & \kappa = -1 \text{ (negatively curved)}\end{cases}$$
+  <p>Here $r$, $\theta$ and $\phi$ are <strong>comoving coordinates</strong>. Our goal is to find $a(t)$, $R_0$ and $\kappa$.</p>
+  <p class="fragment callout inline" style="font-size: 0.8em;">Literature topic: <strong>evidence for/against the cosmological principle</strong>, which this metric assumes.</p>
+  <aside class="notes">Reminder from last time: r(t) = a(t) r(t0). Also known as the FRW or FLRW metric (Friedmann–Lemaître–Robertson–Walker).
+    Comoving coordinates stay fixed for galaxies that just follow the expansion; all the time dependence is in a(t).</aside>
+</section>
+
+<section id="distances">
+  <p class="kicker">5 · Distances</p>
+  <h2>Defining distances in an expanding universe</h2>
+  <div class="fig">
+    <svg viewBox="0 0 760 260" width="760" height="260" role="img" aria-label="An observer at the origin and a galaxy at comoving coordinates r, theta, phi" style="color: var(--ink);">
+      <!-- observer -->
+      <circle cx="80" cy="95" r="16" fill="none" stroke="currentColor" stroke-width="3"/>
+      <path d="M80 111 V170 M80 130 L52 150 M80 130 L108 150 M80 170 L58 215 M80 170 L102 215" fill="none" stroke="currentColor" stroke-width="3"/>
+      <text x="80" y="60" font-size="20" text-anchor="middle" fill="currentColor" font-family="var(--f-ui)">(0, 0, 0)</text>
+      <!-- galaxy -->
+      <g transform="translate(660 120)">
+        <ellipse rx="52" ry="22" fill="currentColor" opacity="0.12"/>
+        <ellipse rx="30" ry="12" fill="currentColor" opacity="0.25"/>
+        <ellipse rx="12" ry="6" fill="currentColor" opacity="0.6"/>
+      </g>
+      <text x="660" y="70" font-size="20" text-anchor="middle" fill="currentColor" font-family="var(--f-ui)">(r, θ, φ)</text>
+      <line class="fragment" x1="120" y1="120" x2="595" y2="120" stroke="var(--accent)" stroke-width="3" stroke-dasharray="10 8"/>
+    </svg>
+  </div>
+  <p style="text-align: center;"><strong>How far away is the galaxy?</strong></p>
+  <aside class="notes">The answer depends on what we mean by "distance": the galaxy moves away while its light travels to us. We start with the proper distance.</aside>
+</section>
+
+<section id="proper-distance" data-text-size="0.9">
+  <h2>Proper distance</h2>
+  <p>The <strong>proper distance</strong> $d_p(t)$ is the distance at a <strong>fixed time</strong> $t$ (as if we could stop the expansion and lay down a tape measure).</p>
+  <div class="fragment">
+    <p>Along a radial line ($d\theta = d\phi = 0$) at fixed $t$ ($dt = 0$), the metric gives $ds = a(t)\,dr$, so</p>
+    $$d_p(t) = a(t)\int_0^r dr = a(t)\, r$$
+  </div>
+  <div class="fragment">
+    <p>Light travels with $ds = 0$: $\;c\,dt = a(t)\,dr$, so the comoving coordinate of a galaxy whose light left at $t_e$ is</p>
+    $$r = c\int_{t_e}^{t_0} \frac{dt}{a(t)} \qquad\xRightarrow{\;a(t_0)\,=\,1\;}\qquad d_p(t_0) = r = c\int_{t_e}^{t_0} \frac{dt}{a(t)}$$
+  </div>
+  <p class="fragment">At emission: $\;d_p(t_e) = a(t_e)\, d_p(t_0) = \dfrac{d_p(t_0)}{1 + z}$</p>
+  <aside class="notes">Proper distance is the distance between the observer and the galaxy at a fixed time. The proper distance today, d_p(t0), equals the comoving coordinate r (a(t0) = 1).
+    Assume light travelling on a null geodesic (ds = 0).</aside>
+</section>
+
+<section id="example">
+  <h2>Example: proper distance</h2>
+  <p>Assume a universe with $a(t) = t/t_0$, i.e. $a \propto t$, with the usual convention $a(t_0) = 1$.</p>
+  <p><strong>What is the proper distance today (comoving distance) to a galaxy at redshift $z = 3$?</strong> Take $H_0 = 68$ km/s/Mpc and $c = 3\times10^5$ km/s.</p>
+  <div class="fragment">
+    $$d_p(t_0) = c\int_{t_e}^{t_0}\frac{dt}{t/t_0} = c\,t_0 \ln\frac{t_0}{t_e}$$
+  </div>
+  <div class="fragment">
+    <p>Since $1 + z = \dfrac{1}{a(t_e)} = \dfrac{t_0}{t_e}$ and $H_0 = \dfrac{\dot a}{a}\Big|_{t_0} = \dfrac{1}{t_0}$:</p>
+    $$d_p(t_0) = \frac{c}{H_0}\ln(1 + z) = 4.4\ \text{Gpc} \times \ln 4 \approx 6.1\ \text{Gpc}$$
+  </div>
+  <aside class="notes">c/H0 = 3×10⁵ km/s / 68 km/s/Mpc ≈ 4400 Mpc. ln 4 ≈ 1.39.</aside>
+</section>
+
+<section id="example-2">
+  <h2>Example, continued</h2>
+  <ul>
+    <li><strong>How far away was the galaxy when the light was emitted?</strong>
+      <p class="fragment" data-fragment-index="1">$$d_p(t_e) = \frac{d_p(t_0)}{1 + z} = \frac{6.1\ \text{Gpc}}{4} \approx 1.5\ \text{Gpc}$$</p></li>
+    <li><strong>How far did the light travel?</strong> <span class="hl-tag fragment" data-fragment-index="2">← light-travel distance</span>
+      <p class="fragment" data-fragment-index="2">$$c\,(t_0 - t_e) = c\,t_0\left(1 - \frac{1}{1+z}\right) = 4.4\ \text{Gpc}\times\frac34 \approx 3.3\ \text{Gpc}$$</p></li>
+  </ul>
+  <p class="fragment" data-fragment-index="3">Three different answers to "how far?": <strong>6.1</strong>, <strong>1.5</strong> and <strong>3.3</strong> Gpc.</p>
+  <aside class="notes">Write all the distances on the board and explain again what each one means: where the galaxy is now, where it was when the light left, and how long the light was on its way (times c).
+    t0 − te is the light-travel time (lookback time); times c it is the light-travel distance.</aside>
+</section>
+
+<section id="distances-try" data-text-size="0.85">
+  <h2>Try it: three distances in a spacetime diagram</h2>
+  <div class="cols" style="grid-template-columns: auto 1fr; gap: 30px;">
+    <div class="w-fig" data-widget="distances"></div>
+    <div>
+      <label class="olbers-label">Redshift $z$ = <span data-v="z"></span></label>
+      <input class="olbers-slider" data-k="z" type="range" min="0.1" max="10" step="0.1" value="3">
+      <p class="w-out olbers-out">$a(t) = t/t_0$: the light left at $t_e = $ <span data-v="te"></span> $t_0$</p>
+      <ul class="w-list">
+        <li style="color: var(--accent);">Proper distance today (comoving): $d_p(t_0) = c\int_{t_e}^{t_0} dt/a$ = <b data-v="dp0"></b> Gpc</li>
+        <li style="color: var(--hot);">Proper distance at emission: $d_p(t_e) = a(t_e)\,d_p(t_0)$ = <b data-v="dpe"></b> Gpc</li>
+        <li style="color: var(--gold);">Light-travel distance: $c\,(t_0 - t_e)$ = <b data-v="travel"></b> Gpc</li>
+      </ul>
+      <p class="aside">$H_0 = 68$ km/s/Mpc. The orange curve is the path of the light. For $z > e - 1 \approx 1.7$ it first moves <em>away</em> from us in proper distance: space expands faster than it travels.</p>
+      <p class="fragment callout inline" style="font-size: 0.8em;">Literature topic: <strong>space-time diagrams in an expanding universe</strong>.</p>
+    </div>
+  </div>
+</section>
+
+<section id="redshift-a">
+  <h2>Derive the relation between redshift and scale factor</h2>
+  <div class="cols" style="grid-template-columns: auto 1fr; gap: 30px; align-items: center;">
+    <div>
+      <p style="white-space: nowrap;"><strong>Show that</strong> $\;\displaystyle 1 + z = \frac{\lambda_0}{\lambda_e} = \frac{a(t_0)}{a(t_e)}$</p>
+    </div>
+    <div class="fragment" data-fragment-index="1">
+    <svg viewBox="0 18 620 152" preserveAspectRatio="xMaxYMid meet" width="620" height="152" role="img" aria-label="A blue wave with two crests leaves a galaxy on the right and travels towards us; near us the same wave is red and stretched" style="color: var(--ink); width: 100%; height: 165px;" font-family="var(--f-ui)" font-size="17">
+      <defs><marker id="rz-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker><marker id="rz-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#dc2626"/></marker><marker id="rz-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2563eb"/></marker></defs>
+      <!-- us -->
+      <circle cx="28" cy="95" r="11" fill="currentColor"/>
+      <text x="28" y="135" text-anchor="middle" fill="currentColor">us</text>
+      <!-- galaxy -->
+      <ellipse cx="588" cy="95" rx="24" ry="11" fill="currentColor" opacity="0.35"/>
+      <ellipse cx="588" cy="95" rx="9" ry="6" fill="currentColor"/>
+      <text x="588" y="135" text-anchor="middle" fill="currentColor">galaxy</text>
+      <!-- observed: red, stretched -->
+      <path d="M70.0 95.0 L71.0 93.7 L72.0 92.5 L73.0 91.2 L74.0 90.0 L75.0 88.8 L76.0 87.6 L77.0 86.4 L78.0 85.3 L79.0 84.2 L80.0 83.1 L81.0 82.1 L82.0 81.1 L83.0 80.1 L84.0 79.2 L85.0 78.4 L86.0 77.6 L87.0 76.8 L88.0 76.2 L89.0 75.5 L90.0 75.0 L91.0 74.5 L92.0 74.1 L93.0 73.7 L94.0 73.4 L95.0 73.2 L96.0 73.1 L97.0 73.0 L98.0 73.0 L99.0 73.1 L100.0 73.2 L101.0 73.4 L102.0 73.7 L103.0 74.1 L104.0 74.5 L105.0 75.0 L106.0 75.5 L107.0 76.2 L108.0 76.8 L109.0 77.6 L110.0 78.4 L111.0 79.2 L112.0 80.1 L113.0 81.1 L114.0 82.1 L115.0 83.1 L116.0 84.2 L117.0 85.3 L118.0 86.4 L119.0 87.6 L120.0 88.8 L121.0 90.0 L122.0 91.2 L123.0 92.5 L124.0 93.7 L125.0 95.0 L126.0 96.3 L127.0 97.5 L128.0 98.8 L129.0 100.0 L130.0 101.2 L131.0 102.4 L132.0 103.6 L133.0 104.7 L134.0 105.8 L135.0 106.9 L136.0 107.9 L137.0 108.9 L138.0 109.9 L139.0 110.8 L140.0 111.6 L141.0 112.4 L142.0 113.2 L143.0 113.8 L144.0 114.5 L145.0 115.0 L146.0 115.5 L147.0 115.9 L148.0 116.3 L149.0 116.6 L150.0 116.8 L151.0 116.9 L152.0 117.0 L153.0 117.0 L154.0 116.9 L155.0 116.8 L156.0 116.6 L157.0 116.3 L158.0 115.9 L159.0 115.5 L160.0 115.0 L161.0 114.5 L162.0 113.8 L163.0 113.2 L164.0 112.4 L165.0 111.6 L166.0 110.8 L167.0 109.9 L168.0 108.9 L169.0 107.9 L170.0 106.9 L171.0 105.8 L172.0 104.7 L173.0 103.6 L174.0 102.4 L175.0 101.2 L176.0 100.0 L177.0 98.8 L178.0 97.5 L179.0 96.3 L180.0 95.0 L181.0 93.7 L182.0 92.5 L183.0 91.2 L184.0 90.0 L185.0 88.8 L186.0 87.6 L187.0 86.4 L188.0 85.3 L189.0 84.2 L190.0 83.1 L191.0 82.1 L192.0 81.1 L193.0 80.1 L194.0 79.2 L195.0 78.4 L196.0 77.6 L197.0 76.8 L198.0 76.2 L199.0 75.5 L200.0 75.0 L201.0 74.5 L202.0 74.1 L203.0 73.7 L204.0 73.4 L205.0 73.2 L206.0 73.1 L207.0 73.0 L208.0 73.0 L209.0 73.1 L210.0 73.2 L211.0 73.4 L212.0 73.7 L213.0 74.1 L214.0 74.5 L215.0 75.0 L216.0 75.5 L217.0 76.2 L218.0 76.8 L219.0 77.6 L220.0 78.4 L221.0 79.2 L222.0 80.1 L223.0 81.1 L224.0 82.1 L225.0 83.1 L226.0 84.2 L227.0 85.3 L228.0 86.4 L229.0 87.6 L230.0 88.8 L231.0 90.0 L232.0 91.2 L233.0 92.5 L234.0 93.7 L235.0 95.0 L236.0 96.3 L237.0 97.5 L238.0 98.8 L239.0 100.0 L240.0 101.2 L241.0 102.4 L242.0 103.6 L243.0 104.7 L244.0 105.8 L245.0 106.9 L246.0 107.9 L247.0 108.9 L248.0 109.9 L249.0 110.8 L250.0 111.6 L251.0 112.4 L252.0 113.2 L253.0 113.8 L254.0 114.5 L255.0 115.0 L256.0 115.5 L257.0 115.9 L258.0 116.3 L259.0 116.6 L260.0 116.8 L261.0 116.9 L262.0 117.0 L263.0 117.0 L264.0 116.9 L265.0 116.8 L266.0 116.6 L267.0 116.3 L268.0 115.9 L269.0 115.5 L270.0 115.0 L271.0 114.5 L272.0 113.8 L273.0 113.2 L274.0 112.4 L275.0 111.6 L276.0 110.8 L277.0 109.9 L278.0 108.9 L279.0 107.9 L280.0 106.9 L281.0 105.8 L282.0 104.7 L283.0 103.6 L284.0 102.4 L285.0 101.2 L286.0 100.0 L287.0 98.8 L288.0 97.5 L289.0 96.3 L290.0 95.0" fill="none" stroke="#dc2626" stroke-width="3.5"/>
+      <circle cx="97.5" cy="73" r="5" fill="#dc2626"/><circle cx="207.5" cy="73" r="5" fill="#dc2626"/>
+      <line x1="97.5" y1="45" x2="207.5" y2="45" stroke="#dc2626" stroke-width="2" marker-start="url(#rz-red)" marker-end="url(#rz-red)"/>
+      <text x="152.5" y="35" text-anchor="middle" fill="#dc2626" font-style="italic" font-family="var(--f-serif)" font-size="22">λ<tspan baseline-shift="sub" font-size="15">0</tspan></text>
+      <text x="180.0" y="160" text-anchor="middle" fill="#dc2626">observed at t₀</text>
+      <!-- emitted: blue -->
+      <path d="M385.0 95.0 L386.0 93.0 L387.0 91.1 L388.0 89.1 L389.0 87.3 L390.0 85.5 L391.0 83.7 L392.0 82.1 L393.0 80.5 L394.0 79.1 L395.0 77.8 L396.0 76.6 L397.0 75.6 L398.0 74.8 L399.0 74.1 L400.0 73.6 L401.0 73.2 L402.0 73.0 L403.0 73.0 L404.0 73.2 L405.0 73.6 L406.0 74.1 L407.0 74.8 L408.0 75.6 L409.0 76.6 L410.0 77.8 L411.0 79.1 L412.0 80.5 L413.0 82.1 L414.0 83.7 L415.0 85.5 L416.0 87.3 L417.0 89.1 L418.0 91.1 L419.0 93.0 L420.0 95.0 L421.0 97.0 L422.0 98.9 L423.0 100.9 L424.0 102.7 L425.0 104.5 L426.0 106.3 L427.0 107.9 L428.0 109.5 L429.0 110.9 L430.0 112.2 L431.0 113.4 L432.0 114.4 L433.0 115.2 L434.0 115.9 L435.0 116.4 L436.0 116.8 L437.0 117.0 L438.0 117.0 L439.0 116.8 L440.0 116.4 L441.0 115.9 L442.0 115.2 L443.0 114.4 L444.0 113.4 L445.0 112.2 L446.0 110.9 L447.0 109.5 L448.0 107.9 L449.0 106.3 L450.0 104.5 L451.0 102.7 L452.0 100.9 L453.0 98.9 L454.0 97.0 L455.0 95.0 L456.0 93.0 L457.0 91.1 L458.0 89.1 L459.0 87.3 L460.0 85.5 L461.0 83.7 L462.0 82.1 L463.0 80.5 L464.0 79.1 L465.0 77.8 L466.0 76.6 L467.0 75.6 L468.0 74.8 L469.0 74.1 L470.0 73.6 L471.0 73.2 L472.0 73.0 L473.0 73.0 L474.0 73.2 L475.0 73.6 L476.0 74.1 L477.0 74.8 L478.0 75.6 L479.0 76.6 L480.0 77.8 L481.0 79.1 L482.0 80.5 L483.0 82.1 L484.0 83.7 L485.0 85.5 L486.0 87.3 L487.0 89.1 L488.0 91.1 L489.0 93.0 L490.0 95.0 L491.0 97.0 L492.0 98.9 L493.0 100.9 L494.0 102.7 L495.0 104.5 L496.0 106.3 L497.0 107.9 L498.0 109.5 L499.0 110.9 L500.0 112.2 L501.0 113.4 L502.0 114.4 L503.0 115.2 L504.0 115.9 L505.0 116.4 L506.0 116.8 L507.0 117.0 L508.0 117.0 L509.0 116.8 L510.0 116.4 L511.0 115.9 L512.0 115.2 L513.0 114.4 L514.0 113.4 L515.0 112.2 L516.0 110.9 L517.0 109.5 L518.0 107.9 L519.0 106.3 L520.0 104.5 L521.0 102.7 L522.0 100.9 L523.0 98.9 L524.0 97.0 L525.0 95.0" fill="none" stroke="#2563eb" stroke-width="3.5"/>
+      <circle cx="402.5" cy="73" r="5" fill="#2563eb"/><circle cx="472.5" cy="73" r="5" fill="#2563eb"/>
+      <line x1="402.5" y1="45" x2="472.5" y2="45" stroke="#2563eb" stroke-width="2" marker-start="url(#rz-blue)" marker-end="url(#rz-blue)"/>
+      <text x="437.5" y="35" text-anchor="middle" fill="#2563eb" font-style="italic" font-family="var(--f-serif)" font-size="22">λ<tspan baseline-shift="sub" font-size="15">e</tspan></text>
+      <text x="455.0" y="160" text-anchor="middle" fill="#2563eb">emitted at tₑ</text>
+      <!-- direction of travel -->
+      <line x1="370" y1="95" x2="320" y2="95" stroke="currentColor" stroke-width="2.5" marker-end="url(#rz-arr)"/>
+    </svg>
+    </div>
+  </div>
+  <ul>
+    <li class="fragment" data-fragment-index="1">One wave crest leaves the galaxy at $t_e$ and arrives at $t_0$. The next crest leaves at $t_e + \lambda_e/c$ and arrives at $t_0 + \lambda_0/c$.</li>
+    <li class="fragment" data-fragment-index="2">Both crests travel from the same comoving coordinate $r$:
+      $$r = c\int_{t_e}^{t_0}\frac{dt}{a(t)} = c\int_{t_e + \lambda_e/c}^{t_0 + \lambda_0/c}\frac{dt}{a(t)}$$</li>
+    <li class="fragment" data-fragment-index="2">Over a time $\lambda/c$, $a(t)$ hardly changes.</li>
+  </ul>
+  <aside class="notes">Give them a few minutes, then derive on the board:
+    Subtract the integral from t_e + λ_e/c to t_0 from both sides: ∫ from t_e to t_e + λ_e/c of dt/a = ∫ from t_0 to t_0 + λ_0/c of dt/a.
+    a is constant over each short interval: (1/a(t_e)) λ_e/c = (1/a(t_0)) λ_0/c.
+    So λ_0/λ_e = a(t_0)/a(t_e) = 1 + z, by the definition of redshift. With a(t_0) = 1 this is the 1 + z = 1/a(t_e) used last time and in the example.</aside>
+</section>
+
+<section id="exercises">
+  <h2>Exercise session</h2>
+  <p>Exercises on cosmological distances: available on Canvas under the Lecture 3 module.</p>
+  <!-- TODO: Canvas link to the Lecture 3 exercises -->
+</section>
+
+<section id="before-next-time">
+  <h2>Before next time</h2>
+  <ul>
+    <li><strong><a href="https://canvas.su.se/courses/12102/modules/items/204283" target="_blank"><em>Problem set 2</em></a></strong> is due <strong>Tuesday 17 November, 10:00</strong>, in Canvas</li>
+    <li>Read <strong>Ryden chapter 4</strong>: cosmic dynamics (the Friedmann equation)</li>
+    <li>Literature project: first topic choice due <strong>Thursday 12 November</strong></li>
+  </ul>
+</section>
+
+</div></div>
+</body>
+</html>
