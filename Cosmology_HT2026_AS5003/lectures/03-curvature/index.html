@@ -72,7 +72,7 @@
       <ul>
         <li><strong>Hubble's law:</strong> galaxies show a redshift (recession velocity) proportional to their distance:
           $$v = H_0 D$$</li>
-        <li>Such a relation arises naturally in a universe that is expanding in a <strong>homogeneous and isotropic</strong> way, described by a <strong>scale factor</strong> $a(t)$:
+        <li>Such a relation arises naturally in a universe that is <strong style="color: var(--hot);">expanding</strong> in a <strong>homogeneous and isotropic</strong> way, described by a <strong>scale factor</strong> $a(t)$:
           $$H_0 = \left.\frac{\dot a}{a}\right|_{t_0}, \qquad 1 + z = \frac{1}{a(t_\text{em})}$$</li>
       </ul>
     </div>
@@ -82,8 +82,8 @@
 <section id="goals">
   <h2>Goals of this week</h2>
   <ul>
-    <li>The concept of <strong>distance in an expanding universe</strong>: how to think about and calculate distances, given a function $a(t)$ <span class="hl-tag fragment" data-fragment-index="1">← today</span></li>
-    <li>How to solve for $a(t)$ for a given universe: the <strong>Friedmann equations</strong> <span class="hl-tag fragment" data-fragment-index="1">← Thursday</span></li>
+    <li>The concept of <strong>distance in an expanding universe</strong>: how to think about and calculate distances, given a function $a(t)$ <span class="hl-tag">← today</span></li>
+    <li>How to solve for $a(t)$ for a given universe: the <strong>Friedmann equations</strong> <span class="hl-tag">← next lecture</span></li>
   </ul>
 </section>
 
@@ -94,7 +94,7 @@
     <li><strong>Special relativity:</strong> space and time are not independent</li>
     <li><strong>General relativity</strong> and the curvature of spacetime</li>
     <li>The <strong>Robertson–Walker metric</strong> for an expanding universe</li>
-    <li>Using the Robertson–Walker metric to calculate <strong>distances</strong></li>
+    <li>Using the Robertson–Walker metric to <span style="color: var(--hot);">calculate</span> <strong>distances</strong></li>
   </ol>
 </section>
 
@@ -189,7 +189,7 @@
     Lorentz (special relativity): x' = γ(x − vt), y' = y, z' = z, t' = γ(t − vx/c²), with γ = 1/√(1 − v²/c²). Light moves at c in both frames; for v ≪ c, γ → 1 and it reduces to Galilean.</aside>
 </section>
 
-<section id="light-clock" data-text-size="0.85">
+<section id="light-clock">
   <h2>Light clock experiment</h2>
   <div class="cols" style="grid-template-columns: auto 1fr; gap: 30px;">
     <div class="fig">
@@ -234,18 +234,22 @@
       <p class="fragment" data-fragment-index="2">Moving at $v$: the light travels a longer, diagonal path, at the same speed $c$:
         $$\left(\frac{c\,\Delta t'}{2}\right)^2 = L^2 + \left(\frac{v\,\Delta t'}{2}\right)^2$$</p>
       <p class="fragment" data-fragment-index="3">$$\Delta t' = \frac{\Delta t}{\sqrt{1 - v^2/c^2}} = \gamma\,\Delta t$$</p>
-      <p class="fragment" data-fragment-index="4">Observer 1 sees Observer 2's clock ticking slowly. Any other clock of Observer 2 must agree with the light clock, so <strong>time itself passes more slowly</strong> for Observer 2 (as seen by 1): <strong>time dilation</strong>.</p>
+      <p class="fragment" data-fragment-index="4">Observer 1 sees Observer 2's clock tick slowly: <strong>time dilation</strong>.</p>
+      <p class="fragment" data-fragment-index="5">With $\Delta x' = v\,\Delta t'$, the distance the clock moves:
+        $$-c^2\Delta t'^2 + \Delta x'^2 = -c^2\Delta t^2 + \underbrace{\Delta x^2}_{=\,0}$$
+        They disagree on $\Delta t$ and $\Delta x$, but agree on this combination: <strong>space and time are not independent</strong>.</p>
     </div>
   </div>
   <aside class="notes">Transition from the last slide: if the speed of light is the same for everyone, time must change in a moving frame.
     Left: the clock at rest, one tick is up and down, Δt = 2L/c. Right: the same clock moving at v, seen by Observer 1: the light goes along the diagonal, still at speed c.
     Click 2 shows the right triangle: half a tick, the light covers cΔt′/2 while the mirrors move vΔt′/2. Derive Δt′ in terms of Δt (on the board, or step by step here).
-    If the other clocks of Observer 2 disagreed with the light clock, Observer 2 could tell that they were moving, which postulate 1 forbids.</aside>
+    Click 4: any other clock of Observer 2 must agree with the light clock, so time itself passes more slowly for Observer 2 (as seen by 1). If the other clocks of Observer 2 disagreed with the light clock, Observer 2 could tell that they were moving, which postulate 1 forbids.
+    Click 5: move v²Δt′² to the left: c²Δt′² − v²Δt′² = 4L² = c²Δt². Δt and Δx each depend on the observer; only −c²Δt² + Δx² is the same for both. Transition: so we need a distance (a metric) in spacetime, not in space and time separately.</aside>
 </section>
 
 <section id="sr-metric">
   <h2>Special relativity metric</h2>
-  <p>Observers in special relativity will not agree on the time or space separation of events (and sometimes not even on which event happened first).</p>
+  <p>Observers in different inertial frames do not agree on the time or space separation between events (and sometimes not even on which happened first).</p>
   <p>What they will agree on is the <strong>spacetime interval</strong> between events:</p>
   $$ds^2 = -c^2 dt^2 + dx^2 + dy^2 + dz^2 = -c^2 dt^2 + d\ell^2$$
   <p class="fragment">Light travels along paths with $ds = 0$ (<strong>null geodesics</strong>). We will use this for distances.</p>
@@ -279,12 +283,16 @@
     <div>
       <p>Special relativity only deals with no acceleration, i.e. no gravity.</p>
       <p>The <strong>equivalence principle</strong>: there is no difference between the behaviour in a box being accelerated (left) and under the influence of gravity (right).</p>
-      <p class="fragment">Light follows the shortest path (a <strong>geodesic</strong>). If the two pictures are equivalent, <strong>spacetime must be curved</strong>.</p>
+      <p class="fragment">So <strong>gravity bends light</strong>, which has no mass.</p>
+      <p class="fragment">Light travels along the straightest possible path (a <strong>geodesic</strong>). If that path is bent, it is spacetime itself that is <strong>curved</strong>: gravity is geometry.</p>
       <p class="fragment aside">"Mass-energy tells spacetime how to curve. Curvature tells mass-energy how to move." (J. Wheeler)</p>
     </div>
   </div>
-  <aside class="notes">In box 1 the light path curves because the floor accelerates up towards the photons.
-    As boxes 1 and 2 are indistinguishable, the light must curve in box 2 too, in the presence of gravity. So spacetime is curved where there is mass (gravity).</aside>
+  <aside class="notes">1. Rocket box: light enters horizontally; while it crosses, the box accelerates up, so the light hits the far wall lower. Inside the box its path bends down (plain kinematics).
+    2. The boxes are indistinguishable (equivalence principle), so light must bend the same way on the planet: gravity bends light.
+    3. Click 1: light has no mass, so this cannot be a force acting on a mass. In GR anything moving freely (light, an apple) follows the straightest possible path through spacetime, a geodesic. ("Shortest" is loose: for light ds = 0, for massive bodies it is the longest proper time.)
+    4. Click 2: if the straightest path is bent, the geometry is bent. Gravity is the curvature of spacetime, not a force.
+    Analogy (leads to the next slides): two planes leave the equator a few hundred km apart, both fly due north without turning, and still meet at the pole. On a flat map you would invent a force pulling them together; really the Earth's surface is curved.</aside>
 </section>
 
 <section id="bun">
@@ -326,13 +334,18 @@
 
 <section id="three-metrics">
   <h2>For homogeneous and isotropic 3D space, only 3 metrics are possible</h2>
-  <ol>
-    <li><strong>Flat</strong> (no curvature anywhere): $\;d\ell^2 = dr^2 + r^2 d\Omega^2$</li>
-    <li><strong>Positively curved</strong> everywhere: $\;d\ell^2 = dr^2 + R_0^2 \sin^2(r/R_0)\, d\Omega^2$</li>
-    <li><strong>Negatively curved</strong> everywhere: $\;d\ell^2 = dr^2 + R_0^2 \sinh^2(r/R_0)\, d\Omega^2$</li>
-  </ol>
-  <p>where $d\Omega^2 = d\theta^2 + \sin^2\theta\, d\phi^2$, $R_0$ is the radius of curvature, and $\sinh x = \tfrac12\left(e^x - e^{-x}\right)$.</p>
-  <aside class="notes">Only the term multiplying dΩ² changes. For r much smaller than R0, sin(r/R0) ≈ sinh(r/R0) ≈ r/R0, and all three look flat: the small-triangle limit again.</aside>
+  <p>Flat space in Cartesian coordinates: $\;d\ell^2 = dx^2 + dy^2 + dz^2$</p>
+  <p>Space is isotropic around us, so we switch to spherical coordinates centred on us: $r$ outwards, angles $\theta, \phi$ on the sky.</p>
+  <div class="fragment">
+    <ol>
+      <li><strong>Flat</strong> (no curvature anywhere): $\;d\ell^2 = dr^2 + r^2 d\Omega^2$</li>
+      <li><strong>Positively curved</strong> everywhere: $\;d\ell^2 = dr^2 + R_0^2 \sin^2(r/R_0)\, d\Omega^2$</li>
+      <li><strong>Negatively curved</strong> everywhere: $\;d\ell^2 = dr^2 + R_0^2 \sinh^2(r/R_0)\, d\Omega^2$</li>
+    </ol>
+    <p>where $d\Omega^2 = d\theta^2 + \sin^2\theta\,d\phi^2$, </p></p>$R_0$ is the radius of curvature, and $\sinh x = \tfrac12\left(e^x - e^{-x}\right)$.</p>
+  </div>
+  <aside class="notes">Transition from Cartesian: same flat space, new coordinates. x = r sinθ cosφ, y = r sinθ sinφ, z = r cosθ gives dx² + dy² + dz² = dr² + r²(dθ² + sin²θ dφ²). We look out radially, and light comes to us along r, so r and the angles on the sky are the natural coordinates.
+    Only the term multiplying dΩ² changes. For r much smaller than R0, sin(r/R0) ≈ sinh(r/R0) ≈ r/R0, and all three look flat: the small-triangle limit again.</aside>
 </section>
 
 <section id="robertson-walker">
