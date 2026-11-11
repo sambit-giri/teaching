@@ -69,11 +69,11 @@
   </ul>
 </section>
 
-<section id="goals">
+<section id="goals" data-text-size="1.3">
   <h2>Goals of this week</h2>
   <ul>
-    <li>The concept of <strong>distance in an expanding universe</strong>: how to think about and calculate distances, given a function $a(t)$ <span class="hl-tag fragment" data-fragment-index="1">← Tuesday</span></li>
-    <li>How to solve for $a(t)$ for a given universe: the <strong>Friedmann equations</strong> <span class="hl-tag fragment" data-fragment-index="1">← today</span></li>
+    <li>The concept of <strong>distance in an expanding universe</strong>: how to think about and calculate distances, given a function $a(t)$ <span class="hl-tag">← last lecture</span></li>
+    <li>What determines $a(t)$: the <span style="white-space: nowrap;"><strong>Friedmann equations</strong> <span class="hl-tag">← today</span></span></li>
   </ul>
 </section>
 
@@ -114,38 +114,33 @@
     <li class="fragment">No light from $t = 0$ actually reaches us: for the first ~380 000 years the universe was opaque. The oldest light we see is the <strong>CMB</strong>, emitted just inside the horizon.</li>
     <li class="fragment">Whether there is a horizon depends on $a(t)$. For $a \propto t$, $\int_0 dt/t$ diverges: <strong>no horizon</strong>.</li>
   </ul>
-  <p class="fragment callout inline" style="font-size: 0.8em;">Literature topics on inflation, which comes later in the course: <strong>primordial gravitational waves and CMB B-modes</strong>; <strong>bouncing cosmologies</strong>.</p>
   <aside class="notes">Same integral as the proper distance today, but starting at t = 0. It is a causal limit, not a source we observe: do not read it as "light emitted at the birth of the universe".
-    For a ∝ t^(2/3) (a universe with only matter, next lecture): d_hor(t0) = 3 c t0 = 2c/H0 ≈ 8.8 Gpc. For our best-fit (benchmark) model it is about 14 Gpc, or 46 billion light years.
+    For our best-fit (benchmark) model it is about 14 Gpc, or 46 billion light years.
     We need a(t) to evaluate it: that is what the Friedmann equations give us.</aside>
 </section>
 
 <section id="distances-try" data-text-size="0.85">
-  <h2>Try it: four distances in a spacetime diagram</h2>
+  <h2>Try it: distances in a spacetime diagram</h2>
   <div class="cols" style="grid-template-columns: auto 1fr; gap: 30px;">
     <div class="w-fig" data-widget="distances"></div>
     <div>
-      <label class="olbers-label">Scale factor</label>
-      <select class="w-select" data-k="n">
-        <option value="1">a(t) = t/t₀</option>
-        <option value="0.6666666666666666" selected>a(t) = (t/t₀)^(2/3)</option>
-      </select>
+      <label class="olbers-label">Scale factor $a(t) = (t/t_0)^n$, &nbsp;$n$ = <span data-v="n"></span></label>
+      <input class="olbers-slider" data-k="n" type="range" min="0.1" max="1" step="0.05" value="0.7">
       <label class="olbers-label">Redshift $z$ = <span data-v="z"></span></label>
       <input class="olbers-slider" data-k="z" type="range" min="0.1" max="10" step="0.1" value="3">
-      <p class="w-out olbers-out">The light left at $t_e = $ <span data-v="te"></span> $t_0$; $\;t_0 = $ <span data-v="t0"></span> Gyr</p>
+      <p class="w-out olbers-out">The light left at $t_e = $ <span data-v="te"></span> $t_0$; $\;t_0 = n/H_0 = $ <span data-v="t0"></span> Gyr</p>
       <ul class="w-list">
         <li style="color: var(--accent);">Proper distance today (comoving): $d_p(t_0) = c\int_{t_e}^{t_0} dt/a$ = <b data-v="dp0"></b> Gpc</li>
         <li style="color: var(--hot);">Proper distance at emission: $d_p(t_e) = a(t_e)\,d_p(t_0)$ = <b data-v="dpe"></b> Gpc</li>
         <li style="color: var(--gold);">Light-travel distance: $c\,(t_0 - t_e)$ = <b data-v="travel"></b> Gpc</li>
         <li style="color: var(--good);">Horizon distance: $d_\text{hor}(t_0) = c\int_0^{t_0} dt/a$ = <b data-v="hor"></b></li>
       </ul>
-      <p class="aside">$H_0 = 68$ km/s/Mpc. All light reaching us now travels along the same path (our <em>past light cone</em>); the green part left the horizon at $t = 0$.</p>
+      <p class="aside">$H_0 = 68$ km/s/Mpc. All light reaching us now travels along the same path, our <em>past light cone</em>; the green part left the horizon at $t = 0$. For $n = 1$ the integral from $t = 0$ diverges: no horizon.</p>
     </div>
   </div>
-  <aside class="notes">Start with a = (t/t0)^(2/3): the horizon is at 3 c t0 = 2c/H0 ≈ 8.8 Gpc, and every galaxy we can see is inside it. Raise z: the galaxy moves towards the horizon, but never past it.
+  <aside class="notes">Same widget as last lecture, now with a(t) = (t/t0)^n and the horizon distance. Start at n = 0.7: the horizon is finite, at c t0/(1 − n), and every galaxy we can see is inside it. Raise z: the galaxy moves towards the horizon, but never past it.
     The light from the galaxy and the light from the horizon arrive along the same curve: everything we see now lies on our past light cone. At t = 0 the horizon was at zero proper distance, since a(0) = 0.
-    Then switch to a = t/t0: the horizon goes to infinity.
-    The age t0 also depends on a(t): t0 = 1/H0 for a ∝ t, and 2/(3H0) for a ∝ t^(2/3).</aside>
+    Move n towards 1: the horizon moves out, and at n = 1 (a ∝ t, last lecture) it is at infinity. The age t0 = n/H0 also depends on a(t).</aside>
 </section>
 
 <!-- ============ 2 · Einstein's field equation ============ -->

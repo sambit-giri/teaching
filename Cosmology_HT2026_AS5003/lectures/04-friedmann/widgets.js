@@ -44,7 +44,7 @@ const widgets = {
       y: { domain: [0, 1.06], label: "↑ time t / t₀", labelAnchor: "top", labelArrow: "none" },
       marks,
     }));
-    const v = { z: z.toFixed(1), te: te.toFixed(2), t0: t0.toFixed(1), dp0: dp0.toFixed(2), dpe: dpe.toFixed(2), travel: travel.toFixed(2),
+    const v = { n: n.toFixed(2), z: z.toFixed(1), te: te.toFixed(2), t0: t0.toFixed(1), dp0: dp0.toFixed(2), dpe: dpe.toFixed(2), travel: travel.toFixed(2),
       hor: isFinite(hor) ? hor.toFixed(2) + " Gpc" : "∞: no horizon" };
     for (const el of box.closest("section").querySelectorAll("[data-v]")) el.textContent = v[el.dataset.v];
   },
