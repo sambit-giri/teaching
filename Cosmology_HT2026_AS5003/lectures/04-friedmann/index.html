@@ -73,7 +73,7 @@
   <h2>Goals of this week</h2>
   <ul>
     <li>The concept of <strong>distance in an expanding universe</strong>: how to think about and calculate distances, given a function $a(t)$ <span class="hl-tag">← last lecture</span></li>
-    <li>What determines $a(t)$: the <span style="white-space: nowrap;"><strong>Friedmann equations</strong> <span class="hl-tag">← today</span></span></li>
+    <li>What determines the scale factor $a(t)$ of a universe: the <span style="white-space: nowrap;"><strong>Friedmann equations</strong> <span class="hl-tag">← today</span></span></li>
   </ul>
 </section>
 
@@ -92,7 +92,7 @@
 
 <section id="distances-recap">
   <p class="kicker">1 · Distances</p>
-  <h2>Three distances to a galaxy at redshift $z$</h2>
+  <h2>Distances to a galaxy at redshift $z$</h2>
   <ul>
     <li class="fragment"><strong style="color: var(--accent);">Proper distance today</strong> (the <strong>comoving distance</strong>): where the galaxy is now
       $$d_p(t_0) = r = c\int_{t_e}^{t_0}\frac{dt}{a(t)}$$</li>
@@ -111,7 +111,7 @@
   $$d_\text{hor}(t_0) = c\int_{0}^{t_0}\frac{dt}{a(t)}$$
   <ul>
     <li>The proper distance today to the farthest point that could ever have sent us a signal: the <strong>size of the observable universe</strong> (the <em>particle horizon</em>).</li>
-    <li class="fragment">No light from $t = 0$ actually reaches us: for the first ~380 000 years the universe was opaque. The oldest light we see is the <strong>CMB</strong>, emitted just inside the horizon.</li>
+    <li class="fragment">It is not measured: it is the limit of what could ever have been in causal contact with us.</li>
     <li class="fragment">Whether there is a horizon depends on $a(t)$. For $a \propto t$, $\int_0 dt/t$ diverges: <strong>no horizon</strong>.</li>
   </ul>
   <aside class="notes">Same integral as the proper distance today, but starting at t = 0. It is a causal limit, not a source we observe: do not read it as "light emitted at the birth of the universe".
@@ -143,6 +143,26 @@
     Move n towards 1: the horizon moves out, and at n = 1 (a ∝ t, last lecture) it is at infinity. The age t0 = n/H0 also depends on a(t).</aside>
 </section>
 
+<section id="cmb">
+  <p class="kicker">Can we see to the horizon?</p>
+  <h2>The cosmic microwave background (CMB)</h2>
+  <div class="cols" style="grid-template-columns: 1.1fr 1fr; gap: 30px;">
+    <ul>
+      <li>The CMB: a blackbody at $T_0 = 2.7$ K, the same in every direction. It is the <strong>oldest light we see</strong>.</li>
+      <li>Early on, the universe was a hot, dense plasma. Light kept scattering off free electrons: the universe was <strong>opaque</strong>, like fog. We cannot see the birth.</li>
+      <li>About 380 000 years after the Big Bang, hydrogen formed and the light escaped. It reaches us now from $z \approx 1100$, <strong>just inside the horizon</strong>.</li>
+    </ul>
+    <div class="fig">
+      <img class="plate" src="../../figures/cmb-spectrum-cobe-firas.png" alt="The CMB spectrum measured by COBE/FIRAS, matching a blackbody curve" style="height: 230px;">
+      <img src="../../figures/planck-cmb-map.jpg" alt="Planck's all-sky map of the cosmic microwave background: tiny hot (red) and cold (blue) spots on an otherwise uniform sky" style="width: 100%; border-radius: 6px; margin-top: 14px;">
+      <p class="credit">Top: COBE/FIRAS spectrum. Bottom: the CMB over the whole sky, from Planck (ESA and the Planck Collaboration, CC BY 4.0)</p>
+    </div>
+  </div>
+  <aside class="notes">A quick picture, to answer "can we see the birth of the universe?". The details (recombination, why T ∝ 1/a, the spots) come in the CMB lecture (Ryden ch. 8).
+    Opaque like fog, or the inside of the Sun: light cannot travel far before it scatters off a free electron. Once neutral hydrogen forms, the photons hardly interact again.
+    In the benchmark model the last-scattering surface is now about 13.9 Gpc away and the horizon about 14.2 Gpc: in light we see about 98% of the way to the horizon, but not beyond the CMB. (Neutrinos or gravitational waves could, in principle, come from earlier.)</aside>
+</section>
+
 <!-- ============ 2 · Einstein's field equation ============ -->
 
 <section id="newton-einstein">
@@ -151,14 +171,20 @@
   <p>The expansion of the universe is regulated by <strong>gravity</strong>.</p>
   <div class="cols" style="grid-template-columns: 1fr 1fr; gap: 40px; align-items: start;">
     <div>
-      <h3>Newtonian gravity</h3>
+      <div style="display: flex; align-items: center; gap: 18px;">
+        <img src="../../figures/bobblehead-newton.png" alt="Newton bobblehead, holding an apple" style="height: 180px;">
+        <h3>Newtonian gravity</h3>
+      </div>
       $$\nabla^2\Phi = 4\pi G\rho, \qquad \frac{d^2\vec r}{dt^2} = -\vec\nabla\Phi$$
       <p>Mass density $\rho$ sets the potential $\Phi$; the potential sets how things accelerate.</p>
     </div>
     <div class="fragment">
-      <h3>General relativity</h3>
+      <div style="display: flex; align-items: center; gap: 18px;">
+        <img src="../../figures/bobblehead-einstein.png" alt="Einstein bobblehead" style="height: 180px;">
+        <h3>General relativity</h3>
+      </div>
       $$G_{\mu\nu} = \frac{8\pi G}{c^4}\,T_{\mu\nu}$$
-      <p>Energy density, pressure and momentum ($T_{\mu\nu}$) set the curvature of spacetime ($G_{\mu\nu}$); the curvature sets how things move.</p>
+      <p>Energy and pressure <span style="white-space: nowrap;">($T_{\mu\nu}$)</span> curve spacetime <span style="white-space: nowrap;">($G_{\mu\nu}$);</span> the curvature sets how things move.</p>
     </div>
   </div>
   <aside class="notes">In Newtonian gravity only mass density is a source. In general relativity energy density and pressure both gravitate; this will matter for the acceleration equation.</aside>
@@ -180,19 +206,32 @@
 
 <section id="static-universe">
   <h2>Einstein's static universe</h2>
-  <p>The original equations did not allow a <strong>static</strong> universe, against the view at the time. Einstein added a constant "fudge factor" to the left-hand side:</p>
-  $$R_{\mu\nu} - \frac12 R\, g_{\mu\nu} + \Lambda\, g_{\mu\nu} = \frac{8\pi G}{c^4}\,T_{\mu\nu}$$
-  <p class="fragment">This <strong>cosmological constant</strong> $\Lambda$ is back in modern cosmology, but now usually moved to the right-hand side, as part of the energy density of the universe.</p>
-  <aside class="notes">Einstein (1917). After Hubble (1929) showed that the universe expands, he dropped Λ; the "biggest blunder" quote comes to us second hand, through Gamow. We come back to Λ at the end of today.</aside>
+  <p>In 1917 everyone assumed a <strong>static</strong> universe. But with matter alone there is no static solution: gravity only attracts, so a universe at rest collapses. Einstein added a repulsive term to the geometry side, the <strong>cosmological constant</strong> $\Lambda$:</p>
+  $$R_{\mu\nu} - \frac12 R\, g_{\mu\nu} + \textcolor{#ea580c}{\Lambda\, g_{\mu\nu}} = \frac{8\pi G}{c^4}\,T_{\mu\nu}$$
+  <table class="w-table" style="width: 100%;">
+    <tr><th>Universe</th><th>Need $\Lambda$?</th></tr>
+    <tr class="fragment"><td><strong>Static</strong> (1917)</td><td>Yes, exactly balancing gravity</td></tr>
+    <tr class="fragment"><td><strong>Expanding, slowing down</strong> (Hubble, 1929)</td><td>No: Einstein dropped it, reportedly his "biggest blunder"</td></tr>
+    <tr class="fragment"><td><strong>Expanding, speeding up</strong> (supernovae, 1998)</td><td>Yes, and it is back</td></tr>
+  </table>
+  <div class="fragment" style="margin-top: 0.6em;">
+    <p>Today $\Lambda$ sits on the other side, as something the universe <strong>contains</strong>:</p>
+    $$R_{\mu\nu} - \frac12 R\, g_{\mu\nu} = \frac{8\pi G}{c^4}\,T_{\mu\nu} \textcolor{#ea580c}{\,-\,\Lambda\, g_{\mu\nu}}$$
+  </div>
+  <aside class="notes">Einstein (1917). Nobody knew yet that the universe expands; it was not even settled that other galaxies exist (the "Great Debate", 1920).
+    Row 2: expansion needs no push. Like a ball thrown upwards: gravity pulls it back all the time, yet it keeps rising, more and more slowly, thanks to the initial throw. A matter-only universe can expand the same way (Friedmann 1922 found such solutions). Einstein dropped Λ around 1931. Eddington (1930) had also shown the static universe is unstable: a little more matter and it collapses, a little less and it runs away. The "biggest blunder" quote reaches us second hand, through Gamow.
+    Row 3: repulsion is needed for acceleration, not for expansion. In 1998 supernovae showed that the expansion speeds up (Nobel Prize 2011): Λ came back, larger than Einstein's static value.
+    Last click: moved across the equals sign, Λ is no longer geometry but a content of the universe, a vacuum energy with P = −ε. We come back to it at the end of today.</aside>
 </section>
 
 <section id="simplify">
   <h2>In a homogeneous and isotropic universe</h2>
   $$R_{\mu\nu} - \frac12 R\, g_{\mu\nu} = \frac{8\pi G}{c^4}\,T_{\mu\nu}$$
-  <p>In general: ten coupled, second-order, nonlinear differential equations. For a homogeneous and isotropic universe they simplify a lot:</p>
-  <ul>
+  <p>In general: ten coupled, second-order, nonlinear differential equations.</p>
+  <p style="margin-bottom: 0.2em;">For a homogeneous and isotropic universe they simplify a lot:</p>
+  <ul style="margin-top: 0;">
     <li>The metric is the <strong>Robertson–Walker metric</strong>: only $a(t)$, $\kappa$ and $R_0$</li>
-    <li>The stress–energy tensor can only depend on <strong>time</strong>: energy density $\varepsilon(t)$ and pressure $P(t)$</li>
+    <li>The stress–energy tensor can only depend on <strong>time</strong></li>
   </ul>
 </section>
 
@@ -218,7 +257,7 @@
 <section id="critical-density">
   <h2>The critical density</h2>
   <p>For a flat universe ($\kappa = 0$):</p>
-  $$H(t)^2 = \frac{8\pi G}{3c^2}\,\varepsilon(t)$$
+  $$H(t)^2 = \frac{8\pi G}{3c^2}\,\varepsilon(t) \underbrace{\cancel{\;-\,\frac{\kappa c^2}{R_0^2}\,\frac{1}{a(t)^2}\;}}_{=\,0}$$
   <div class="fragment">
     <p>The <strong>critical density</strong>, for which the universe is flat:</p>
     $$\varepsilon_c(t) \equiv \frac{3c^2 H(t)^2}{8\pi G}$$
@@ -236,18 +275,25 @@
   <div class="cols" style="grid-template-columns: 1fr auto; gap: 36px;">
     <div>
       $$\Omega(t) \equiv \frac{\varepsilon(t)}{\varepsilon_c(t)}$$
-      <p>Divide the Friedmann equation by $\varepsilon_c$:</p>
-      $$1 - \Omega(t) = -\frac{\kappa c^2}{R_0^2\, a(t)^2\, H(t)^2}$$
-      <p class="fragment">The right-hand side cannot change sign with time, so neither can the left:</p>
-      <ul class="fragment">
+      <p>Start from the Friedmann equation:</p>
+      $$H^2 = \frac{8\pi G}{3c^2}\,\varepsilon - \frac{\kappa c^2}{R_0^2\, a^2}$$
+      <div class="fragment" data-fragment-index="1">
+        <p>Divide by $H^2$, using $\dfrac{8\pi G}{3c^2 H^2} = \dfrac{1}{\varepsilon_c}$:</p>
+        $$1 = \underbrace{\frac{\varepsilon}{\varepsilon_c}}_{\Omega} - \frac{\kappa c^2}{R_0^2\, a^2 H^2}
+          \quad\Rightarrow\quad 1 - \Omega(t) = -\frac{\kappa c^2}{R_0^2\, a(t)^2\, H(t)^2}$$
+      </div>
+      <p class="fragment" data-fragment-index="2">The right-hand side cannot change sign with time, so neither can the left (cases on the right).</p>
+    </div>
+    <div>
+      <ul class="fragment" data-fragment-index="3" style="font-size: 0.9em;">
         <li>$\Omega < 1$: $\kappa = -1$, negatively curved</li>
         <li>$\Omega > 1$: $\kappa = +1$, positively curved</li>
         <li>$\Omega = 1$: $\kappa = 0$, flat</li>
       </ul>
-    </div>
-    <div class="fig fragment">
-      <img class="plate" src="../../figures/universe-geometry-wmap.jpg" alt="Triangles on a sphere (Omega greater than 1), a saddle (Omega less than 1) and a flat sheet (Omega equal to 1)" style="width: 330px; height: auto;">
-      <p class="credit">NASA / WMAP Science Team</p>
+      <div class="fig fragment" data-fragment-index="4">
+        <img class="plate" src="../../figures/universe-geometry-wmap.jpg" alt="Triangles on a sphere (Omega greater than 1), a saddle (Omega less than 1) and a flat sheet (Omega equal to 1)" style="width: 300px; height: auto;">
+        <p class="credit">NASA / WMAP Science Team</p>
+      </div>
     </div>
   </div>
   <aside class="notes">The density of the universe decides its geometry. The figure is the cover of Lecture 3: the Ω labels make sense now.
@@ -260,27 +306,56 @@
   <p class="kicker">4 · Fluid and acceleration equations</p>
   <h2>The fluid equation</h2>
   <p>The Friedmann equation is one equation with two unknowns, $a(t)$ and $\varepsilon(t)$. We need another: the <strong>fluid equation</strong>.</p>
-  <p class="fragment">First law of thermodynamics for a comoving box (no heat flows in a homogeneous universe, $dQ = 0$):
-    $$dE + P\,dV = dQ = 0 \quad\Rightarrow\quad \dot E + P\,\dot V = 0$$</p>
-  <p class="fragment">With $V \propto a^3$, so $\dot V/V = 3\,\dot a/a$, and $E = V\varepsilon$:
-    $$\dot E = V\left(\dot\varepsilon + 3\frac{\dot a}{a}\,\varepsilon\right)$$</p>
-  <p class="fragment">$$\dot\varepsilon + 3\,\frac{\dot a}{a}\,(\varepsilon + P) = 0$$</p>
+  <div class="cols" style="grid-template-columns: 1fr auto; gap: 30px;">
+    <div>
+    <p class="fragment">First law of thermodynamics for a comoving box (no heat flows in a homogeneous universe, $dQ = 0$):
+      $$dE + P\,dV = dQ = 0 \quad\Rightarrow\quad \dot E + P\,\dot V = 0$$</p>
+    <p class="fragment">With $V \propto a^3$, so $\dot V/V = 3\,\dot a/a$, and $E = V\varepsilon$:
+      $$\dot E = V\left(\dot\varepsilon + 3\frac{\dot a}{a}\,\varepsilon\right)$$</p>
+    <p class="fragment">$$\dot\varepsilon + 3\,\frac{\dot a}{a}\,(\varepsilon + P) = 0$$</p>
+    </div>
+    <div class="fig">
+      <svg viewBox="0 0 440 320" width="440" height="320" role="img" aria-label="A comoving box at an early time and the same box later: every side length grows in proportion to a, so the volume grows as a cubed; the same particles are inside, further apart" style="color: var(--ink);">
+        <defs><marker id="fluid-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+        <polygon points="20,150 48,122 118,122 90,150" fill="var(--accent)" fill-opacity="0.18" stroke="currentColor" stroke-width="2"/>
+        <polygon points="90,150 118,122 118,192 90,220" fill="var(--accent)" fill-opacity="0.28" stroke="currentColor" stroke-width="2"/>
+        <rect x="20" y="150" width="70" height="70" fill="var(--accent)" fill-opacity="0.1" stroke="currentColor" stroke-width="2"/>
+        <circle cx="38" cy="171" r="5" fill="var(--hot)"/>
+        <circle cx="69" cy="165" r="5" fill="var(--hot)"/>
+        <circle cx="52" cy="192" r="5" fill="var(--hot)"/>
+        <circle cx="34" cy="205" r="5" fill="var(--hot)"/>
+        <circle cx="75" cy="200" r="5" fill="var(--hot)"/>
+        <text x="55" y="248" font-size="22" font-style="italic" text-anchor="middle" fill="currentColor" font-family="var(--f-ui)">ℓ</text>
+        <line x1="20" y1="230" x2="90" y2="230" stroke="currentColor" stroke-width="1.5"/>
+        <polygon points="210,95 270,35 420,35 360,95" fill="var(--accent)" fill-opacity="0.18" stroke="currentColor" stroke-width="2"/>
+        <polygon points="360,95 420,35 420,185 360,245" fill="var(--accent)" fill-opacity="0.28" stroke="currentColor" stroke-width="2"/>
+        <rect x="210" y="95" width="150" height="150" fill="var(--accent)" fill-opacity="0.1" stroke="currentColor" stroke-width="2"/>
+        <circle cx="248" cy="140" r="5" fill="var(--hot)"/>
+        <circle cx="315" cy="128" r="5" fill="var(--hot)"/>
+        <circle cx="278" cy="185" r="5" fill="var(--hot)"/>
+        <circle cx="240" cy="212" r="5" fill="var(--hot)"/>
+        <circle cx="327" cy="203" r="5" fill="var(--hot)"/>
+        <text x="285" y="273" font-size="22" font-style="italic" text-anchor="middle" fill="currentColor" font-family="var(--f-ui)">ℓ</text>
+        <line x1="210" y1="255" x2="360" y2="255" stroke="currentColor" stroke-width="1.5"/>
+        <line x1="135" y1="185" x2="195" y2="185" stroke="currentColor" stroke-width="2" marker-end="url(#fluid-arrow)"/>
+        <text x="55" y="312" font-size="18" text-anchor="middle" fill="currentColor" font-family="var(--f-ui)">earlier, a(t₁)</text>
+        <text x="300" y="312" font-size="18" text-anchor="middle" fill="currentColor" font-family="var(--f-ui)">later, a(t₂)</text>
+      </svg>
+    </div>
+  </div>
   <aside class="notes">The box expands with the universe. Its energy changes only through the work done by the pressure, P dV.
     Substituting: V(ε̇ + 3(ȧ/a)ε) + P·3(ȧ/a)V = 0, divide by V.</aside>
 </section>
 
 <section id="acceleration">
-  <p class="kicker">Group activity (10 + 5 min)</p>
+  <p class="kicker">Activity in pairs</p>
   <h2>Derive the acceleration equation</h2>
-  <ol>
-    <li><strong>In your group (10 min):</strong> combine the Friedmann equation and the fluid equation,
-      $$\left(\frac{\dot a}{a}\right)^2 = \frac{8\pi G}{3c^2}\,\varepsilon - \frac{\kappa c^2}{R_0^2}\,\frac{1}{a^2}, \qquad \dot\varepsilon + 3\,\frac{\dot a}{a}\,(\varepsilon + P) = 0,$$
-      to show that
-      $$\frac{\ddot a}{a} = -\frac{4\pi G}{3c^2}\,(\varepsilon + 3P)$$</li>
-    <li><strong>Explain your solution to another group (5 min).</strong></li>
-  </ol>
+  <p>In pairs, combine the Friedmann equation and the fluid equation,
+    $$\left(\frac{\dot a}{a}\right)^2 = \frac{8\pi G}{3c^2}\,\varepsilon - \frac{\kappa c^2}{R_0^2}\,\frac{1}{a^2}, \qquad \dot\varepsilon + 3\,\frac{\dot a}{a}\,(\varepsilon + P) = 0,$$
+    to show that
+    $$\frac{\ddot a}{a} = -\frac{4\pi G}{3c^2}\,(\varepsilon + 3P)$$</p>
   <p class="fragment aside">Hints: multiply the Friedmann equation by $a^2$; take the time derivative (the curvature term is a constant); use the fluid equation to replace $\dot\varepsilon$.</p>
-  <aside class="notes">HT22 group activity: groups of 3–4, 10 minutes to derive, then 5 minutes explaining to a neighbouring group. Show the hints if groups are stuck. Then derive on the board:
+  <aside class="notes">Work in pairs. Show the hints if pairs are stuck. Then derive on the board:
     2ȧä = (8πG/3c²)(ε̇a² + 2εaȧ). Divide by 2aȧ: ä/a = (4πG/3c²)(ε̇ a/ȧ + 2ε).
     Fluid equation: ε̇ a/ȧ = −3(ε + P). So ä/a = (4πG/3c²)(−3ε − 3P + 2ε) = −(4πG/3c²)(ε + 3P).
     It also follows directly from the space–space components of Einstein's equation: "Friedmann's second equation".
@@ -295,7 +370,7 @@
   $$\left(\frac{\dot a}{a}\right)^2 = \frac{8\pi G}{3c^2}\,\varepsilon - \frac{\kappa c^2}{R_0^2}\,\frac{1}{a^2}, \qquad \dot\varepsilon + 3\,\frac{\dot a}{a}\,(\varepsilon + P) = 0$$
   <p>Two equations, three unknowns: $a$, $\varepsilon$ and $P$. We need an <strong>equation of state</strong> $P(\varepsilon)$ for each component.</p>
   <div class="fragment">
-    <p>For the substances that matter in cosmology it takes a simple form:</p>
+    <p>For the components of the universe relevant to cosmology it takes a simple form:</p>
     $$P = w\,\varepsilon$$
     <p>with $w$ a dimensionless number.</p>
   </div>
@@ -329,7 +404,7 @@
   $$\frac{\ddot a}{a} = -\frac{4\pi G}{3c^2}\,(\varepsilon + 3P) = -\frac{4\pi G}{3c^2}\,\varepsilon\,(1 + 3w)$$
   <p class="fragment">If $w < -\tfrac13$, the right-hand side is positive: $\ddot a > 0$, an <strong>accelerating universe</strong>.</p>
   <p class="fragment">Any component with $w < -\tfrac13$ is called <strong>dark energy</strong>. The best-known case, $w = -1$, is a <strong>cosmological constant</strong>.</p>
-  <p class="fragment callout inline" style="font-size: 0.8em;">Literature topics: <strong>evidence for evolving dark energy</strong> (e.g. DESI); <strong>the end of the Universe</strong>.</p>
+  <p class="fragment callout inline" style="font-size: 0.8em;">Literature topic: <strong>evidence for evolving dark energy</strong> (e.g. DESI).</p>
   <aside class="notes">Matter (w = 0) and radiation (w = 1/3) both decelerate the expansion. Something with negative pressure is needed to accelerate it.</aside>
 </section>
 
@@ -343,6 +418,12 @@
     <p>so a static universe ($\ddot a = 0$) needs $\Lambda = 4\pi G\rho$.</p>
   </div>
   <aside class="notes">Einstein's static universe. It is unstable: a little more matter and it collapses, a little less and it expands.</aside>
+</section>
+
+<section id="exercises">
+  <h2>Exercise session</h2>
+  <p>Exercises: available on Canvas under the Lecture 4 module.</p>
+  <!-- TODO: Canvas link to the Lecture 4 exercises -->
 </section>
 
 <section id="lambda-energy">

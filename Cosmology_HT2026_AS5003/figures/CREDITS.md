@@ -36,6 +36,7 @@ Most were taken from Sambit's Keynote decks (Lecture 1: `Lecture1_26Nov03.key`, 
 | `planck-cmb-map.jpg` | All-sky CMB map, Planck | ESA and the Planck Collaboration, via Wikimedia Commons, *Cosmic Microwave Background (CMB).jpeg* (CC BY 4.0) | free |
 | `frames-of-reference.png` | Two frames of reference in relative motion | Krea, Wikimedia Commons, *Frames of reference in relative motion.svg* (CC BY-SA 3.0) | credit |
 | `cinnamon-bun.jpg` | Swedish cinnamon bun | from the 2022 Keynote, source unknown (stock photo) | check |
+| `bobblehead-newton.png`, `bobblehead-einstein.png` | Newton and Einstein bobbleheads (L4) | cropped from a screenshot in the 2021/2022 Keynote, source unknown (product photos) | check |
 | `universe-geometry-wmap.jpg` | Triangles on closed, open and flat geometries (L3 cover) | NASA / WMAP Science Team, MAP990006, via Wikimedia Commons, *End of universe.jpg* (public domain) | free |
 | `cmb-spectrum-cobe-firas.png` | CMB spectrum, COBE/FIRAS | Wikimedia Commons, *Cmbr.svg* | free |
 | `bbn-light-element-abundances.jpg` | Light-element abundances vs. density | NASA / WMAP Science Team | free |
