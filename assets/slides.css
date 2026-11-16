@@ -335,3 +335,8 @@ html, body { background: var(--bg); }
 html.print-pdf .reveal .slides .pdf-page > section { display: flex !important; flex-direction: column; height: 720px; padding: 34px 56px 46px; box-sizing: border-box; }
 html.print-pdf .reveal .click-reveal { visibility: visible; }
 html.print-pdf .reveal .slides section .fragment.fade-out { visibility: hidden; }
+
+/* A short code example (<pre class="code">), e.g. a Python snippet */
+.reveal pre.code { margin: 0.5em 0; padding: 14px 22px; font: 500 0.7em/1.5 var(--f-mono); color: var(--ink); background: var(--accent-soft); border: 1px solid var(--edge); border-radius: 10px; white-space: pre; text-align: left; box-shadow: none; width: auto; }
+.reveal code { font-family: var(--f-mono); font-size: 0.9em; }
+.reveal table.w-table th .katex { text-transform: none; letter-spacing: 0; }

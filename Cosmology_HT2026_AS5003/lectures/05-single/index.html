@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lecture 5 · Single-component universes · Cosmology AS5003</title>
+<script src="../../../assets/theme.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<link rel="stylesheet" href="../../../assets/tokens.css">
+<link rel="stylesheet" href="../../../assets/slides.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/notes/notes.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<script defer src="../../../assets/slides.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.16/dist/plot.umd.min.js"></script>
+<script type="module" src="widgets.js"></script>
+</head>
+<body>
+<a class="deck-home" href="../../">&larr; AS5003</a>
+<div class="reveal"><div class="slides">
+<!-- One <section> per slide, in the order of HT25's Lecture5_251118 (Ryden 5.1–5.3);
+     the id is the slide's link (#/id). Figures live in ../../figures/ (credits in figures/CREDITS.md).
+     class="fragment"          appears on the next click, like a Keynote build
+     <section data-text-size="1.2">   fixes the text size of a slide (1 = 30px) instead of the automatic fit
+     style="font-size: 0.8em" on a <p>, <li> or <ul>   makes that part smaller (or larger) than the rest
+     $...$ and $$...$$          maths (LaTeX)
+     "Try it" slides: <div class="w-fig" data-widget="..."> is drawn by widgets.js from the inputs with data-k.
+     Edit and see the result:  ./build.sh --edit, then reload the page after saving. -->
+
+<section id="title" class="cover">
+  <p class="kicker">Stockholm University · Department of Astronomy</p>
+  <h1>AS5003 (Cosmology) HT26</h1>
+  <p class="sub">Lecture 5 (17 Nov 2026)</p>
+  <!-- every lecture: the timeline first, then one figure for the lecture's theme -->
+  <div class="cover-figs">
+    <figure>
+      <img src="../../figures/history-of-universe-timeline.jpg" alt="Timeline of the Universe from the Big Bang to today">
+      <p class="credit">Image credit: NASA</p>
+    </figure>
+    <figure>
+      <div class="w-fig" data-widget="single" data-w="520" data-h="340" style="align-self: start;"></div>
+      <p class="credit">The scale factor $a(t)$ of four model universes</p>
+    </figure>
+  </div>
+</section>
+
+<section id="admin">
+  <h2>Practical information</h2>
+  <ul>
+    <li><strong>Literature review:</strong> final topic and papers due <strong>Thursday 19 November</strong>.</li>
+    <li><strong>Home assignments:</strong>
+      <ul>
+        <li><a href="https://canvas.su.se/courses/12102/modules/items/204283" target="_blank"><em>Problem set 2</em></a> was due today, 10:00.</li>
+        <li><em>Problem set 3</em> is due <strong>Tuesday 24 November, 10:00</strong>, in Canvas.</li>
+        <!-- TODO: Canvas link to Problem set 3 -->
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<section id="recap" data-text-size="0.95">
+  <p class="kicker">Recap</p>
+  <h2>From last time</h2>
+  <ul>
+    <li><strong>Friedmann equation:</strong> $\;\left(\dfrac{\dot a}{a}\right)^2 = \dfrac{8\pi G}{3c^2}\,\varepsilon - \dfrac{\kappa c^2}{R_0^2}\,\dfrac{1}{a^2}$</li>
+    <li><strong>Fluid equation:</strong> $\;\dot\varepsilon + 3\,\dfrac{\dot a}{a}\,(\varepsilon + P) = 0$</li>
+    <li><strong>Equation of state:</strong> $\;P = w\,\varepsilon$</li>
+  </ul>
+  <div style="display: flex; justify-content: flex-end; margin-bottom: 1em;">
+    <table class="w-table fragment">
+      <tr><th>Component</th><th>$w$</th></tr>
+      <tr><td>Matter</td><td>$0$</td></tr>
+      <tr><td>Radiation</td><td>$1/3$</td></tr>
+      <tr><td>Cosmological constant</td><td>$-1$</td></tr>
+    </table>
+  </div>
+  <p class="aside">$a$: scale factor, $\varepsilon$: energy density, $P$: pressure. $\kappa = 0$, $+1$ or $-1$ for a flat, positively or negatively curved universe; $R_0$ is the radius of curvature.</p>
+</section>
+
+<section id="goals" data-text-size="1.3">
+  <h2>Goals of this week</h2>
+  <ul>
+    <li>How the energy density of each component changes as the universe <span style="white-space: nowrap;">expands <span class="hl-tag">← today</span></span></li>
+    <li>How the scale factor $a(t)$ evolves in a universe with <span style="white-space: nowrap;"><strong>one component</strong> <span class="hl-tag">← today</span></span></li>
+    <li>…and in a universe with <span style="white-space: nowrap;"><strong>several components</strong> <span class="hl-tag">← next lecture</span></span></li>
+  </ul>
+</section>
+
+<section id="plan">
+  <h2>Today's plan</h2>
+  <ol>
+    <li><strong>Energy density</strong> and scale factor</li>
+    <li>Which component <strong>dominates</strong>, and when</li>
+    <li>The <strong>empty</strong> universe</li>
+    <li><strong>Flat</strong> universes with one component: matter, radiation, $\Lambda$</li>
+  </ol>
+</section>
+
+<!-- ============ 1 · Energy density and scale factor ============ -->
+
+<section id="eps-a">
+  <p class="kicker">1 · Energy density and scale factor</p>
+  <h2>How does $\varepsilon$ change with $a$?</h2>
+  <div class="cols" style="grid-template-columns: 1fr auto; gap: 40px;">
+    <div>
+      <p>Put the equation of state $P = w\varepsilon$ into the fluid equation:</p>
+      $$\dot\varepsilon + 3\,\frac{\dot a}{a}\,(1 + w)\,\varepsilon = 0$$
+      <div class="fragment">
+        <p>Separate the variables and integrate:</p>
+        $$\frac{d\varepsilon}{\varepsilon} = -3(1 + w)\,\frac{da}{a}$$
+        $$\Rightarrow\quad \textcolor{#ea580c}{\varepsilon(a) = \varepsilon_0\, a^{-3(1+w)}}$$
+      </div>
+    </div>
+    <table class="w-table fragment">
+      <tr><th>Component</th><th>$w$</th><th>$\varepsilon(a)$</th></tr>
+      <tr><td>Matter</td><td>$0$</td><td>$\varepsilon_{m,0}\, a^{-3}$</td></tr>
+      <tr><td>Radiation</td><td>$1/3$</td><td>$\varepsilon_{r,0}\, a^{-4}$</td></tr>
+      <tr><td>Cosmological<br>constant</td><td>$-1$</td><td>$\varepsilon_{\Lambda,0}$:<br>constant!</td></tr>
+    </table>
+  </div>
+  <aside class="notes">ε0 is the value today, since a(t0) = 1. This holds for each component separately, as long as the components do not exchange energy.</aside>
+</section>
+
+<section id="eps-why">
+  <h2>Building intuition for these powers of $a$</h2>
+  <div class="cols" style="grid-template-columns: 1fr auto; gap: 30px;">
+    <ul>
+      <li class="fragment"><strong>Matter:</strong> the number of particles per volume falls as $a^{-3}$; each keeps its energy $mc^2$. So $\varepsilon_m \propto a^{-3}$.</li>
+      <li class="fragment"><strong>Radiation:</strong> the number of photons per volume also falls as $a^{-3}$, but each photon is stretched: $E = hc/\lambda \propto a^{-1}$. So $\varepsilon_r \propto a^{-4}$.</li>
+      <li class="fragment"><strong>Cosmological constant:</strong> the energy of empty space itself. More space, same energy per volume: $\varepsilon_\Lambda$ = constant.</li>
+    </ul>
+    <div class="fig">
+      <svg viewBox="0 0 420 300" width="420" height="300" role="img" aria-label="A small box with a short-wavelength wave and the same box later, three times larger, with a wave three times longer" style="color: var(--ink);">
+        <defs><marker id="why-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+        <rect x="10" y="125" width="80" height="80" fill="var(--accent)" fill-opacity="0.12" stroke="currentColor" stroke-width="2"/>
+        <path d="M10,165 q10,-16 20,0 t20,0 t20,0 t20,0" fill="none" stroke="var(--hot)" stroke-width="3"/>
+        <line x1="110" y1="165" x2="160" y2="165" stroke="currentColor" stroke-width="2" marker-end="url(#why-arrow)"/>
+        <rect x="175" y="45" width="240" height="240" fill="var(--accent)" fill-opacity="0.12" stroke="currentColor" stroke-width="2"/>
+        <path d="M175,165 q30,-48 60,0 t60,0 t60,0 t60,0" fill="none" stroke="var(--hot)" stroke-width="3"/>
+        <text x="50" y="232" font-size="18" text-anchor="middle" fill="currentColor" font-family="var(--f-ui)">earlier</text>
+        <text x="295" y="30" font-size="18" text-anchor="middle" fill="currentColor" font-family="var(--f-ui)">later: λ ∝ a</text>
+      </svg>
+    </div>
+  </div>
+  <aside class="notes">The photon picture is the redshift from Lecture 2: λ grows with a, so each photon loses energy. Matter particles are not stretched (their kinetic energy does fall, but for nonrelativistic matter it is negligible next to mc²).
+    For Λ: the fluid equation with P = −ε gives ε̇ = 0 directly. Energy is not conserved in the usual sense in an expanding universe: the negative pressure does work.</aside>
+</section>
+
+<!-- ============ 2 · Which component dominates ============ -->
+
+<section id="dominates">
+  <p class="kicker">2 · Which component dominates?</p>
+  <h2>The mix changes over time</h2>
+  <div class="cols" style="grid-template-columns: 1fr auto; gap: 30px;">
+    <div>
+      $$\varepsilon(a) = \varepsilon_0\, a^{-3(1+w)}$$
+      <p>The larger $w$, the faster $\varepsilon$ falls as the universe expands.</p>
+      <ul>
+        <li class="fragment">As $a \to 0$: the component with the <strong>highest</strong> $w$ dominates.</li>
+        <li class="fragment">As $a \to \infty$: the component with the <strong>lowest</strong> $w$ dominates.</li>
+      </ul>
+      <p class="fragment">Our universe has gone from <strong style="color: var(--hot);">radiation</strong>-dominated, to <strong style="color: var(--accent);">matter</strong>-dominated, to <strong style="color: var(--good);">dark energy</strong>-dominated.</p>
+    </div>
+    <div class="w-fig" data-widget="density"></div>
+  </div>
+  <aside class="notes">Plotted for the benchmark model (Ryden): Ωr,0 = 9×10⁻⁵, Ωm,0 = 0.31, ΩΛ,0 = 0.69, in units of today's critical density. On a log–log plot each component is a straight line with slope −3(1 + w).
+    Where two lines cross, the two components have the same energy density: the next two slides.</aside>
+</section>
+
+<section id="equality-rm">
+  <h2>Radiation–matter equality</h2>
+  $$\varepsilon_m(a) = \varepsilon_{m,0}\, a^{-3}, \qquad \varepsilon_r(a) = \varepsilon_{r,0}\, a^{-4}$$
+  <p>Today $\;\Omega_{m,0} \equiv \dfrac{\varepsilon_{m,0}}{\varepsilon_{c,0}} = 0.31\;$ and $\;\Omega_{r,0} \equiv \dfrac{\varepsilon_{r,0}}{\varepsilon_{c,0}} = 9\times10^{-5}$.</p>
+  <p><strong>At what scale factor $a$ was $\varepsilon_m(a) = \varepsilon_r(a)$?</strong></p>
+  <div class="fragment">
+    <p>Divide both sides by $\varepsilon_{c,0}$:</p>
+    $$\Omega_{m,0}\, a^{-3} = \Omega_{r,0}\, a^{-4} \quad\Rightarrow\quad a_{rm} = \frac{\Omega_{r,0}}{\Omega_{m,0}} = \frac{9\times10^{-5}}{0.31} \approx 2.9\times10^{-4}$$
+  </div>
+  <p class="fragment">That is redshift $z_{rm} = 1/a_{rm} - 1 \approx 3400$.</p>
+</section>
+
+<section id="equality-ml">
+  <p class="kicker">Try in pairs</p>
+  <h2>Matter–Λ equality</h2>
+  $$\varepsilon_m(a) = \varepsilon_{m,0}\, a^{-3}, \qquad \varepsilon_\Lambda(a) = \varepsilon_{\Lambda,0}$$
+  <p>Today $\;\Omega_{m,0} = 0.31\;$ and $\;\Omega_{\Lambda,0} = 0.69$.</p>
+  <ul>
+    <li>At what scale factor $a$ was $\varepsilon_m(a) = \varepsilon_\Lambda(a)$?</li>
+    <li>What redshift $z$ does this correspond to?</li>
+  </ul>
+  <aside class="notes">Answer: a = (Ωm,0/ΩΛ,0)^(1/3) = 0.77, z = 0.30 (Ryden Table 5.2). Cosmologically very recent: dark energy has dominated only for the last few billion years.
+    Extra, if time: the expansion started to accelerate a bit earlier, when εm = 2εΛ (ä = 0 needs ε + 3P = 0): a = (Ωm,0/2ΩΛ,0)^(1/3) = 0.61, z = 0.64.</aside>
+</section>
+
+<!-- ============ 3 · The empty universe ============ -->
+
+<section id="milne">
+  <p class="kicker">3 · The empty universe</p>
+  <h2>The empty (Milne) universe</h2>
+  <p>With $\varepsilon = 0$ the Friedmann equation becomes</p>
+  $$\dot a^2 = -\frac{\kappa c^2}{R_0^2}$$
+  <ul>
+    <li class="fragment">$\kappa = 0$: $\dot a = 0$, a static, empty, flat universe. Allowed, but not very interesting.</li>
+    <li class="fragment">$\kappa = -1$: $\dot a = c/R_0$, so $\;a(t) = \dfrac{t}{t_0}\;$ with $\;t_0 = \dfrac{R_0}{c}$, and $H_0 = 1/t_0$.</li>
+  </ul>
+  <p class="fragment callout inline">This is the $a = t/t_0$ we used for distances in Lecture 3. It has <strong>no horizon</strong> (Lecture 4).</p>
+  <aside class="notes">κ = +1 is impossible: ȧ² would be negative.
+    Nothing slows the expansion down, so the universe coasts: ȧ is constant and the age is exactly the Hubble time.
+    Named after Edward Milne (1932). The galaxies are only test particles in it.</aside>
+</section>
+
+<!-- ============ 4 · Flat, single-component universes ============ -->
+
+<section id="flat-general">
+  <p class="kicker">4 · Flat universes with one component</p>
+  <h2>Flat, with one component</h2>
+  <p>With $\kappa = 0$ and $\varepsilon = \varepsilon_0\, a^{-3(1+w)}$, the Friedmann equation becomes</p>
+  $$\dot a^2 = \frac{8\pi G\varepsilon_0}{3c^2}\, a^{-(1+3w)}$$
+  <div class="fragment">
+    <p>Try a power law, $a \propto t^q$. The left side goes as $t^{2(q-1)}$, the right side as $t^{-q(1+3w)}$, so</p>
+    $$2q - 2 = -q(1 + 3w) \quad\Rightarrow\quad q = \frac{2}{3(1+w)}$$
+  </div>
+  <div class="fragment">
+    <p>With $a(t_0) = 1$:</p>
+    $$\textcolor{#ea580c}{a(t) = \left(\frac{t}{t_0}\right)^{2/(3+3w)}}$$
+  </div>
+  <aside class="notes">ȧ ∝ t^(q−1), so ȧ² ∝ t^(2q−2); a^(−(1+3w)) ∝ t^(−q(1+3w)). The constant fixes t0 in terms of ε0 (Ryden eq. 5.49).</aside>
+</section>
+
+<section id="special-cases">
+  <h2>Two special cases</h2>
+  $$a(t) = \left(\frac{t}{t_0}\right)^{2/(3+3w)}$$
+  <ul>
+    <li class="fragment"><strong>$w = -1$</strong> (cosmological constant): the power is infinite. The solution takes a different form: in a few slides.</li>
+    <li class="fragment"><strong>$w < -1$</strong> ("phantom dark energy"): the power is negative. The expanding solution reaches $a = \infty$ after a finite time: the universe ends in a <strong>Big Rip</strong>.</li>
+  </ul>
+  <aside class="notes">For w < −1 the expanding solution is a ∝ (t_rip − t)^(2/(3+3w)), with a negative power: a → ∞ as t → t_rip. Everything, down to atoms, is torn apart.
+    Whether w is exactly −1 is an open question (DESI, Lecture 4).</aside>
+</section>
+
+<section id="eds">
+  <h2>Matter only: the Einstein–de Sitter universe</h2>
+  <p>For matter, $w = 0$:</p>
+  $$a(t) = \left(\frac{t}{t_0}\right)^{2/3}$$
+  <p><strong>Q:</strong> What is the relation between the Hubble constant $H_0$ and the age of the universe $t_0$?</p>
+  <div class="fragment">
+    $$H_0 = \frac{\dot a(t_0)}{a(t_0)} = \frac{2}{3t_0} \quad\Rightarrow\quad t_0 = \frac{2}{3}\,H_0^{-1}$$
+    <p>The universe is <strong>younger than the Hubble time</strong>.</p>
+  </div>
+  <aside class="notes">Problem set 2 used this model. Einstein and de Sitter (1932). The standard model until the 1990s: flat, and only matter.
+    With H0 = 68 km/s/Mpc it gives t0 = 9.6 Gyr: younger than the oldest stars (about 13 Gyr). An "age problem".</aside>
+</section>
+
+<section id="radiation">
+  <h2>Radiation only</h2>
+  <p>For radiation, $w = 1/3$:</p>
+  $$a(t) = \left(\frac{t}{t_0}\right)^{1/2}, \qquad t_0 = \frac{1}{2}\,H_0^{-1}$$
+  <p class="fragment">In general, for $w > -\tfrac13$ the age is less than the Hubble time, $t_0 < H_0^{-1}$.</p>
+  <p class="fragment"><strong>Why?</strong> These universes decelerate ($\ddot a < 0$, Lecture 4). The expansion was faster in the past, so it took less time than $1/H_0$ to get to today's size.</p>
+  <aside class="notes">A radiation-only universe is a good description of our universe early on, for a ≪ a_rm.
+    The "Try it" slide after the next one shows the deceleration argument as a picture.</aside>
+</section>
+
+<section id="de-sitter">
+  <h2>Λ only: the de Sitter universe</h2>
+  <p>Now $\varepsilon_\Lambda$ is constant, so the Friedmann equation gives a constant Hubble parameter:</p>
+  $$H^2 = \left(\frac{\dot a}{a}\right)^2 = \frac{8\pi G\,\varepsilon_\Lambda}{3c^2} = H_0^2$$
+  <div class="fragment">
+    <p>Rearrange, $\dfrac{da}{a} = H_0\, dt$, and integrate:</p>
+    $$a(t) = e^{H_0(t - t_0)}$$
+  </div>
+  <p class="fragment">$a \to 0$ only as $t \to -\infty$: <strong>no Big Bang</strong>, and an infinite age. The universe doubles in size every $\ln 2/H_0 \approx 10$ Gyr.</p>
+  <aside class="notes">Willem de Sitter, 1917, the same year as Einstein's static universe. Our universe is heading towards this: Λ will dominate more and more. Inflation (Lecture 13) is a de Sitter phase in the very early universe.</aside>
+</section>
+
+<section id="single-try">
+  <h2>Try it: $a(t)$ in four universes</h2>
+  <div class="cols" style="grid-template-columns: auto 1fr; gap: 30px;">
+    <div class="w-fig" data-widget="single"></div>
+    <div>
+      <label class="w-toggle"><input type="checkbox" data-k="milne" checked> Empty (Milne): $a \propto t$</label>
+      <label class="w-toggle"><input type="checkbox" data-k="matter" checked> Matter only: $a \propto t^{2/3}$</label>
+      <label class="w-toggle"><input type="checkbox" data-k="radiation" checked> Radiation only: $a \propto t^{1/2}$</label>
+      <label class="w-toggle"><input type="checkbox" data-k="lambda" checked> $\Lambda$ only: $a \propto e^{H_0 t}$</label>
+      <p class="aside" style="margin-top: 1em;">All four have the same $H_0$: the same slope today. The empty universe is the straight line. Curves that bend down (decelerating) reach $a = 0$ sooner: they are younger than $1/H_0$. The $\Lambda$ curve bends up and never reaches $a = 0$.</p>
+    </div>
+  </div>
+  <aside class="notes">Time on the x axis in units of the Hubble time, with today at 0. The dots mark the Big Bang: at −1 (empty), −2/3 (matter), −1/2 (radiation).
+    Turn the curves on one at a time. The future: all four keep expanding; the Λ universe fastest.</aside>
+</section>
+
+<section id="distances-try" data-text-size="0.85">
+  <h2>Try it: distances in four universes</h2>
+  <div class="cols" style="grid-template-columns: auto 1fr; gap: 30px;">
+    <div class="w-fig" data-widget="spacetime"></div>
+    <div>
+      <select class="w-select" data-k="model" aria-label="Model universe">
+        <option value="milne">Empty (Milne): a ∝ t</option>
+        <option value="matter" selected>Matter only: a ∝ t²ᐟ³</option>
+        <option value="radiation">Radiation only: a ∝ t¹ᐟ²</option>
+        <option value="lambda">Λ only: a ∝ exp(H₀t)</option>
+      </select>
+      <label class="olbers-label">Redshift $z$ = <span data-v="z"></span></label>
+      <input class="olbers-slider" data-k="z" type="range" min="0.1" max="5" step="0.1" value="2">
+      <ul class="w-list">
+        <li>Light left the galaxy <b data-v="look"></b> ago</li>
+        <li style="color: var(--accent);">Proper distance today: <b data-v="dp0"></b></li>
+        <li style="color: var(--hot);">Proper distance at emission: <b data-v="dpe"></b></li>
+        <li style="color: var(--good);">Horizon distance: <b data-v="hor"></b></li>
+      </ul>
+      <p class="aside">$H_0 = 68$ km/s/Mpc. Grey: galaxies at fixed comoving distance. Gold: our past light cone, the path of all light reaching us now.</p>
+      <p class="callout inline" style="font-size: 0.8em;">Literature topic: <strong>space-time diagrams in an expanding universe</strong>.</p>
+    </div>
+  </div>
+  <aside class="notes">The same kind of diagram as in Lectures 3 and 4, now for the four model universes, with time measured back from today in Hubble times.
+    The light cone is teardrop-shaped: light that left towards us early on was at first carried away by the expansion, and only later started to gain on us.
+    Compare the models at the same z: the matter-only universe gives the smallest distances and the Λ-only one the largest. In the Λ-only universe the light cone never gets wider than c/H0.</aside>
+</section>
+
+<section id="summary">
+  <h2>Summary: single-component universes</h2>
+  <p>$\varepsilon(a) = \varepsilon_0\, a^{-3(1+w)}$: radiation $\propto a^{-4}$, matter $\propto a^{-3}$, $\Lambda$ constant.</p>
+  <table class="w-table" style="width: 100%;">
+    <thead><tr><th>Universe</th><th>$a(t)$</th><th>Age $t_0$</th><th>Horizon $d_\text{hor}(t_0)$</th></tr></thead>
+    <tbody>
+      <tr><td>Empty, $\kappa = -1$</td><td>$t/t_0$</td><td>$1/H_0$</td><td>$\infty$</td></tr>
+      <tr><td>Matter, flat</td><td>$(t/t_0)^{2/3}$</td><td>$2/(3H_0)$</td><td>$2c/H_0$</td></tr>
+      <tr><td>Radiation, flat</td><td>$(t/t_0)^{1/2}$</td><td>$1/(2H_0)$</td><td>$c/H_0$</td></tr>
+      <tr><td>$\Lambda$, flat</td><td>$e^{H_0(t - t_0)}$</td><td>$\infty$</td><td>$\infty$</td></tr>
+    </tbody>
+  </table>
+  <aside class="notes">Next lecture: universes with several components, where in general a(t) has to be found numerically.</aside>
+</section>
+
+<section id="exercises">
+  <h2>Exercise session</h2>
+  <p>Exercises: available on Canvas under the Lecture 5 module.</p>
+  <!-- TODO: Canvas link to the Lecture 5 exercises -->
+</section>
+
+<section id="before-next-time">
+  <h2>Before next time</h2>
+  <ul>
+    <li><strong>Literature review:</strong> final topic and papers due <strong>Thursday 19 November</strong></li>
+    <li><em>Problem set 3</em> is due <strong>Tuesday 24 November, 10:00</strong>, in Canvas</li>
+    <li>Read <strong>Ryden sections 5.4–5.5</strong>: universes with several components, and the Benchmark Model</li>
+  </ul>
+</section>
+
+</div></div>
+</body>
+</html>
