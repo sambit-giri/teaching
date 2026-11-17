@@ -41,7 +41,7 @@
       <p class="credit">Image credit: NASA</p>
     </figure>
     <figure>
-      <div class="w-fig" data-widget="single" data-w="520" data-h="340" style="align-self: start;"></div>
+      <div class="w-fig" data-widget="single" data-h="395" style="align-self: start;"></div>
       <p class="credit">The scale factor $a(t)$ of four model universes</p>
     </figure>
   </div>
@@ -54,10 +54,10 @@
     <li><strong>Home assignments:</strong>
       <ul>
         <li><a href="https://canvas.su.se/courses/12102/modules/items/204283" target="_blank"><em>Problem set 2</em></a> was due today, 10:00.</li>
-        <li><em>Problem set 3</em> is due <strong>Tuesday 24 November, 10:00</strong>, in Canvas.</li>
-        <!-- TODO: Canvas link to Problem set 3 -->
+        <li><a href="https://canvas.su.se/courses/12102/assignments/32862" target="_blank"><em>Problem set 3</em></a> is due <strong>Tuesday 24 November, 10:00</strong>, in Canvas.</li>
       </ul>
     </li>
+    <li><strong>Overlapping exams:</strong> contact <a href="mailto:studieinfo@astro.su.se">studieinfo@astro.su.se</a>.</li>
   </ul>
 </section>
 
@@ -200,16 +200,35 @@
 <section id="milne">
   <p class="kicker">3 · The empty universe</p>
   <h2>The empty (Milne) universe</h2>
-  <p>With $\varepsilon = 0$ the Friedmann equation becomes</p>
-  $$\dot a^2 = -\frac{\kappa c^2}{R_0^2}$$
+  <p>The Friedmann equation, multiplied by $a^2$:</p>
+  <div style="display: flex; align-items: center; justify-content: center; gap: 1.2em;">
+    <div class="r-stack">
+      <div class="fragment fade-out" data-fragment-index="1">$$\dot a^2 = \frac{8\pi G}{3c^2}\,\varepsilon\, a^2 - \frac{\kappa c^2}{R_0^2}$$</div>
+      <div class="fragment" data-fragment-index="1">$$\dot a^2 = \cancel{\frac{8\pi G}{3c^2}\,\varepsilon\, a^2} - \frac{\kappa c^2}{R_0^2}$$</div>
+    </div>
+    <div class="fragment" data-fragment-index="1">$$\xrightarrow{\;\varepsilon\,=\,0\;}\quad \textcolor{#ea580c}{\dot a^2 = -\frac{\kappa c^2}{R_0^2}}$$</div>
+  </div>
   <ul>
     <li class="fragment">$\kappa = 0$: $\dot a = 0$, a static, empty, flat universe. Allowed, but not very interesting.</li>
     <li class="fragment">$\kappa = -1$: $\dot a = c/R_0$, so $\;a(t) = \dfrac{t}{t_0}\;$ with $\;t_0 = \dfrac{R_0}{c}$, and $H_0 = 1/t_0$.</li>
   </ul>
   <p class="fragment callout inline">This is the $a = t/t_0$ we used for distances in Lecture 3. It has <strong>no horizon</strong> (Lecture 4).</p>
-  <aside class="notes">κ = +1 is impossible: ȧ² would be negative.
+  <p class="fragment"><strong>What about $\kappa = +1$?</strong></p>
+  <aside class="notes">Before the click: the full Friedmann equation with all components together has no simple solution. But if one component dominates, we can drop the others, and then the equation can be solved exactly. So we build model universes one component at a time, starting with the simplest: nothing at all, ε = 0.
+    κ = +1: ask the class before showing the answer (ȧ² would be negative).
     Nothing slows the expansion down, so the universe coasts: ȧ is constant and the age is exactly the Hubble time.
     Named after Edward Milne (1932). The galaxies are only test particles in it.</aside>
+</section>
+
+<section id="milne-plots" data-text-size="1.1">
+  <h2>The empty universe in pictures</h2>
+  <div class="cols" style="grid-template-columns: auto auto auto; gap: 14px; align-items: start;">
+    <div class="w-fig" data-widget="single" data-show="milne" data-h="440"></div>
+    <div class="w-fig" data-widget="dist" data-show="milne"></div>
+    <div class="w-fig" data-widget="spacetime" data-model="milne" data-z="2" data-w="400" data-h="440" data-xmax="2.2" data-smin="-1.2"></div>
+  </div>
+  <aside class="notes">Left: a(t) with time in Hubble times, today at 0; the Big Bang is exactly 1/H0 ago. Middle: proper distance of a galaxy at redshift z, today (Observation) and when the light left it (Emission), in units of c/H0, on log axes as in Ryden Fig. 5.3. Right: the spacetime diagram of this universe (as in Lectures 3 and 4), with a galaxy at z = 2: blue is its distance today, orange its distance at emission, gold our past light cone.
+    Today's distance grows without limit as z grows: no horizon. The distance at emission has a maximum: the most distant galaxies were close to us when their light left.</aside>
 </section>
 
 <!-- ============ 4 · Flat, single-component universes ============ -->
@@ -217,8 +236,14 @@
 <section id="flat-general">
   <p class="kicker">4 · Flat universes with one component</p>
   <h2>Flat, with one component</h2>
-  <p>With $\kappa = 0$ and $\varepsilon = \varepsilon_0\, a^{-3(1+w)}$, the Friedmann equation becomes</p>
-  $$\dot a^2 = \frac{8\pi G\varepsilon_0}{3c^2}\, a^{-(1+3w)}$$
+  <p>The Friedmann equation, multiplied by $a^2$:</p>
+  <div style="display: flex; align-items: center; justify-content: center; gap: 1.2em;">
+    <div class="r-stack">
+      <div class="fragment fade-out" data-fragment-index="1">$$\dot a^2 = \frac{8\pi G}{3c^2}\,\varepsilon\, a^2 - \frac{\kappa c^2}{R_0^2}$$</div>
+      <div class="fragment" data-fragment-index="1">$$\dot a^2 = \frac{8\pi G}{3c^2}\,\varepsilon\, a^2 - \cancel{\frac{\kappa c^2}{R_0^2}}$$</div>
+    </div>
+    <div class="fragment" data-fragment-index="1">$$\xrightarrow[\varepsilon\,=\,\varepsilon_0 a^{-3(1+w)}]{\;\kappa\,=\,0\;}\quad \dot a^2 = \frac{8\pi G\varepsilon_0}{3c^2}\, a^{-(1+3w)}$$</div>
+  </div>
   <div class="fragment">
     <p>Try a power law, $a \propto t^q$. The left side goes as $t^{2(q-1)}$, the right side as $t^{-q(1+3w)}$, so</p>
     $$2q - 2 = -q(1 + 3w) \quad\Rightarrow\quad q = \frac{2}{3(1+w)}$$
@@ -254,6 +279,17 @@
     With H0 = 68 km/s/Mpc it gives t0 = 9.6 Gyr: younger than the oldest stars (about 13 Gyr). An "age problem".</aside>
 </section>
 
+<section id="eds-plots" data-text-size="1.1">
+  <h2>Adding matter only</h2>
+  <div class="cols" style="grid-template-columns: auto auto auto; gap: 14px; align-items: start;">
+    <div class="w-fig" data-widget="single" data-show="milne,matter" data-h="440"></div>
+    <div class="w-fig" data-widget="dist" data-show="milne,matter"></div>
+    <div class="w-fig" data-widget="spacetime" data-model="matter" data-z="2" data-w="400" data-h="440" data-xmax="2.2" data-smin="-1.2"></div>
+  </div>
+  <aside class="notes">Same slope as the empty universe today (same H0), but bending down: decelerating, so the Big Bang is closer, 2/3 of a Hubble time ago.
+    Today's distance levels off at large z, and the spacetime diagram shows the horizon (green): this universe has a horizon, the edge of the observable universe. Ask: what is the horizon distance? (2c/H0, from the integral of Lecture 4.)</aside>
+</section>
+
 <section id="radiation">
   <h2>Radiation only</h2>
   <p>For radiation, $w = 1/3$:</p>
@@ -261,7 +297,18 @@
   <p class="fragment">In general, for $w > -\tfrac13$ the age is less than the Hubble time, $t_0 < H_0^{-1}$.</p>
   <p class="fragment"><strong>Why?</strong> These universes decelerate ($\ddot a < 0$, Lecture 4). The expansion was faster in the past, so it took less time than $1/H_0$ to get to today's size.</p>
   <aside class="notes">A radiation-only universe is a good description of our universe early on, for a ≪ a_rm.
-    The "Try it" slide after the next one shows the deceleration argument as a picture.</aside>
+    The next slide shows the deceleration argument as a picture, and the "Try it" slide after de Sitter lets the students explore it.</aside>
+</section>
+
+<section id="radiation-plots" data-text-size="1.1">
+  <h2>Adding radiation only</h2>
+  <div class="cols" style="grid-template-columns: auto auto auto; gap: 14px; align-items: start;">
+    <div class="w-fig" data-widget="single" data-show="milne,matter,radiation" data-h="440"></div>
+    <div class="w-fig" data-widget="dist" data-show="milne,matter,radiation"></div>
+    <div class="w-fig" data-widget="spacetime" data-model="radiation" data-z="2" data-w="400" data-h="440" data-xmax="2.2" data-smin="-1.2"></div>
+  </div>
+  <aside class="notes">Radiation decelerates even more: the Big Bang is only half a Hubble time ago, and the horizon is closer, c/H0.
+    Order of the curves at fixed z: the more the universe decelerates, the smaller the distances.</aside>
 </section>
 
 <section id="de-sitter">
@@ -276,48 +323,36 @@
   <aside class="notes">Willem de Sitter, 1917, the same year as Einstein's static universe. Our universe is heading towards this: Λ will dominate more and more. Inflation (Lecture 13) is a de Sitter phase in the very early universe.</aside>
 </section>
 
-<section id="single-try">
-  <h2>Try it: $a(t)$ in four universes</h2>
-  <div class="cols" style="grid-template-columns: auto 1fr; gap: 30px;">
-    <div class="w-fig" data-widget="single"></div>
-    <div>
-      <label class="w-toggle"><input type="checkbox" data-k="milne" checked> Empty (Milne): $a \propto t$</label>
-      <label class="w-toggle"><input type="checkbox" data-k="matter" checked> Matter only: $a \propto t^{2/3}$</label>
-      <label class="w-toggle"><input type="checkbox" data-k="radiation" checked> Radiation only: $a \propto t^{1/2}$</label>
-      <label class="w-toggle"><input type="checkbox" data-k="lambda" checked> $\Lambda$ only: $a \propto e^{H_0 t}$</label>
-      <p class="aside" style="margin-top: 1em;">All four have the same $H_0$: the same slope today. The empty universe is the straight line. Curves that bend down (decelerating) reach $a = 0$ sooner: they are younger than $1/H_0$. The $\Lambda$ curve bends up and never reaches $a = 0$.</p>
-    </div>
+<section id="desitter-plots" data-text-size="1.1">
+  <h2>Adding Λ only</h2>
+  <div class="cols" style="grid-template-columns: auto auto auto; gap: 14px; align-items: start;">
+    <div class="w-fig" data-widget="single" data-show="milne,matter,radiation,lambda" data-h="440"></div>
+    <div class="w-fig" data-widget="dist" data-show="milne,matter,radiation,lambda"></div>
+    <div class="w-fig" data-widget="spacetime" data-model="lambda" data-z="2" data-w="400" data-h="440" data-xmax="2.2" data-smin="-1.2"></div>
   </div>
-  <aside class="notes">Time on the x axis in units of the Hubble time, with today at 0. The dots mark the Big Bang: at −1 (empty), −2/3 (matter), −1/2 (radiation).
-    Turn the curves on one at a time. The future: all four keep expanding; the Λ universe fastest.</aside>
+  <aside class="notes">Λ bends the other way: accelerating, and no Big Bang. Distances today are the largest of the four: d = z c/H0 exactly, and no horizon.
+    At emission, the distance approaches c/H0 for large z: light from beyond that never reaches us (an event horizon). Next: any w with a slider.</aside>
 </section>
 
-<section id="distances-try" data-text-size="0.85">
-  <h2>Try it: distances in four universes</h2>
-  <div class="cols" style="grid-template-columns: auto 1fr; gap: 30px;">
-    <div class="w-fig" data-widget="spacetime"></div>
+<section id="single-try" data-text-size="1.1">
+  <h2>Try it: any <i>w</i></h2>
+  <div class="cols" style="grid-template-columns: auto 1fr; gap: 30px; align-items: start;">
+    <div class="w-fig" data-widget="wslider"></div>
     <div>
-      <select class="w-select" data-k="model" aria-label="Model universe">
-        <option value="milne">Empty (Milne): a ∝ t</option>
-        <option value="matter" selected>Matter only: a ∝ t²ᐟ³</option>
-        <option value="radiation">Radiation only: a ∝ t¹ᐟ²</option>
-        <option value="lambda">Λ only: a ∝ exp(H₀t)</option>
-      </select>
-      <label class="olbers-label">Redshift $z$ = <span data-v="z"></span></label>
-      <input class="olbers-slider" data-k="z" type="range" min="0.1" max="5" step="0.1" value="2">
+      <label class="olbers-label">Equation of state $w$ = <span data-v="w"></span></label>
+      <input class="olbers-slider" data-k="w" type="range" min="-1.5" max="1" step="0.01" value="0">
       <ul class="w-list">
-        <li>Light left the galaxy <b data-v="look"></b> ago</li>
-        <li style="color: var(--accent);">Proper distance today: <b data-v="dp0"></b></li>
-        <li style="color: var(--hot);">Proper distance at emission: <b data-v="dpe"></b></li>
-        <li style="color: var(--good);">Horizon distance: <b data-v="hor"></b></li>
+        <li><b data-v="law"></b></li>
+        <li>Age: <b data-v="age"></b><span data-v="vs"></span></li>
+        <li>Expansion today: <b data-v="acc"></b></li>
+        <li>Future: <b data-v="end"></b></li>
       </ul>
-      <p class="aside">$H_0 = 68$ km/s/Mpc. Grey: galaxies at fixed comoving distance. Gold: our past light cone, the path of all light reaching us now.</p>
-      <p class="callout inline" style="font-size: 0.8em;">Literature topic: <strong>space-time diagrams in an expanding universe</strong>.</p>
+      <p class="aside" style="margin-top: 1em;">The wide gold curve: flat, one component with this $w$, same $H_0$ as the others. For which $w$ is the universe <strong>older</strong> than $1/H_0$? When does the expansion <strong>speed up</strong>?</p>
     </div>
   </div>
-  <aside class="notes">The same kind of diagram as in Lectures 3 and 4, now for the four model universes, with time measured back from today in Hubble times.
-    The light cone is teardrop-shaped: light that left towards us early on was at first carried away by the expansion, and only later started to gain on us.
-    Compare the models at the same z: the matter-only universe gives the smallest distances and the Λ-only one the largest. In the Λ-only universe the light cone never gets wider than c/H0.</aside>
+  <aside class="notes">The four curves of the cover, plus the gold curve for the chosen w. Time in units of the Hubble time, with today at 0; the empty universe, a ∝ t, has age exactly 1/H0.
+    Start at w = 0 (matter), then 1/3 (radiation), −1 (Λ). The answer to both questions is w &lt; −1/3: the same condition as ä &gt; 0 (Lecture 4). Age t0 = 2/(3(1+w)) / H0 (Ryden eq. 5.42).
+    Below w = −1 (phantom energy) there is no Big Bang, and a becomes infinite a finite time from now: the Big Rip of the previous slides.</aside>
 </section>
 
 <section id="summary">
@@ -345,7 +380,7 @@
   <h2>Before next time</h2>
   <ul>
     <li><strong>Literature review:</strong> final topic and papers due <strong>Thursday 19 November</strong></li>
-    <li><em>Problem set 3</em> is due <strong>Tuesday 24 November, 10:00</strong>, in Canvas</li>
+    <li><a href="https://canvas.su.se/courses/12102/assignments/32862" target="_blank"><em>Problem set 3</em></a> is due <strong>Tuesday 24 November, 10:00</strong>, in Canvas</li>
     <li>Read <strong>Ryden sections 5.4–5.5</strong>: universes with several components, and the Benchmark Model</li>
   </ul>
 </section>

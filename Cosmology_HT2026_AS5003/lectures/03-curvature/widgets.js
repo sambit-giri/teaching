@@ -2,6 +2,7 @@
 // and inputs with a data-k="name" attribute; the widget redraws when an input changes and when the
 // light/dark theme is switched. Charts use Observable Plot and d3 (from the CDN).
 import { c_kms, hubbleTime } from "../../_shared/cosmo.js";
+import { withAxes } from "../../_shared/plot.js";
 
 const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 const colours = () => Object.fromEntries(["ink", "ink-soft", "accent", "hot", "cool", "good", "gold", "edge", "bg"].map((k) => [k.replace("-", "_"), css(`--${k}`)]));
@@ -114,13 +115,13 @@ const widgets = {
       Plot.ruleY([1], { x1: 0, x2: dp0, stroke: C.accent, strokeWidth: 3 }),
       Plot.ruleY([te], { x1: 0, x2: dpe, stroke: C.hot, strokeWidth: 3 }),
       Plot.dot([{ d: dpe, t: te }, { d: 0, t: 1 }], { x: "d", y: "t", r: 6, fill: C.gold }));
-    box.replaceChildren(Plot.plot({
+    box.replaceChildren(Plot.plot(withAxes({
       width: 560, height: 400, marginLeft: 60, marginBottom: 50, marginTop: 20, marginRight: 20,
       style: { background: "transparent", color: C.ink, fontSize: "16px", fontFamily: css("--f-ui") },
       x: { domain: [-0.05 * xmax, xmax], label: "proper distance (Gpc) →", labelAnchor: "right", labelArrow: "none" },
       y: { domain: [0, 1.06], label: "↑ time t / t₀", labelAnchor: "top", labelArrow: "none" },
       marks,
-    }));
+    }, C.ink)));
     const v = { z: z.toFixed(1), te: te.toFixed(2), t0: t0.toFixed(1), dp0: dp0.toFixed(2), dpe: dpe.toFixed(2), travel: travel.toFixed(2),
       hor: isFinite(hor) ? hor.toFixed(2) + " Gpc" : "∞: no horizon" };
     for (const el of box.closest("section").querySelectorAll("[data-v]")) el.textContent = v[el.dataset.v];

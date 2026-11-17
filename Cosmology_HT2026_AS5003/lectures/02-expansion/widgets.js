@@ -2,6 +2,7 @@
 // and inputs with a data-k="name" attribute; the widget redraws when an input changes and when the
 // light/dark theme is switched. Charts use Observable Plot (from the CDN, with d3).
 import { c_kms, hubbleTime, sci, wavelengthToRGB } from "../../_shared/cosmo.js";
+import { withAxes } from "../../_shared/plot.js";
 
 const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 const colours = () => Object.fromEntries(["ink", "ink-soft", "accent", "hot", "cool", "good", "gold", "edge", "bg"].map((k) => [k.replace("-", "_"), css(`--${k}`)]));
@@ -9,11 +10,11 @@ const colours = () => Object.fromEntries(["ink", "ink-soft", "accent", "hot", "c
 // a Plot chart of the given size in the slide's look
 function plot(W, H, opts) {
   const C = colours();
-  return Plot.plot({
+  return Plot.plot(withAxes({
     width: W, height: H, marginLeft: 70, marginBottom: 50, marginTop: 34, marginRight: 20,
     style: { background: "transparent", color: C.ink, fontSize: "17px", fontFamily: css("--f-ui") },
     ...opts,
-  });
+  }, C.ink));
 }
 
 // ---------- schematic quasar-like spectrum ----------

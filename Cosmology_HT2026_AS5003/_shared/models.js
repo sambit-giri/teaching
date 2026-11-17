@@ -1,13 +1,15 @@
 // Model universes for the Lecture 5 and 6 widgets (Ryden ch. 5). Time is s = H0 (t − t0), distances
 // are in units of the Hubble distance c/H0, and a(t0) = 1. Charts use Observable Plot (global Plot).
+import { withAxes } from "./plot.js";
 
 // Flat single-component universes and the empty (Milne) universe. For a power law a ∝ t^n the
-// Big Bang is at s = −n; de Sitter (n = null) has no Big Bang.
+// Big Bang is at s = −n; de Sitter (n = null) has no Big Bang. dash: the line style, so that the
+// curves differ by more than colour.
 export const single = {
-  milne: { name: "Empty (Milne)", n: 1, label: "empty: a ∝ t" },
-  matter: { name: "Matter only", n: 2 / 3, label: "matter: a ∝ t²ᐟ³" },
-  radiation: { name: "Radiation only", n: 1 / 2, label: "radiation: a ∝ t¹ᐟ²" },
-  lambda: { name: "Λ only (de Sitter)", n: null, label: "Λ: a ∝ exp(H₀t)" },
+  milne: { name: "Empty (Milne)", n: 1, label: "empty: a ∝ t", dash: "12 4 3 4" },
+  matter: { name: "Matter only", n: 2 / 3, label: "matter: a ∝ t²ᐟ³", dash: null },
+  radiation: { name: "Radiation only", n: 1 / 2, label: "radiation: a ∝ t¹ᐟ²", dash: "8 5" },
+  lambda: { name: "Λ only (de Sitter)", n: null, label: "Λ: a ∝ exp(H₀t)", dash: "2 4" },
 };
 
 // a(s) for a single-component model (0 before a Big Bang)
@@ -77,32 +79,44 @@ export function evolve({ Om, OL, Or = 0 }, smax = 4, amax = 4) {
   };
 }
 
-// The four curves of Lecture 5: a(s) for the empty, matter-only, radiation-only and Λ-only universes.
-// show: which models to draw (default all). C: theme colours. Returns the Plot figure.
+// time range of the a(t) plots, in units of the Hubble time, and the largest a shown. The plot
+// keeps equal units on both axes: a step of 1 is as long in t as in a.
+export const sRange = [-2.2, 4.2], aMax = 5.6;
+
 export const singleColours = (C) => ({ milne: C.ink_soft, matter: C.accent, radiation: C.hot, lambda: C.good });
 
-export function singlePlot(C, { show = Object.keys(single), width = 600, height = 400, fontSize = "16px", font } = {}) {
+// The four curves of Lecture 5: a(s) for the empty, matter-only, radiation-only and Λ-only universes.
+// show: which models to draw (default all). extra: more marks, drawn under the curves. C: theme
+// colours. height sets the size; the width follows from equal units on both axes. Returns the Plot figure.
+export function singlePlot(C, { show = Object.keys(single), extra = [], height = 420, fontSize = "16px", font } = {}) {
   const col = singleColours(C);
+  const margin = { marginLeft: 50, marginBottom: 46, marginTop: 32, marginRight: 16 };
+  const width = Math.round((height - margin.marginTop - margin.marginBottom) * (sRange[1] - sRange[0]) / aMax + margin.marginLeft + margin.marginRight);
   const marks = [
     Plot.ruleX([0], { stroke: C.edge, strokeDasharray: "4 4" }),
-    Plot.text([{ s: -0.05, a: 2.85 }], { x: "s", y: "a", text: () => "← past", textAnchor: "end", fill: C.ink_soft }),
-    Plot.text([{ s: 0.05, a: 2.85 }], { x: "s", y: "a", text: () => "future →", textAnchor: "start", fill: C.ink_soft }),
+    ...extra,
+    Plot.text([{ s: -0.05, a: 0.95 * aMax }], { x: "s", y: "a", text: () => "← past", textAnchor: "end", fill: C.ink_soft }),
+    Plot.text([{ s: 0.05, a: 0.95 * aMax }], { x: "s", y: "a", text: () => "future →", textAnchor: "start", fill: C.ink_soft }),
     Plot.dot([{ s: 0, a: 1 }], { x: "s", y: "a", r: 5, fill: C.ink }),
     Plot.text([{ s: 0, a: 1 }], { x: "s", y: "a", text: () => "today", dx: 30, dy: 14, fill: C.ink }),
   ];
   for (const m of show) {
-    const n = single[m].n, s0 = n === null ? -2.2 : -n;
-    const pts = d3.range(s0, 2.2001, 0.01).map((s) => ({ s, a: aSingle(m, s) })).filter((p) => p.a <= 3);
-    marks.push(Plot.line(pts, { x: "s", y: "a", stroke: col[m], strokeWidth: 3 }));
+    const n = single[m].n, s0 = n === null ? sRange[0] : -n;
+    const pts = d3.range(s0, sRange[1] + 1e-4, 0.01).map((s) => ({ s, a: aSingle(m, s) })).filter((p) => p.a <= aMax);
+    marks.push(Plot.line(pts, { x: "s", y: "a", stroke: col[m], strokeWidth: 3, strokeDasharray: single[m].dash }));
     if (n !== null) marks.push(Plot.dot([{ s: s0, a: 0 }], { x: "s", y: "a", r: 5, fill: col[m] }));
   }
-  // labels as a key in the empty top left
-  marks.push(Plot.text(show.map((m, i) => ({ s: -2.1, a: 2.8 - 0.3 * i, m })), { x: "s", y: "a", text: (d) => single[d.m].label, textAnchor: "start", fill: (d) => col[d.m], fontWeight: 700 }));
-  return Plot.plot({
-    width, height, marginLeft: 50, marginBottom: 46, marginTop: 32, marginRight: 16,
-    style: { background: "transparent", color: C.ink, fontSize, fontFamily: font },
-    x: { domain: [-2.2, 2.2], label: "time H₀(t − t₀) →", labelAnchor: "right", labelArrow: "none" },
-    y: { domain: [0, 3], ticks: 6, label: "↑ scale factor a", labelAnchor: "top", labelArrow: "none" },
-    marks,
+  // a key in the empty top left: a sample of each line style, then its label
+  show.forEach((m, i) => {
+    const a = (0.82 - 0.09 * i) * aMax;
+    marks.push(Plot.line([{ s: -2.1, a }, { s: -1.6, a }], { x: "s", y: "a", stroke: col[m], strokeWidth: 3, strokeDasharray: single[m].dash }),
+      Plot.text([{ s: -1.5, a }], { x: "s", y: "a", text: () => single[m].label, textAnchor: "start", fill: col[m], fontWeight: 700 }));
   });
+  return Plot.plot(withAxes({
+    width, height, ...margin,
+    style: { background: "transparent", color: C.ink, fontSize, fontFamily: font },
+    x: { domain: sRange, ticks: d3.range(Math.ceil(sRange[0]), sRange[1] + 1e-9), tickFormat: "d", label: "time H₀(t − t₀) →", labelAnchor: "right", labelArrow: "none" },
+    y: { domain: [0, aMax], ticks: d3.range(0, aMax + 1e-9), tickFormat: "d", label: "↑ scale factor a", labelAnchor: "top", labelArrow: "none" },
+    marks,
+  }, C.ink));
 }

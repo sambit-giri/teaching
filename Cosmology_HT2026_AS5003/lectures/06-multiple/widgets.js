@@ -3,6 +3,7 @@
 // light/dark theme is switched. Charts use Observable Plot and d3 (from the CDN).
 import { hubbleTime, benchmark, E, simpson } from "../../_shared/cosmo.js";
 import { singlePlot, evolve } from "../../_shared/models.js";
+import { withAxes } from "../../_shared/plot.js";
 
 const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 const colours = () => Object.fromEntries(["ink", "ink-soft", "accent", "hot", "cool", "good", "gold", "edge", "bg"].map((k) => [k.replace("-", "_"), css(`--${k}`)]));
@@ -25,12 +26,12 @@ function fatePlot(C, curves, { width = 520, height = 380 } = {}) {
     marks.push(Plot.line(c.pts, { x: "s", y: "a", stroke: c.colour, strokeWidth: c.width ?? 3, strokeDasharray: c.dash, clip: true }));
     if (c.label) marks.push(Plot.text([c.at], { x: "s", y: "a", text: () => c.label, fill: c.colour, fontWeight: 700, textAnchor: c.anchor ?? "start", dx: c.dx ?? 0, dy: c.dy ?? 0, clip: true }));
   }
-  return Plot.plot({
+  return Plot.plot(withAxes({
     width, height, marginLeft: 50, marginBottom: 46, marginTop: 32, marginRight: 16, style: style(C),
     x: { domain: [-4, 4], label: "time H₀(t − t₀) →", labelAnchor: "right", labelArrow: "none" },
     y: { domain: [0, 3], ticks: 6, label: "↑ scale factor a", labelAnchor: "top", labelArrow: "none" },
     marks,
-  });
+  }, C.ink));
 }
 
 // One line about a universe's history, from evolve()
@@ -43,16 +44,16 @@ function describe(Om, OL, u) {
 
 const fill = (box, v) => { for (const el of box.closest("section").querySelectorAll("[data-v]")) el.textContent = v[el.dataset.v] ?? ""; };
 
-// Ryden's Figure 5.7: four universes with Ωm,0 = 0.31
+// Ryden's Figure 5.7: four universes with Ωm,0 = 0.31, told apart by line style as well as colour
 const fates = (C) => [
-  { name: "Big Chill", OL: 0.69, colour: C.good, at: { s: -0.4, a: 2.4 }, anchor: "end" },
-  { name: "Big Crunch", OL: -0.31, colour: C.hot, at: { s: 2.3, a: 0.55 } },
-  { name: "Loitering", OL: 1.7289, colour: C.gold, at: { s: -3.9, a: 0.62 } },
-  { name: "Big Bounce", OL: 1.8, colour: C.accent, at: { s: -3.0, a: 2.6 }, anchor: "start" },
+  { name: "Big Chill", OL: 0.69, colour: C.good, at: { s: 1.1, a: 2.3 }, dx: 10 },
+  { name: "Big Crunch", OL: -0.31, colour: C.hot, dash: "8 5", at: { s: 2.3, a: 0.55 } },
+  { name: "Loitering", OL: 1.7289, colour: C.gold, dash: "2 4", at: { s: -3.9, a: 0.62 } },
+  { name: "Big Bounce", OL: 1.8, colour: C.accent, dash: "12 4 3 4", at: { s: -3.0, a: 2.6 }, anchor: "start" },
 ].map((f) => ({ ...f, pts: evolve({ Om: 0.31, OL: f.OL }).pts, label: f.name }));
 
 const widgets = {
-  single: (box) => box.replaceChildren(singlePlot(colours(), { width: +(box.dataset.w ?? 480), height: +(box.dataset.h ?? 340), font: css("--f-ui") })),
+  single: (box) => box.replaceChildren(singlePlot(colours(), { height: +(box.dataset.h ?? 400), font: css("--f-ui") })),
 
   // matter + Λ + curvature. data-mode: "fates" (the four curves of Ryden Fig. 5.7, no inputs),
   // "mk" (slider Om, no Λ), "flat" (slider Om, ΩΛ = 1 − Ωm), "plane" (sliders Om and OL, presets,
@@ -72,7 +73,7 @@ const widgets = {
     if (mode !== "plane") { box.replaceChildren(aplot); return; }
 
     const ms = d3.range(0.002, 3.0001, 0.01);
-    const plane = Plot.plot({
+    const plane = Plot.plot(withAxes({
       width: 400, height: 360, marginLeft: 56, marginBottom: 46, marginTop: 32, marginRight: 12, style: style(C, "15px"),
       x: { domain: [0, 3], label: "Ωm,0 →", labelAnchor: "right", labelArrow: "none" },
       y: { domain: [-1, 3], label: "↑ ΩΛ,0", labelAnchor: "top", labelArrow: "none" },
@@ -89,7 +90,7 @@ const widgets = {
         Plot.dot([[benchmark.Om, benchmark.OL]], { symbol: "star", r: 7, fill: C.gold }),
         Plot.dot([[Om, OL]], { r: 7, fill: C.ink, stroke: C.bg, strokeWidth: 2 }),
       ],
-    });
+    }, C.ink));
     // a click on the plane picks (Ωm,0, ΩΛ,0)
     plane.style.cursor = "crosshair";
     plane.addEventListener("click", (e) => {
@@ -132,14 +133,14 @@ const widgets = {
       Plot.text([{ t: 0.5, a: 0.1 }], { x: "t", y: "a", text: () => "a ∝ t²ᐟ³", fill: C.accent, fontWeight: 700, dy: -14, textAnchor: "end" }),
       Plot.text([{ t: 60, a: 8 }], { x: "t", y: "a", text: () => "a ∝ eᴴᵗ", fill: C.good, fontWeight: 700, textAnchor: "end", dx: -6 }));
     const fmt = (d) => (Number.isInteger(Math.log10(d)) ? `10${sup(Math.log10(d))}` : "");
-    box.replaceChildren(Plot.plot({
+    box.replaceChildren(Plot.plot(withAxes({
       width: 620, height: 430, marginLeft: 64, marginBottom: 50, marginTop: 32, marginRight: 20, style: style(C),
       x: log ? { type: "log", domain: [1e-6, 100], tickFormat: fmt, label: "time t (Gyr) →", labelAnchor: "right", labelArrow: "none" }
         : { domain: [0, 40], label: "time t (Gyr) →", labelAnchor: "right", labelArrow: "none" },
       y: log ? { type: "log", domain: [1e-5, 10], tickFormat: fmt, label: "↑ scale factor a", labelAnchor: "top", labelArrow: "none" }
         : { domain: [0, 4], label: "↑ scale factor a", labelAnchor: "top", labelArrow: "none" },
       marks,
-    }));
+    }, C.ink)));
   },
 
   // proper distance today or at emission against z, for the Benchmark Model, matter only and Λ only
@@ -161,12 +162,12 @@ const widgets = {
       marks.push(Plot.text([{ z, d: m.f(z) / (emit ? 1 + z : 1) }], { x: "z", y: "d", text: () => m.name, fill: m.c, fontWeight: 700, dy,
         textAnchor: m.name === "Λ only" && !emit ? "end" : "middle", dx: m.name === "Λ only" && !emit ? -10 : 0 }));
     }
-    box.replaceChildren(Plot.plot({
+    box.replaceChildren(Plot.plot(withAxes({
       width: 600, height: 420, marginLeft: 64, marginBottom: 50, marginTop: 32, marginRight: 20, style: style(C),
       x: { type: "log", domain: [0.01, 1000], tickFormat: (d) => (Number.isInteger(Math.log10(d)) ? String(d) : ""), label: "redshift z →", labelAnchor: "right", labelArrow: "none" },
       y: { domain: [0, emit ? 1.05 : 3.6], label: emit ? "↑ dp(te) (c/H₀)" : "↑ dp(t₀) (c/H₀)", labelAnchor: "top", labelArrow: "none" },
       marks,
-    }));
+    }, C.ink)));
   },
 };
 
