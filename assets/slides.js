@@ -9,6 +9,7 @@ renderMathInElement(document.querySelector(".reveal .slides"), {
     { left: "$", right: "$", display: false },
   ],
   throwOnError: false,
+  trust: (ctx) => ctx.command === "\\htmlClass",   // \htmlClass{c-hot}{...} colours with the theme
 });
 
 // Size a slide's text (titles keep their size) to the largest that fits: up to 1.5× on text-only

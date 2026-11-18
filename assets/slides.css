@@ -340,3 +340,9 @@ html.print-pdf .reveal .slides section .fragment.fade-out { visibility: hidden; 
 .reveal pre.code { margin: 0.5em 0; padding: 14px 22px; font: 500 0.7em/1.5 var(--f-mono); color: var(--ink); background: var(--accent-soft); border: 1px solid var(--edge); border-radius: 10px; white-space: pre; text-align: left; box-shadow: none; width: auto; }
 .reveal code { font-family: var(--f-mono); font-size: 0.9em; }
 .reveal table.w-table th .katex { text-transform: none; letter-spacing: 0; }
+
+/* Maths in a theme colour: \htmlClass{c-hot}{...}, as the model colours of the a(t) plots */
+.reveal .c-hot { color: var(--hot); }
+.reveal .c-accent { color: var(--accent); }
+.reveal .c-good { color: var(--good); }
+.reveal .c-soft { color: var(--ink-soft); }

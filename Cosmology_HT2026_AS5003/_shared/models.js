@@ -87,11 +87,9 @@ export const singleColours = (C) => ({ milne: C.ink_soft, matter: C.accent, radi
 
 // The four curves of Lecture 5: a(s) for the empty, matter-only, radiation-only and Λ-only universes.
 // show: which models to draw (default all). extra: more marks, drawn under the curves. C: theme
-// colours. height sets the size; the width follows from equal units on both axes. Returns the Plot figure.
+// colours. height sets the size (see aPlot). Returns the Plot figure.
 export function singlePlot(C, { show = Object.keys(single), extra = [], height = 420, fontSize = "16px", font } = {}) {
   const col = singleColours(C);
-  const margin = { marginLeft: 50, marginBottom: 46, marginTop: 32, marginRight: 16 };
-  const width = Math.round((height - margin.marginTop - margin.marginBottom) * (sRange[1] - sRange[0]) / aMax + margin.marginLeft + margin.marginRight);
   const marks = [
     Plot.ruleX([0], { stroke: C.edge, strokeDasharray: "4 4" }),
     ...extra,
@@ -112,10 +110,18 @@ export function singlePlot(C, { show = Object.keys(single), extra = [], height =
     marks.push(Plot.line([{ s: -2.1, a }, { s: -1.6, a }], { x: "s", y: "a", stroke: col[m], strokeWidth: 3, strokeDasharray: single[m].dash }),
       Plot.text([{ s: -1.5, a }], { x: "s", y: "a", text: () => single[m].label, textAnchor: "start", fill: col[m], fontWeight: 700 }));
   });
+  return aPlot(C, marks, { height, fontSize, font });
+}
+
+// a(t) axes shared by Lectures 5 and 6: time H0(t − t0) over range (default sRange) and a over [0, aMax],
+// with equal units on both axes. height sets the size; the width follows. Returns the Plot figure.
+export function aPlot(C, marks, { height = 420, fontSize = "16px", font, range = sRange } = {}) {
+  const margin = { marginLeft: 50, marginBottom: 46, marginTop: 32, marginRight: 16 };
+  const width = Math.round((height - margin.marginTop - margin.marginBottom) * (range[1] - range[0]) / aMax + margin.marginLeft + margin.marginRight);
   return Plot.plot(withAxes({
     width, height, ...margin,
     style: { background: "transparent", color: C.ink, fontSize, fontFamily: font },
-    x: { domain: sRange, ticks: d3.range(Math.ceil(sRange[0]), sRange[1] + 1e-9), tickFormat: "d", label: "time H₀(t − t₀) →", labelAnchor: "right", labelArrow: "none" },
+    x: { domain: range, ticks: d3.range(Math.ceil(range[0]), range[1] + 1e-9), tickFormat: "d", label: "time H₀(t − t₀) →", labelAnchor: "right", labelArrow: "none" },
     y: { domain: [0, aMax], ticks: d3.range(0, aMax + 1e-9), tickFormat: "d", label: "↑ scale factor a", labelAnchor: "top", labelArrow: "none" },
     marks,
   }, C.ink));

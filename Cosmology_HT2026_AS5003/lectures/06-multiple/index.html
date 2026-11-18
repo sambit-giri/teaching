@@ -41,7 +41,7 @@
       <p class="credit">Image credit: NASA</p>
     </figure>
     <figure>
-      <div class="w-fig" data-widget="fate" data-mode="fates" data-w="520" data-h="340" style="align-self: start;"></div>
+      <div class="w-fig" data-widget="fate" data-mode="fates" data-h="395" style="align-self: start;"></div>
       <p class="credit">Four universes with matter and $\Lambda$ (after Ryden, Fig. 5.7)</p>
     </figure>
   </div>
@@ -50,7 +50,13 @@
 <section id="admin">
   <h2>Practical information</h2>
   <ul>
-    <li><strong>Literature review:</strong> final topic and papers due <strong>today</strong>.</li>
+    <li><strong>Literature review:</strong>
+      <ul>
+        <li>Final topic and papers due <strong>today</strong>.</li>
+        <li>The <a href="https://canvas.su.se/courses/12102/modules/items/210476" target="_blank">full list of selected topics</a> is in Canvas.</li>
+        <li>Let me know when you want to present: <strong style="white-space: nowrap;">Thursday 17 December, 10:15–12:00</strong> or <strong style="white-space: nowrap;">Friday 18 December, 13:15–15:00</strong>.</li>
+      </ul>
+    </li>
     <li><strong>Home assignment:</strong> <a href="https://canvas.su.se/courses/12102/assignments/32862" target="_blank"><em>Problem set 3</em></a> is due <strong>Tuesday 24 November, 10:00</strong>, in Canvas.</li>
   </ul>
 </section>
@@ -85,11 +91,11 @@
 <section id="plan">
   <h2>Today's plan</h2>
   <ol>
-    <li>The Friedmann equation in terms of $\Omega$</li>
+    <li>The Friedmann equation in terms of the density parameter $\Omega$</li>
     <li>The <strong>general solution</strong>, and cosmology calculators</li>
     <li>Some combinations:
       <ul>
-        <li>matter + curvature (no $\Lambda$: the universe before 1998)</li>
+        <li>matter + curvature (no $\Lambda$: the most popular model until 1998)</li>
         <li>matter + $\Lambda$ (flat: close to our universe today)</li>
         <li>matter + $\Lambda$ + curvature</li>
         <li>radiation + matter (the early universe)</li>
@@ -102,13 +108,15 @@
 <!-- ============ 1 · The Friedmann equation with Ω ============ -->
 
 <section id="curvature-omega">
-  <p class="kicker">1 · The Friedmann equation with $\Omega$</p>
+  <p class="kicker">The Friedmann equation with $\Omega$</p>
   <h2>The curvature term, in terms of $\Omega_0$</h2>
-  <p>From Lecture 4:</p>
-  $$1 - \Omega(t) = -\frac{\kappa c^2}{R_0^2\, a(t)^2\, H(t)^2}$$
+  <p>The Friedmann equation: $\quad\displaystyle H(t)^2 = \frac{8\pi G}{3c^2}\,\varepsilon(t) - \frac{\kappa c^2}{R_0^2\, a(t)^2}$</p>
   <div class="fragment">
-    <p>Today ($a = 1$, $H = H_0$, $\Omega = \Omega_0$):</p>
-    $$\frac{\kappa c^2}{R_0^2} = H_0^2\,(\Omega_0 - 1)$$
+    <p>With the density parameter $\Omega \equiv \varepsilon/\varepsilon_c$ and $\varepsilon_c = \dfrac{3c^2H^2}{8\pi G}$ (<a href="../04-friedmann/#/omega/3" target="_blank">discussed in Lecture 4</a>):</p>
+    <div style="display: flex; align-items: center; justify-content: center; gap: 1.2em;">
+      <div>$$1 - \Omega(t) = -\frac{\kappa c^2}{R_0^2\, a(t)^2\, H(t)^2}$$</div>
+      <div class="fragment">$$\xrightarrow{\;a\,=\,1,\;\; H\,=\,H_0,\;\; \Omega\,=\,\Omega_0\;}\quad \frac{\kappa c^2}{R_0^2} = H_0^2\,(\Omega_0 - 1)$$</div>
+    </div>
   </div>
   <div class="fragment">
     <p>Put this into the Friedmann equation and divide by $H_0^2$, using $\varepsilon_{c,0} = \dfrac{3c^2H_0^2}{8\pi G}$:</p>
@@ -123,16 +131,15 @@
   $$\varepsilon(t) = \frac{\varepsilon_{r,0}}{a^4} + \frac{\varepsilon_{m,0}}{a^3} + \varepsilon_{\Lambda,0}$$
   <div class="fragment">
     <p>Divide by $\varepsilon_{c,0}$, with $\Omega_{i,0} = \varepsilon_{i,0}/\varepsilon_{c,0}$:</p>
-    $$\frac{H^2}{H_0^2} = \underbrace{\frac{\Omega_{r,0}}{a^4}}_{\text{radiation}} + \underbrace{\frac{\Omega_{m,0}}{a^3}}_{\text{matter}} + \underbrace{\Omega_{\Lambda,0}}_{\Lambda} + \underbrace{\frac{1 - \Omega_0}{a^2}}_{\text{curvature}}$$
+    $$\frac{H^2}{H_0^2} = \htmlClass{c-hot}{\underbrace{\frac{\Omega_{r,0}}{a^4}}_{\text{radiation}}} + \htmlClass{c-accent}{\underbrace{\frac{\Omega_{m,0}}{a^3}}_{\text{matter}}} + \htmlClass{c-good}{\underbrace{\Omega_{\Lambda,0}}_{\Lambda}} + \htmlClass{c-soft}{\underbrace{\frac{1 - \Omega_0}{a^2}}_{\text{curvature}}}$$
     <p>with $\Omega_0 = \Omega_{r,0} + \Omega_{m,0} + \Omega_{\Lambda,0}$.</p>
+    <p>Each term goes as a different power of $a$, so each has its own era in which it dominates.</p>
   </div>
-  <p class="fragment">Each term goes as a different power of $a$, so each has its own era in which it dominates.</p>
 </section>
 
 <!-- ============ 2 · The general solution ============ -->
 
 <section id="general">
-  <p class="kicker">2 · The general solution</p>
   <h2>The general solution</h2>
   <p>With $H = \dot a/a$, so $dt = da/(aH)$, the Friedmann equation gives</p>
   $$H_0\, dt = \frac{da}{\left[\Omega_{r,0}\,a^{-2} + \Omega_{m,0}\,a^{-1} + \Omega_{\Lambda,0}\,a^2 + (1 - \Omega_0)\right]^{1/2}}$$
@@ -140,7 +147,7 @@
     <p>Integrate from the Big Bang ($a = 0$):</p>
     $$H_0\, t = \int_0^a \frac{da'}{\left[\Omega_{r,0}\,a'^{-2} + \Omega_{m,0}\,a'^{-1} + \Omega_{\Lambda,0}\,a'^2 + (1 - \Omega_0)\right]^{1/2}}$$
   </div>
-  <p class="fragment">In general this must be integrated <strong>numerically</strong>. The same holds for distances, e.g. the comoving distance (exercises):
+  <p class="fragment">In general this must be integrated <strong>numerically</strong>. The same holds for distances, e.g. the comoving distance (exercise sheet on multiple-component universes):
     $$d_p(t_0) = \frac{c}{H_0}\int_{a_e}^1 \frac{da}{\left[\Omega_{r,0} + \Omega_{m,0}\,a + \Omega_{\Lambda,0}\,a^4 + (1 - \Omega_0)\,a^2\right]^{1/2}}$$</p>
   <aside class="notes">From H²/H0² = E(a)²: dt = da/(a H0 E), and a E = [Ωr a⁻² + Ωm a⁻¹ + ΩΛ a² + (1 − Ω0)]^(1/2).
     For the distance, d_p(t0) = c∫dt/a = c∫da/(a² H) = (c/H0)∫da/(a² E).</aside>
@@ -163,41 +170,35 @@ cosmo.comoving_distance(1)  # d_p(t0) at z = 1</pre>
 
 <!-- ============ 3 · Combinations ============ -->
 
-<section id="matter-curvature">
-  <p class="kicker">3 · Matter + curvature: the model before 1998</p>
+<section id="matter-curvature" data-text-size="0.8">
+  <p class="kicker">The most popular model until 1998</p>
   <h2>Matter + curvature</h2>
-  $$\frac{H^2}{H_0^2} = \frac{\Omega_0}{a^3} + \frac{1 - \Omega_0}{a^2}$$
-  <ul>
-    <li><strong>$\Omega_0 = 1$</strong>: flat. The Einstein–de Sitter universe, $a \propto t^{2/3}$.</li>
-    <li class="fragment"><strong>$\Omega_0 < 1$</strong> ($\kappa = -1$): the right side is always positive, so the universe <strong>expands forever</strong>. The matter thins out until the curvature term dominates: $a \propto t$, like the empty universe.</li>
-    <li class="fragment"><strong>$\Omega_0 > 1$</strong> ($\kappa = +1$): the curvature term is negative. $H = 0$ at
-      $$a_\text{max} = \frac{\Omega_0}{\Omega_0 - 1}$$
-      and then the universe contracts, the mirror image of its expansion: a <strong>Big Crunch</strong>.</li>
-  </ul>
-  <aside class="notes">a_max: set Ω0/a³ = (Ω0 − 1)/a². After a_max the universe retraces its expansion in reverse, ending at a = 0 a time 2 t_max after the Big Bang.</aside>
-</section>
-
-<section id="destiny-try">
-  <p class="kicker">Matter + curvature</p>
-  <h2>Try it: density is destiny</h2>
-  <div class="cols" style="grid-template-columns: auto 1fr; gap: 30px;">
-    <div class="w-fig" data-widget="fate" data-mode="mk"></div>
+  <div class="cols" style="grid-template-columns: 1fr auto; gap: 30px;">
     <div>
-      <label class="olbers-label">$\Omega_0 = \Omega_{m,0}$ = <span data-v="Om"></span> &nbsp;(<span data-v="k"></span>)</label>
-      <input class="olbers-slider" data-k="Om" type="range" min="0" max="3" step="0.05" value="2">
-      <ul class="w-list">
-        <li><span data-v="start"></span></li>
-        <li><span data-v="end"></span></li>
+      <p>The universe contains only matter, so $\Omega_0 = \Omega_{m,0}$:</p>
+      $$\frac{H^2}{H_0^2} = \frac{\Omega_{m,0}}{a^3} + \frac{1 - \Omega_{m,0}}{a^2}$$
+      <ul>
+        <li><strong>$\Omega_{m,0} = 1$</strong>: flat. The Einstein–de Sitter universe, $a \propto t^{2/3}$.</li>
+        <li class="fragment"><strong>$\Omega_{m,0} < 1$</strong> ($\kappa = -1$): the right side is always positive, so the universe <strong>expands forever</strong>. The matter thins out until the curvature term dominates: $a \propto t$, like the empty universe.</li>
+        <li class="fragment"><strong>$\Omega_{m,0} > 1$</strong> ($\kappa = +1$): the curvature term is negative.<br>$H = 0$ (or $\dot a = 0$) at
+          $a_\text{max} = \dfrac{\Omega_{m,0}}{\Omega_{m,0} - 1}$, and then the universe contracts, the mirror image of its expansion: a <strong>Big Crunch</strong>.</li>
       </ul>
-      <p class="aside">Dashed: the Einstein–de Sitter universe, $\Omega_0 = 1$.</p>
+      <p class="fragment"><strong>Density is destiny</strong>: $\Omega_{m,0}$ alone sets both the geometry and the fate.</p>
+    </div>
+    <div>
+      <div class="w-fig" data-widget="fate" data-mode="mk"></div>
+      <label class="olbers-label">$\Omega_{m,0}$ = <span data-v="Om"></span> &nbsp;(<span data-v="k"></span>)</label>
+      <input class="olbers-slider" data-k="Om" type="range" min="0" max="3" step="0.05" value="1">
+      <p class="aside" style="margin: 0.3em 0 0;">Future: <span data-v="end"></span></p>
     </div>
   </div>
-  <aside class="notes">Until 1998 this was the whole question: is Ω0 above or below 1? The amount of matter decided both the geometry and the fate. With Λ, that link breaks (next slides).
-    Slide to Ω0 = 0: the empty universe, a straight line.</aside>
+  <aside class="notes">The plot starts at Ωm,0 = 1 (Einstein–de Sitter, on the blue line); move the slider for each case as you talk about it. Grey: the empty universe, Ωm,0 = 0, a straight line.
+    a_max: set Ωm,0/a³ = (Ωm,0 − 1)/a². After a_max the universe retraces its expansion in reverse, ending at a = 0 a time 2 t_max after the Big Bang. Check a_max on the slider: Ωm,0 = 2 gives a_max = 2.
+    Until 1998 this was the whole question: is Ω0 above or below 1? The amount of matter decided both the geometry and the fate. In 1998–99 two supernova teams (Riess et al. 1998, Perlmutter et al. 1999) found that the expansion is speeding up, which needs Λ (Nobel Prize in Physics 2011: Perlmutter, Schmidt, Riess). With Λ, the link between geometry and fate breaks (next slides).</aside>
 </section>
 
-<section id="matter-lambda">
-  <p class="kicker">Matter + Λ, flat: close to our universe today</p>
+<section id="matter-lambda" data-text-size="0.9">
+  <p class="kicker">Close to our universe today</p>
   <h2>Matter + $\Lambda$, flat</h2>
   <div class="cols" style="grid-template-columns: 1fr auto; gap: 30px;">
     <div>
@@ -205,77 +206,90 @@ cosmo.comoving_distance(1)  # d_p(t0) at z = 1</pre>
       $$\frac{H^2}{H_0^2} = \frac{\Omega_{m,0}}{a^3} + (1 - \Omega_{m,0})$$
       <ul>
         <li class="fragment">$\Omega_{m,0} < 1$: the right side is always positive. The universe expands forever, faster and faster: the <strong>Big Chill</strong>.</li>
-        <li class="fragment">$\Omega_{m,0} > 1$ needs $\Omega_{\Lambda,0} < 0$: a $\Lambda$ that attracts. There is a maximum $a$, and then a <strong>Big Crunch</strong>.</li>
+        <li class="fragment">$\Omega_{m,0} > 1$ needs $\Omega_{\Lambda,0} < 0$: a $\Lambda$ that attracts. There is a maximum $a$, and then a <strong>Big Crunch</strong>. What is $a_\text{max}$?</li>
       </ul>
     </div>
-    <div class="fragment">
+    <div>
       <div class="w-fig" data-widget="fate" data-mode="flat"></div>
       <label class="olbers-label">$\Omega_{m,0}$ = <span data-v="Om"></span>, &nbsp;$\Omega_{\Lambda,0}$ = <span data-v="OL"></span></label>
-      <input class="olbers-slider" data-k="Om" type="range" min="0.05" max="1.5" step="0.05" value="0.9">
+      <input class="olbers-slider" data-k="Om" type="range" min="0.05" max="1.5" step="0.01" value="0.31">
+      <p class="aside" style="margin: 0.3em 0 0;">Future: <span data-v="end"></span></p>
     </div>
   </div>
-  <aside class="notes">Ryden's examples: Ωm,0 = 0.9 (Big Chill, close to Einstein–de Sitter for a long time) and Ωm,0 = 1.1, ΩΛ,0 = −0.1 (Big Crunch).
+  <aside class="notes">Starts at Ωm,0 = 0.31, ΩΛ,0 = 0.69: the Benchmark Model. Grey and blue: the empty and Einstein–de Sitter universes, as on the previous slide.
+    a_max: H = 0 where Ωm,0/a³ = Ωm,0 − 1. Let the students work it out: a_max = (Ωm,0/(Ωm,0 − 1))^(1/3); check it on the slider (Ωm,0 = 1.2 gives a_max = 1.82).
+    Ryden's examples: Ωm,0 = 0.9 (Big Chill, close to Einstein–de Sitter for a long time) and Ωm,0 = 1.1, ΩΛ,0 = −0.1 (Big Crunch).
     At late times Λ dominates and the universe approaches de Sitter: exponential expansion.</aside>
 </section>
 
-<section id="matter-lambda-curvature">
+<section id="matter-lambda-curvature" data-text-size="0.8">
   <h2>Matter + $\Lambda$ + curvature</h2>
-  $$\frac{H^2}{H_0^2} = \frac{\Omega_{m,0}}{a^3} + \Omega_{\Lambda,0} + \frac{1 - \Omega_{m,0} - \Omega_{\Lambda,0}}{a^2}$$
-  <p>Many behaviours are possible, depending on $\Omega_{m,0}$ and $\Omega_{\Lambda,0}$:</p>
-  <ul>
-    <li class="fragment"><strong>Big Chill</strong>: expands forever</li>
-    <li class="fragment"><strong>Big Crunch</strong>: expands, then recollapses</li>
-    <li class="fragment"><strong>Loitering</strong>: $a$ stays almost constant for a long time, then expands again</li>
-    <li class="fragment"><strong>Big Bounce</strong>: no Big Bang. The universe contracts, bounces, and expands</li>
-  </ul>
-  <aside class="notes">Loitering: matter and Λ almost balance, as in Einstein's static universe; Lemaître discussed it in 1927.
+  <div class="cols" style="grid-template-columns: 1fr auto; gap: 30px; align-items: start;">
+    <div>
+      $$\frac{H^2}{H_0^2} = \frac{\Omega_{m,0}}{a^3} + \Omega_{\Lambda,0} + \frac{1 - \Omega_{m,0} - \Omega_{\Lambda,0}}{a^2}$$
+      <p>Many behaviours are possible, depending on $\Omega_{m,0}$ and $\Omega_{\Lambda,0}$:</p>
+      <ul>
+        <li class="fragment" data-fragment-index="1"><strong>Big Chill</strong>: expands forever</li>
+        <li class="fragment" data-fragment-index="1"><strong>Big Crunch</strong>: expands, then recollapses</li>
+        <li class="fragment" data-fragment-index="2"><strong>Loitering</strong>: $a$ stays almost constant for a long time, then expands again</li>
+        <li class="fragment" data-fragment-index="2"><strong>Big Bounce</strong>: no Big Bang. The universe contracts, bounces, and expands</li>
+      </ul>
+    </div>
+    <div class="w-fig" data-widget="fate" data-mode="fates" data-h="360" data-steps></div>
+  </div>
+  <aside class="notes">All four have Ωm,0 = 0.31 (Ryden Fig. 5.7). First click: Big Chill and Big Crunch, met already. Second click: "There are two more interesting cases."
+    Loitering: matter and Λ almost balance, as in Einstein's static universe; Lemaître discussed it in 1927.
     A Big Bounce universe has a minimum scale factor, so a maximum redshift: in Ryden's example z_max ≈ 0.8. We see quasars at z > 6, so we do not live in one.</aside>
 </section>
 
 <section id="plane-try" data-text-size="0.8">
   <h2>Try it: the $\Omega_{m,0}$–$\Omega_{\Lambda,0}$ plane</h2>
-  <div class="w-fig" data-widget="fate" data-mode="plane" style="display: flex; gap: 20px; justify-content: center;"></div>
-  <div style="display: grid; grid-template-columns: auto 1fr 1fr; gap: 0 30px; align-items: end;">
-    <select class="w-select" data-preset aria-label="Example universe">
-      <option value="0.31,0.69" selected>Big Chill (Benchmark)</option>
-      <option value="0.31,-0.31">Big Crunch</option>
-      <option value="0.31,1.7289">Loitering</option>
-      <option value="0.31,1.8">Big Bounce</option>
-      <option value="1,0">Einstein–de Sitter</option>
-    </select>
-    <div>
-      <label class="olbers-label">$\Omega_{m,0}$ = <span data-v="Om"></span></label>
+  <div class="w-fig" data-widget="fate" data-mode="plane" style="display: flex; gap: 20px; justify-content: space-between; align-items: start;">
+    <div class="w-mid" style="flex: 1; align-self: center;">
+      <select class="w-select" data-preset aria-label="Example universe">
+        <option value="0.31,0.69" selected>Big Chill (Benchmark)</option>
+        <option value="0.31,-0.31">Big Crunch</option>
+        <option value="0.31,1.7289">Loitering</option>
+        <option value="0.31,1.8">Big Bounce</option>
+        <option value="1,0">Einstein–de Sitter</option>
+      </select>
+      <label class="olbers-label" style="margin-top: 1em;">$\Omega_{m,0}$ = <span data-v="Om"></span></label>
       <input class="olbers-slider" data-k="Om" type="range" min="0" max="3" step="any" value="0.31">
-    </div>
-    <div>
-      <label class="olbers-label">$\Omega_{\Lambda,0}$ = <span data-v="OL"></span></label>
+      <label class="olbers-label" style="margin-top: 1em;">$\Omega_{\Lambda,0}$ = <span data-v="OL"></span></label>
       <input class="olbers-slider" data-k="OL" type="range" min="-1" max="3" step="any" value="0.69">
     </div>
   </div>
-  <p class="w-out olbers-out">$\Omega_0$ = <span data-v="O0"></span> (<span data-v="k"></span>): <span data-v="start"></span>; <span data-v="end"></span>; the expansion today is <span data-v="accel"></span>. &nbsp;<span class="aside">Click the plane to pick a universe. ★: our universe.</span></p>
+  <p class="w-out olbers-out" style="text-align: center; margin-top: 0.8em;">$\Omega_0$ = <span data-v="O0"></span> (<span data-v="k"></span>): <span data-v="start"></span><br>
+    <strong style="color: var(--accent);">Future: <span data-v="end"></span>; the expansion today is <span data-v="accel"></span>.</strong><br>
+    <span class="aside">Click the plane to pick a universe. ★: our universe.</span></p>
   <aside class="notes">The dashed line is flat universes. Above the blue line there is no Big Bang (bounce); below the red line the universe recollapses. Close to the blue line: loitering, the closer the longer.
     Expansion today speeds up when ΩΛ,0 > Ωm,0/2 (from the acceleration equation, q0 = Ωm,0/2 − ΩΛ,0 < 0).
     The star is the Benchmark Model: flat, Big Chill.</aside>
 </section>
 
-<section id="radiation-matter">
-  <p class="kicker">Radiation + matter, flat: the early universe</p>
-  <h2>Radiation + matter</h2>
-  $$\frac{H^2}{H_0^2} = \frac{\Omega_{r,0}}{a^4} + \frac{\Omega_{m,0}}{a^3}$$
-  <p>At early times ($a \ll a_{rm}$) radiation dominates, $a \propto t^{1/2}$; later matter takes over, $a \propto t^{2/3}$.</p>
-  <div class="fragment">
-    <p>It can be integrated exactly (Ryden eq. 5.110):</p>
-    $$H_0\, t = \frac{4a_{rm}^2}{3\sqrt{\Omega_{r,0}}}\left[1 - \left(1 - \frac{a}{2a_{rm}}\right)\left(1 + \frac{a}{a_{rm}}\right)^{1/2}\right]$$
+<section id="radiation-matter" data-text-size="0.75">
+  <p class="kicker">A good approximation for the early universe</p>
+  <h2>Radiation + matter, flat</h2>
+  <div class="cols" style="grid-template-columns: 1fr auto; gap: 30px; align-items: start;">
+    <div>
+      $$\frac{H^2}{H_0^2} = \frac{\Omega_{r,0}}{a^4} + \frac{\Omega_{m,0}}{a^3}$$
+      <p>At early times ($a \ll a_{rm}$) radiation dominates, $a \propto t^{1/2}$; later matter takes over, $a \propto t^{2/3}$.</p>
+      <div class="fragment">
+        <p>It can be integrated exactly (Ryden eq. 5.110):</p>
+        $$H_0\, t = \frac{4a_{rm}^2}{3\sqrt{\Omega_{r,0}}}\left[1 - \left(1 - \frac{a}{2a_{rm}}\right)\left(1 + \frac{a}{a_{rm}}\right)^{1/2}\right]$$
+      </div>
+      <p class="fragment">At $a = a_{rm} = 2.9\times10^{-4}$: the time of radiation–matter equality, $\;t_{rm} \approx 3.5\times10^{-6}\,H_0^{-1} \approx 50\,000$ years. A short phase, cosmologically speaking, but a very interesting one.</p>
+    </div>
+    <div class="w-fig" data-widget="rm"></div>
   </div>
-  <p class="fragment">At $a = a_{rm} = 2.9\times10^{-4}$: the time of radiation–matter equality, $\;t_{rm} \approx 3.5\times10^{-6}\,H_0^{-1} \approx 50\,000$ years. A short phase, cosmologically speaking, but a very interesting one.</p>
-  <aside class="notes">The radiation era is so short that leaving out radiation changes the age of the universe by only a few parts per million.
+  <aside class="notes">The plot has log axes: a power law is a straight line, with slope 1/2 for radiation and 2/3 for matter. The exact solution (white) bends from one to the other around equality (gold), with Ωr,0 = 9.0×10⁻⁵ and Ωm,0 = 0.31.
+    The radiation era is so short that leaving out radiation changes the age of the universe by only a few parts per million.
     "Very interesting": the first nuclei (Lecture 12) form during it, and the CMB (Lectures 10–11) comes from shortly after.</aside>
 </section>
 
 <!-- ============ 4 · The Benchmark Model ============ -->
 
 <section id="benchmark">
-  <p class="kicker">4 · The Benchmark Model</p>
   <h2>The Benchmark Model: our best guess</h2>
   <p>Flat, with radiation, matter and a cosmological constant; $H_0 = 68$ km/s/Mpc. Also known as <strong>ΛCDM</strong> (Λ + cold dark matter).</p>
   <div class="cols" style="grid-template-columns: 1fr 1.15fr; gap: 36px; align-items: start;">
@@ -296,35 +310,28 @@ cosmo.comoving_distance(1)  # d_p(t0) at z = 1</pre>
       <tr><td>Now</td><td>$1$</td><td>13.7 Gyr</td></tr>
     </table>
   </div>
-  <aside class="notes">Ryden Table 5.2. Matter–Λ equality: the pairs question from Tuesday. Only about 5% of today's energy density is in the matter we are made of.</aside>
+  <p class="credit">Values: Ryden §5.5, Table 5.2, rounded. Close to the Planck 2018 results: $H_0 = 67.4 \pm 0.5$ km/s/Mpc, $\Omega_{m,0} = 0.315 \pm 0.007$ (<a href="https://arxiv.org/abs/1807.06209" target="_blank">Planck Collaboration 2020, A&amp;A 641, A6</a>).</p>
+  <aside class="notes">Ryden Table 5.2. The Benchmark Model is Ryden's rounded fit to the data; Planck 2018 (TT,TE,EE+lowE+lensing) gives H0 = 67.4 ± 0.5, Ωm,0 = 0.315 ± 0.007, ΩΛ,0 = 0.685. The H0 tension (Lecture 2): local distance-ladder measurements give about 73. Matter–Λ equality: the pairs question from Tuesday. Only about 5% of today's energy density is in the matter we are made of.</aside>
 </section>
 
-<section id="benchmark-try">
-  <h2>Try it: $a(t)$ in the Benchmark Model</h2>
-  <div class="cols" style="grid-template-columns: auto 1fr; gap: 30px;">
+<section id="benchmark-a">
+  <h2>$a(t)$ in the Benchmark Model</h2>
+  <div style="display: flex; gap: 40px; justify-content: center; align-items: start;">
     <div class="w-fig" data-widget="benchmark"></div>
-    <div>
-      <label class="w-toggle"><input type="checkbox" data-k="log"> Logarithmic axes</label>
-      <p class="aside" style="margin-top: 1em;">On logarithmic axes the Benchmark Model looks like a sequence of single-component universes: $a \propto t^{1/2}$, then $t^{2/3}$, then exponential.</p>
-    </div>
+    <div class="w-fig fragment" data-fragment-index="0" data-widget="benchmark" data-log></div>
   </div>
+  <p class="aside" style="text-align: center;">Age today: $t_0 = 13.7$ Gyr. <span class="fragment" data-fragment-index="0">On logarithmic axes the Benchmark Model looks like a sequence of single-component universes: $a \propto t^{1/2}$, then $t^{2/3}$, then exponential.</span></p>
   <aside class="notes">Linear axes first: today, and the switch from slowing down to speeding up near matter–Λ equality (the curve bends upwards).
-    Then log axes: straight lines of slope 1/2 and 2/3, and the turn upwards at the end. Each era is well described by last lecture's solutions.</aside>
+    Click: log axes, straight lines of slope 1/2 and 2/3, and the turn upwards at the end. Each era is well described by last lecture's solutions.</aside>
 </section>
 
 <section id="distances-z">
   <h2>Distances in the Benchmark Model</h2>
-  <div class="cols" style="grid-template-columns: auto 1fr; gap: 30px;">
-    <div class="w-fig" data-widget="dz"></div>
-    <div>
-      <select class="w-select" data-k="when" aria-label="Which distance">
-        <option value="today" selected>Proper distance today, dp(t₀)</option>
-        <option value="emission">Proper distance at emission, dp(te)</option>
-      </select>
-      <p class="aside" style="margin-top: 1em;">Benchmark Model, flat matter only and flat $\Lambda$ only, all with the same $H_0$. At small $z$ they agree: Hubble's law, $d_p \approx cz/H_0$.</p>
-      <p class="aside">At emission, distance has a <strong>maximum</strong>: the most distant galaxies were close to us when their light left.</p>
-    </div>
+  <div style="display: flex; gap: 30px; justify-content: center; align-items: start;">
+    <div class="w-fig" data-widget="dz" data-key></div>
+    <div class="w-fig" data-widget="dz" data-when="emission"></div>
   </div>
+  <p class="aside">Same models and colours as for $a(t)$, all with the same $H_0$. At small $z$ they agree: Hubble's law, $d_p \approx cz/H_0$. At emission, distance has a <strong>maximum</strong>: the most distant galaxies were close to us when their light left.</p>
   <aside class="notes">After Ryden Fig. 5.9. Today: the Benchmark curve flattens towards its horizon, about 3.2 c/H0 = 14 Gpc. At emission: in the Benchmark Model the maximum is near z ≈ 1.6, at about 0.4 c/H0 ≈ 1.8 Gpc.
     The models differ most at z ~ 1: measuring distances out there tells them apart (Lecture 7).</aside>
 </section>
@@ -332,9 +339,13 @@ cosmo.comoving_distance(1)  # d_p(t0) at z = 1</pre>
 <section id="summary">
   <h2>Summary: universes with several components</h2>
   <ul>
-    <li>$\dfrac{H^2}{H_0^2} = \dfrac{\Omega_{r,0}}{a^4} + \dfrac{\Omega_{m,0}}{a^3} + \Omega_{\Lambda,0} + \dfrac{1 - \Omega_0}{a^2}$, solved for $a(t)$ numerically in general</li>
-    <li>Matter + curvature: <strong>density is destiny</strong>. With $\Lambda$, the fate depends on both $\Omega_{m,0}$ and $\Omega_{\Lambda,0}$</li>
-    <li>The <strong>Benchmark Model</strong> (ΛCDM): flat, $\Omega_{m,0} = 0.31$, $\Omega_{\Lambda,0} = 0.69$; radiation, then matter, then $\Lambda$ dominate; $t_0 = 13.7$ Gyr</li>
+    <li class="fragment">$\dfrac{H^2}{H_0^2} = \dfrac{\Omega_{r,0}}{a^4} + \dfrac{\Omega_{m,0}}{a^3} + \Omega_{\Lambda,0} + \dfrac{1 - \Omega_0}{a^2}$<br>
+      Solved for $a(t)$ numerically in general</li>
+    <li class="fragment">Matter + curvature: <strong>density is destiny</strong>.<br>
+      With $\Lambda$, the fate depends on both $\Omega_{m,0}$ and $\Omega_{\Lambda,0}$</li>
+    <li class="fragment">The <strong>Benchmark Model</strong> (ΛCDM):<br>
+      flat, $\Omega_{r,0} = 9.0\times10^{-5}$, $\Omega_{m,0} = 0.31$, $\Omega_{\Lambda,0} = 0.69$; $t_0 = 13.7$ Gyr<br>
+      Radiation, then matter, then $\Lambda$ dominate</li>
   </ul>
   <aside class="notes">Next lecture: how we measure these parameters (Ryden ch. 6).</aside>
 </section>

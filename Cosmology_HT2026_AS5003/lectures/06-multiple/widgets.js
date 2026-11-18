@@ -2,7 +2,7 @@
 // and inputs with a data-k="name" attribute; the widget redraws when an input changes and when the
 // light/dark theme is switched. Charts use Observable Plot and d3 (from the CDN).
 import { hubbleTime, benchmark, E, simpson } from "../../_shared/cosmo.js";
-import { singlePlot, evolve } from "../../_shared/models.js";
+import { single, singlePlot, aPlot, evolve, aMax } from "../../_shared/models.js";
 import { withAxes } from "../../_shared/plot.js";
 
 const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
@@ -15,42 +15,82 @@ const tH = hubbleTime(benchmark.H0);                     // 1/H0 in Gyr
 const bounceLine = (m) => m <= 0.5 ? 4 * m * Math.cosh(Math.acosh((1 - m) / m) / 3) ** 3 : 4 * m * Math.cos(Math.acos((1 - m) / m) / 3) ** 3;
 const crunchLine = (m) => m <= 1 ? 0 : 4 * m * Math.cos(Math.acos((1 - m) / m) / 3 + 4 * Math.PI / 3) ** 3;
 
-// a(t) curves for matter + Λ + curvature, against H0(t − t0)
-function fatePlot(C, curves, { width = 520, height = 380 } = {}) {
+// a(t) curves for matter + Λ + curvature, against H0(t − t0): the axes of Lecture 5, centred on today
+const sRange = [-3.2, 3.2];
+const history = (Om, OL) => evolve({ Om, OL }, sRange[1] + 0.2, aMax + 0.5);
+function fatePlot(C, curves, { height = 400, extra = [] } = {}) {
   const marks = [
     Plot.ruleX([0], { stroke: C.edge, strokeDasharray: "4 4" }),
     Plot.dot([{ s: 0, a: 1 }], { x: "s", y: "a", r: 5, fill: C.ink }),
     Plot.text([{ s: 0, a: 1 }], { x: "s", y: "a", text: () => "today", dx: -8, dy: -12, textAnchor: "end", fill: C.ink }),
   ];
   for (const c of curves) {
-    marks.push(Plot.line(c.pts, { x: "s", y: "a", stroke: c.colour, strokeWidth: c.width ?? 3, strokeDasharray: c.dash, clip: true }));
-    if (c.label) marks.push(Plot.text([c.at], { x: "s", y: "a", text: () => c.label, fill: c.colour, fontWeight: 700, textAnchor: c.anchor ?? "start", dx: c.dx ?? 0, dy: c.dy ?? 0, clip: true }));
+    const className = c.step ? `step-${c.step}` : undefined;
+    marks.push(Plot.line(c.pts, { x: "s", y: "a", stroke: c.colour, strokeWidth: c.width ?? 3, strokeOpacity: c.opacity, strokeDasharray: c.dash, clip: true, className }));
+    if (c.label) marks.push(Plot.text([c.at], { x: "s", y: "a", text: () => c.label, fill: c.colour, fontWeight: 700, textAnchor: c.anchor ?? "start", dx: c.dx ?? 0, dy: c.dy ?? 0, clip: true, className }));
   }
-  return Plot.plot(withAxes({
-    width, height, marginLeft: 50, marginBottom: 46, marginTop: 32, marginRight: 16, style: style(C),
-    x: { domain: [-4, 4], label: "time H₀(t − t₀) →", labelAnchor: "right", labelArrow: "none" },
-    y: { domain: [0, 3], ticks: 6, label: "↑ scale factor a", labelAnchor: "top", labelArrow: "none" },
-    marks,
-  }, C.ink));
+  // a key in the empty top left, as in Lecture 5, for the curves with a key
+  curves.filter((c) => c.key).forEach((c, i) => {
+    const a = (0.82 - 0.09 * i) * aMax, s0 = sRange[0] + 0.1;
+    marks.push(Plot.line([{ s: s0, a }, { s: s0 + 0.5, a }], { x: "s", y: "a", stroke: c.colour, strokeWidth: c.width ?? 3, strokeDasharray: c.dash }),
+      Plot.text([{ s: s0 + 0.6, a }], { x: "s", y: "a", text: () => c.key, textAnchor: "start", fill: c.colour, fontWeight: 700 }));
+  });
+  return aPlot(C, [...marks, ...extra], { height, font: css("--f-ui"), range: sRange });
 }
 
-// One line about a universe's history, from evolve()
-function describe(Om, OL, u) {
+// The scale factor where the expansion stops (H = 0) between a1 and a2, or null: the first sign change
+// of E² = Ωm/a³ + ΩΛ + (1 − Ωm − ΩΛ)/a², found on a log grid and refined by bisection. The fate does
+// not depend on how far the a(t) curves are drawn, so a Big Crunch at a = 100 is still found.
+function turning(Om, OL, a1, a2) {
+  const E2 = (a) => Om / a ** 3 + OL + (1 - Om - OL) / a ** 2;
+  const n = 3000, r = (a2 / a1) ** (1 / n);
+  for (let i = 1, lo = a1; i <= n; i++, lo *= r) {
+    let hi = lo * r;
+    if (E2(hi) > 0) continue;
+    for (let j = 0; j < 50; j++) { const mid = Math.sqrt(lo * hi); if (E2(mid) > 0) lo = mid; else hi = mid; }
+    return lo;
+  }
+  return null;
+}
+
+// One line about a universe's history (matter + Λ + curvature)
+function describe(Om, OL) {
   const O0 = Om + OL, k = Math.abs(O0 - 1) < 0.005 ? "flat, κ = 0" : O0 > 1 ? "κ = +1" : "κ = −1";
-  const start = u.bang !== null ? `Big Bang ${(-u.bang).toFixed(2)}/H₀ = ${(-u.bang * tH).toFixed(1)} Gyr ago` : `no Big Bang: a bounce at a = ${u.bounce.toFixed(2)}`;
-  const end = u.amax !== null ? `Big Crunch, after a maximum a = ${u.amax.toFixed(2)}` : "expands forever";
+  const amax = turning(Om, OL, 1, 1e8), amin = turning(Om, OL, 1, 1e-8);
+  // age t0 = ∫ da / (a H), in ln a from a ≈ 0 to today
+  const age = amin === null ? simpson((x) => 1 / Math.sqrt(Om / Math.exp(3 * x) + OL + (1 - Om - OL) / Math.exp(2 * x)), Math.log(1e-8), 0, 2000) : null;
+  const start = amin === null ? `Big Bang ${age.toFixed(2)}/H₀ = ${(age * tH).toFixed(1)} Gyr ago` : `no Big Bang: a bounce at a = ${amin.toFixed(2)}`;
+  const end = amax !== null ? `Big Crunch, with aₘₐₓ = ${amax.toPrecision(3)}` : "expands forever";
   return { O0: O0.toFixed(2), k, start, end, accel: OL > Om / 2 ? "speeding up" : "slowing down" };
 }
 
 const fill = (box, v) => { for (const el of box.closest("section").querySelectorAll("[data-v]")) el.textContent = v[el.dataset.v] ?? ""; };
 
 // Ryden's Figure 5.7: four universes with Ωm,0 = 0.31, told apart by line style as well as colour
+// (not gold, which is the chosen universe on the slider slides). step: the click that shows the curve.
 const fates = (C) => [
-  { name: "Big Chill", OL: 0.69, colour: C.good, at: { s: 1.1, a: 2.3 }, dx: 10 },
-  { name: "Big Crunch", OL: -0.31, colour: C.hot, dash: "8 5", at: { s: 2.3, a: 0.55 } },
-  { name: "Loitering", OL: 1.7289, colour: C.gold, dash: "2 4", at: { s: -3.9, a: 0.62 } },
-  { name: "Big Bounce", OL: 1.8, colour: C.accent, dash: "12 4 3 4", at: { s: -3.0, a: 2.6 }, anchor: "start" },
-].map((f) => ({ ...f, pts: evolve({ Om: 0.31, OL: f.OL }).pts, label: f.name }));
+  { name: "Big Chill", OL: 0.69, colour: C.good, at: { s: 1.1, a: 2.3 }, dx: 10, step: 1 },
+  { name: "Big Crunch", OL: -0.31, colour: C.hot, dash: "8 5", at: { s: 1.3, a: 0.55 }, step: 1 },
+  { name: "Loitering", OL: 1.7289, colour: C.cool, dash: "2 4", at: { s: -3.1, a: 0.2 }, step: 2 },
+  { name: "Big Bounce", OL: 1.8, colour: C.accent, dash: "12 4 3 4", at: { s: 0.6, a: 3.6 }, anchor: "end", step: 2 },
+].map((f) => ({ ...f, pts: history(0.31, f.OL).pts, label: f.name }));
+
+// With data-steps on the box, the curves of step k show once k groups of clicks on the slide are shown
+function showSteps(box) {
+  const sec = box.closest("section");
+  const update = () => {
+    const shown = new Set([...sec.querySelectorAll(".fragment.visible")].map((f) => f.dataset.fragmentIndex)).size;
+    for (const g of box.querySelectorAll("[class*='step-']")) {
+      const k = +[...g.classList].find((c) => c.startsWith("step-")).slice(5);
+      g.style.opacity = k <= shown ? 1 : 0;
+    }
+  };
+  update();
+  if (!box.dataset.bound) {
+    box.dataset.bound = "1";
+    for (const ev of ["fragmentshown", "fragmenthidden", "slidechanged"]) Reveal.on(ev, update);
+  }
+}
 
 const widgets = {
   single: (box) => box.replaceChildren(singlePlot(colours(), { height: +(box.dataset.h ?? 400), font: css("--f-ui") })),
@@ -61,15 +101,21 @@ const widgets = {
   fate: (box, s) => {
     const C = colours(), mode = box.dataset.mode;
     if (mode === "fates") {
-      box.replaceChildren(fatePlot(C, fates(C), { width: +(box.dataset.w ?? 520), height: +(box.dataset.h ?? 340) }));
+      box.replaceChildren(fatePlot(C, fates(C), { height: +(box.dataset.h ?? 400) }));
+      if ("steps" in box.dataset) showSteps(box);
       return;
     }
     const Om = s.Om, OL = mode === "mk" ? 0 : mode === "flat" ? 1 - s.Om : s.OL;
-    const u = evolve({ Om, OL });
-    const eds = { pts: evolve({ Om: 1, OL: 0 }).pts, colour: C.ink_soft, width: 2, dash: "6 5", label: "Einstein–de Sitter", at: { s: 3.9, a: 2.65 }, anchor: "end" };
-    const curves = [...(mode === "plane" ? [] : [eds]), { pts: u.pts, colour: C.accent }];
-    const aplot = fatePlot(C, curves, mode === "plane" ? { width: 470, height: 360 } : { width: 540, height: 400 });
-    fill(box, { Om: Om.toFixed(2), OL: OL.toFixed(2), ...describe(Om, OL, u) });
+    const u = history(Om, OL);
+    // the single-component universes of Lecture 5, in their colours and line styles
+    const milne = { pts: history(0, 0).pts, colour: C.ink_soft, dash: single.milne.dash, key: single.milne.label };
+    const eds = { pts: history(1, 0).pts, colour: C.accent, key: single.matter.label };
+    // the chosen universe: a wide, faint gold curve, as on the slider slide of Lecture 5
+    // plane: the four universes of the previous slide; otherwise the empty and Einstein–de Sitter ones
+    const others = mode === "plane" ? fates(C).map((f) => ({ ...f, step: undefined })) : [milne, eds];
+    const curves = [{ pts: u.pts, colour: C.gold, width: 10, opacity: 0.45 }, ...others];
+    const aplot = fatePlot(C, curves, { height: 360 });
+    fill(box, { Om: Om.toFixed(2), OL: OL.toFixed(2), ...describe(Om, OL) });
     if (mode !== "plane") { box.replaceChildren(aplot); return; }
 
     const ms = d3.range(0.002, 3.0001, 0.01);
@@ -101,71 +147,136 @@ const widgets = {
       sec.querySelector('[data-k="OL"]').value = Math.min(3, Math.max(-1, l)).toFixed(2);
       sec.querySelector('[data-k="Om"]').dispatchEvent(new Event("input"));
     });
-    box.replaceChildren(plane, aplot);
+    // the controls (.w-mid in the box) stay between the plane and the a(t) plot; only the plots are
+    // replaced, so that a slider being dragged is not taken out of the page
+    const mid = box.querySelector(":scope > .w-mid");
+    if (!mid) { box.replaceChildren(plane, aplot); return; }
+    for (const el of [...box.children]) if (el !== mid) el.remove();
+    mid.before(plane);
+    mid.after(aplot);
   },
 
-  // the Benchmark Model: a(t) on linear or log axes (checkbox data-k="log")
-  benchmark: (box, s) => {
-    const C = colours(), p = benchmark, log = s.log;
-    const lna = d3.range(Math.log(1e-7), Math.log(30), 0.005);
-    let t = (1e-7) ** 2 / (2 * Math.sqrt(p.Or)) * tH;   // radiation era: a = (2 √Ωr H0 t)^(1/2)
-    const pts = lna.map((x, i) => {
-      if (i) { const a0 = Math.exp(lna[i - 1]), a1 = Math.exp(x); t += 0.5 * (1 / E(a0) + 1 / E(a1)) * (x - lna[i - 1]) * tH; }
-      return { t, a: Math.exp(x) };
-    });
-    const tAt = (a) => {                                 // interpolated in ln a
-      const i = pts.findIndex((q) => q.a >= a), q0 = pts[i - 1], q1 = pts[i];
-      return q0.t + (q1.t - q0.t) * Math.log(a / q0.a) / Math.log(q1.a / q0.a);
-    };
-    const arm = p.Or / p.Om, amL = (p.Om / p.OL) ** (1 / 3);
-    const ep = [
-      // label placement on linear axes, then on log axes: [text anchor, dx, dy]
-      { t: tAt(arm), a: arm, label: "radiation–matter equality", lin: null, log: ["start", 12, 10] },
-      { t: tAt(amL), a: amL, label: "matter–Λ equality", lin: ["start", 12, 14], log: ["end", -12, 6] },
-      { t: tAt(1), a: 1, label: `today, t₀ = ${tAt(1).toFixed(1)} Gyr`, lin: ["end", -10, -12], log: ["end", -12, -14] },
+  // radiation + matter, flat (Ryden eq. 5.110): a(t) on log axes, with the radiation-only and
+  // matter-only power laws it follows before and after radiation–matter equality
+  rm: (box) => {
+    const C = colours(), { Om, Or } = benchmark, arm = Or / Om;
+    const tExact = (a) => 4 * arm ** 2 / (3 * Math.sqrt(Or)) * (1 - (1 - a / (2 * arm)) * Math.sqrt(1 + a / arm));
+    const as = d3.range(-6, -1.999, 0.02).map((x) => 10 ** x);
+    const ts = d3.range(-11, -2.999, 0.05).map((x) => 10 ** x);
+    const lines = [
+      { key: single.radiation.label, colour: C.hot, dash: single.radiation.dash, width: 2.5, pts: ts.map((t) => ({ t, a: Math.sqrt(2 * Math.sqrt(Or) * t) })) },
+      { key: single.matter.label, colour: C.accent, width: 2.5, pts: ts.map((t) => ({ t, a: (1.5 * Math.sqrt(Om) * t) ** (2 / 3) })) },
+      { key: "radiation + matter", colour: C.ink, width: 6, pts: as.map((a) => ({ t: tExact(a), a })) },
     ];
-    const marks = [Plot.line(pts, { x: "t", y: "a", stroke: C.accent, strokeWidth: 3, clip: true }),
-      Plot.dot(ep, { x: "t", y: "a", r: 6, fill: C.ink }),
-      ...ep.filter((d) => d[log ? "log" : "lin"]).map((d) => { const [textAnchor, dx, dy] = d[log ? "log" : "lin"];
-        return Plot.text([d], { x: "t", y: "a", text: "label", textAnchor, dx, dy, fill: C.ink }); })];
-    if (log) marks.push(
-      Plot.text([{ t: 1e-5, a: 1.15e-4 }], { x: "t", y: "a", text: () => "a ∝ t¹ᐟ²", fill: C.hot, fontWeight: 700, dx: -8, dy: -14, textAnchor: "end" }),
-      Plot.text([{ t: 0.5, a: 0.1 }], { x: "t", y: "a", text: () => "a ∝ t²ᐟ³", fill: C.accent, fontWeight: 700, dy: -14, textAnchor: "end" }),
-      Plot.text([{ t: 60, a: 8 }], { x: "t", y: "a", text: () => "a ∝ eᴴᵗ", fill: C.good, fontWeight: 700, textAnchor: "end", dx: -6 }));
-    const fmt = (d) => (Number.isInteger(Math.log10(d)) ? `10${sup(Math.log10(d))}` : "");
+    const marks = [Plot.ruleY([arm], { stroke: C.edge, strokeDasharray: "4 4" })];
+    // the exact curve first, underneath the two power laws
+    for (const l of [lines[2], lines[0], lines[1]]) marks.push(Plot.line(l.pts, { x: "t", y: "a", stroke: l.colour, strokeWidth: l.width, strokeDasharray: l.dash, clip: true }));
+    // a key in the empty top left; the key rows are evenly spaced in log a
+    lines.forEach((l, i) => {
+      const a = 10 ** (-2.25 - 0.3 * i);
+      marks.push(Plot.line([{ t: 2e-11, a }, { t: 1.5e-10, a }], { x: "t", y: "a", stroke: l.colour, strokeWidth: l.width, strokeDasharray: l.dash }),
+        Plot.text([{ t: 2.2e-10, a }], { x: "t", y: "a", text: () => l.key, textAnchor: "start", fill: l.colour, fontWeight: 700 }));
+    });
+    marks.push(Plot.dot([{ t: tExact(arm), a: arm }], { x: "t", y: "a", r: 6, fill: C.gold }),
+      Plot.text([{ t: tExact(arm), a: arm }], { x: "t", y: "a", text: () => "equality, a = aᵣₘ", dx: 10, dy: 14, textAnchor: "start", fill: C.gold, fontWeight: 700 }));
+    const pow = (d) => (Number.isInteger(Math.log10(d)) ? `10${sup(Math.round(Math.log10(d)))}` : "");
     box.replaceChildren(Plot.plot(withAxes({
-      width: 620, height: 430, marginLeft: 64, marginBottom: 50, marginTop: 32, marginRight: 20, style: style(C),
-      x: log ? { type: "log", domain: [1e-6, 100], tickFormat: fmt, label: "time t (Gyr) →", labelAnchor: "right", labelArrow: "none" }
-        : { domain: [0, 40], label: "time t (Gyr) →", labelAnchor: "right", labelArrow: "none" },
-      y: log ? { type: "log", domain: [1e-5, 10], tickFormat: fmt, label: "↑ scale factor a", labelAnchor: "top", labelArrow: "none" }
-        : { domain: [0, 4], label: "↑ scale factor a", labelAnchor: "top", labelArrow: "none" },
+      width: 460, height: 400, marginLeft: 60, marginBottom: 46, marginTop: 32, marginRight: 16, style: style(C),
+      x: { type: "log", domain: [1e-11, 1e-3], ticks: [1e-11, 1e-9, 1e-7, 1e-5, 1e-3], tickFormat: pow, label: "time H₀t →", labelAnchor: "right", labelArrow: "none" },
+      y: { type: "log", domain: [1e-6, 1e-2], ticks: [1e-6, 1e-5, 1e-4, 1e-3, 1e-2], tickFormat: pow, label: "↑ scale factor a", labelAnchor: "top", labelArrow: "none" },
       marks,
     }, C.ink)));
   },
 
-  // proper distance today or at emission against z, for the Benchmark Model, matter only and Λ only
-  dz: (box, s) => {
-    const C = colours(), emit = s.when === "emission";
+  // the Benchmark Model (thick, in the ink colour, like the exact solution of the radiation + matter
+  // slide). Linear axes: the axes of the other a(t) plots, with the empty, matter-only and Λ-only
+  // universes of Lecture 5. Log axes (data-log on the box): H0 t against a, with the three power laws.
+  benchmark: (box) => {
+    const C = colours(), p = benchmark, log = "log" in box.dataset;
+    const lna = d3.range(Math.log(1e-7), Math.log(30), 0.005);
+    let tau = (1e-7) ** 2 / (2 * Math.sqrt(p.Or));     // H0 t; radiation era: a = (2 √Ωr H0 t)^(1/2)
+    const pts = lna.map((x, i) => {
+      if (i) { const a0 = Math.exp(lna[i - 1]), a1 = Math.exp(x); tau += 0.5 * (1 / E(a0) + 1 / E(a1)) * (x - lna[i - 1]); }
+      return { tau, a: Math.exp(x) };
+    });
+    const tauAt = (a) => {                              // interpolated in ln a
+      const i = pts.findIndex((q) => q.a >= a), q0 = pts[i - 1], q1 = pts[i];
+      return q0.tau + (q1.tau - q0.tau) * Math.log(a / q0.a) / Math.log(q1.a / q0.a);
+    };
+    const tau0 = tauAt(1), arm = p.Or / p.Om, amL = (p.Om / p.OL) ** (1 / 3);
+    const bench = { colour: C.ink, width: 6, key: "Benchmark Model" };
+    const dot = (d) => Plot.dot([d], { x: "x", y: "a", r: 6, fill: C.gold });
+    const label = (d, text, textAnchor, dx, dy) => Plot.text([d], { x: "x", y: "a", text: () => text, textAnchor, dx, dy, fill: C.gold, fontWeight: 700 });
+    const note = `t₀ = ${(tau0 * tH).toFixed(1)} Gyr`;
+    if (!log) {
+      const mL = { x: tauAt(amL) - tau0, a: amL };
+      const lambda = d3.range(sRange[0], sRange[1] + 1e-4, 0.01).map((x) => ({ s: x, a: Math.exp(x) })).filter((q) => q.a <= aMax + 0.5);
+      const curves = [
+        { ...bench, pts: pts.map((q) => ({ s: q.tau - tau0, a: q.a })) },
+        { pts: history(0, 0).pts, colour: C.ink_soft, dash: single.milne.dash, key: single.milne.label },
+        { pts: history(1, 0).pts, colour: C.accent, key: single.matter.label },
+        { pts: lambda, colour: C.good, dash: single.lambda.dash, key: single.lambda.label },
+      ];
+      box.replaceChildren(fatePlot(C, curves, { height: 400, extra: [
+        Plot.dot([{ s: -tau0, a: 0 }], { x: "s", y: "a", r: 6, fill: C.ink }),
+        dot(mL), label(mL, "matter–Λ equality", "start", 10, 18),
+      ] }));
+      return;
+    }
+    // log axes: the three power laws, and the exponential matched to the model at late times
+    const ts = d3.range(-11, 1.0001, 0.05).map((x) => 10 ** x), last = pts[pts.length - 1];
+    const laws = [
+      { colour: C.hot, dash: single.radiation.dash, key: single.radiation.label, pts: ts.map((x) => ({ x, a: Math.sqrt(2 * Math.sqrt(p.Or) * x) })) },
+      { colour: C.accent, key: single.matter.label, pts: ts.map((x) => ({ x, a: (1.5 * Math.sqrt(p.Om) * x) ** (2 / 3) })) },
+      { colour: C.good, dash: single.lambda.dash, key: single.lambda.label, pts: ts.filter((x) => x > 0.05).map((x) => ({ x, a: last.a * Math.exp(Math.sqrt(p.OL) * (x - last.tau)) })) },
+    ];
+    const lines = [{ ...bench, pts: pts.map((q) => ({ x: q.tau, a: q.a })) }, ...laws];
+    const marks = lines.map((l) => Plot.line(l.pts, { x: "x", y: "a", stroke: l.colour, strokeWidth: l.width ?? 2.5, strokeDasharray: l.dash, clip: true }));
+    // a key in the empty bottom right
+    lines.forEach((l, i) => {
+      const a = 10 ** (-4.3 - 0.45 * i);
+      marks.push(Plot.line([{ x: 2e-5, a }, { x: 2e-4, a }], { x: "x", y: "a", stroke: l.colour, strokeWidth: l.width ?? 2.5, strokeDasharray: l.dash }),
+        Plot.text([{ x: 3e-4, a }], { x: "x", y: "a", text: () => l.key, textAnchor: "start", fill: l.colour, fontWeight: 700 }));
+    });
+    const rm = { x: tauAt(arm), a: arm }, mL = { x: tauAt(amL), a: amL }, now = { x: tau0, a: 1 };
+    marks.push(dot(rm), label(rm, "radiation–matter equality", "end", -10, -12),
+      dot(mL), label(mL, "matter–Λ equality", "end", -12, 6),
+      Plot.dot([now], { x: "x", y: "a", r: 5, fill: C.ink }),
+      Plot.text([now], { x: "x", y: "a", text: () => `today, ${note}`, textAnchor: "end", dx: -10, dy: -10, fill: C.ink }));
+    const pow = (d) => (Number.isInteger(Math.log10(d)) ? `10${sup(Math.round(Math.log10(d)))}` : "");
+    box.replaceChildren(Plot.plot(withAxes({
+      width: 434, height: 400, marginLeft: 50, marginBottom: 46, marginTop: 32, marginRight: 16, style: style(C),
+      x: { type: "log", domain: [1e-11, 10], ticks: [1e-11, 1e-9, 1e-7, 1e-5, 1e-3, 1e-1, 10], tickFormat: pow, label: "time H₀t →", labelAnchor: "right", labelArrow: "none" },
+      y: { type: "log", domain: [1e-6, 10], ticks: [1e-6, 1e-4, 1e-2, 1], tickFormat: pow, label: "↑ scale factor a", labelAnchor: "top", labelArrow: "none" },
+      marks,
+    }, C.ink)));
+  },
+
+  // proper distance against redshift (after Ryden Fig. 5.9), today or at emission (data-when="emission"),
+  // for the Benchmark Model and the empty, matter-only and Λ-only universes, styled as in the a(t) plot.
+  // data-key on the box draws the key.
+  dz: (box) => {
+    const C = colours(), emit = box.dataset.when === "emission";
     const zs = d3.range(-2, 3.0001, 0.02).map((x) => 10 ** x);
     const bench = (z) => simpson((x) => 1 / (Math.exp(x) * E(Math.exp(x))), -Math.log(1 + z), 0, 200);
-    const models = [
-      // where each label goes: [z, dy] today and at emission
-      { name: "Benchmark", f: bench, c: C.accent, today: [8, -14], emission: [1.6, -14] },
-      { name: "matter only", f: (z) => 2 * (1 - 1 / Math.sqrt(1 + z)), c: C.ink_soft, dash: "6 5", today: [100, 18], emission: [20, 16] },
-      { name: "Λ only", f: (z) => z, c: C.good, dash: "2 4", today: [1.2, 0], emission: [100, -14] },
+    const models = [   // comoving distance today, in c/H0
+      { key: "Benchmark Model", f: bench, c: C.ink, width: 6 },
+      { key: single.milne.label, f: (z) => Math.log(1 + z), c: C.ink_soft, dash: single.milne.dash },
+      { key: single.matter.label, f: (z) => 2 * (1 - 1 / Math.sqrt(1 + z)), c: C.accent },
+      { key: single.lambda.label, f: (z) => z, c: C.good, dash: single.lambda.dash },
     ];
-    const marks = [];
-    for (const m of models) {
-      const pts = zs.map((z) => ({ z, d: m.f(z) / (emit ? 1 + z : 1) }));
-      marks.push(Plot.line(pts, { x: "z", y: "d", stroke: m.c, strokeWidth: 3, strokeDasharray: m.dash, clip: true }));
-      const [z, dy] = m[emit ? "emission" : "today"];
-      marks.push(Plot.text([{ z, d: m.f(z) / (emit ? 1 + z : 1) }], { x: "z", y: "d", text: () => m.name, fill: m.c, fontWeight: 700, dy,
-        textAnchor: m.name === "Λ only" && !emit ? "end" : "middle", dx: m.name === "Λ only" && !emit ? -10 : 0 }));
-    }
+    const ymax = emit ? 1.05 : 3.6;
+    const marks = models.map((m) => Plot.line(zs.map((z) => ({ z, d: m.f(z) / (emit ? 1 + z : 1) })),
+      { x: "z", y: "d", stroke: m.c, strokeWidth: m.width ?? 3, strokeDasharray: m.dash, clip: true }));
+    if ("key" in box.dataset) models.forEach((m, i) => {
+      const d = (0.9 - 0.08 * i) * ymax;
+      marks.push(Plot.line([{ z: 0.013, d }, { z: 0.04, d }], { x: "z", y: "d", stroke: m.c, strokeWidth: m.width ?? 3, strokeDasharray: m.dash }),
+        Plot.text([{ z: 0.05, d }], { x: "z", y: "d", text: () => m.key, textAnchor: "start", fill: m.c, fontWeight: 700 }));
+    });
     box.replaceChildren(Plot.plot(withAxes({
-      width: 600, height: 420, marginLeft: 64, marginBottom: 50, marginTop: 32, marginRight: 20, style: style(C),
+      width: 520, height: 380, marginLeft: 56, marginBottom: 46, marginTop: 32, marginRight: 20, style: style(C),
       x: { type: "log", domain: [0.01, 1000], tickFormat: (d) => (Number.isInteger(Math.log10(d)) ? String(d) : ""), label: "redshift z →", labelAnchor: "right", labelArrow: "none" },
-      y: { domain: [0, emit ? 1.05 : 3.6], label: emit ? "↑ dp(te) (c/H₀)" : "↑ dp(t₀) (c/H₀)", labelAnchor: "top", labelArrow: "none" },
+      y: { domain: [0, ymax], label: emit ? "↑ dp(tₑ), at emission (c/H₀)" : "↑ dp(t₀), today (c/H₀)", labelAnchor: "top", labelArrow: "none" },
       marks,
     }, C.ink)));
   },
