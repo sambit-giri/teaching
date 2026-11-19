@@ -153,8 +153,42 @@
     For the distance, d_p(t0) = c∫dt/a = c∫da/(a² H) = (c/H0)∫da/(a² E).</aside>
 </section>
 
+<section id="calc-try" data-text-size="0.75">
+  <h2>A cosmology calculator</h2>
+  <div class="cols" style="grid-template-columns: 230px auto 380px; gap: 24px; align-items: start;">
+    <div class="calc-in" style="display: grid; grid-template-columns: auto 1fr; gap: 10px 10px; align-items: center; font: 500 21px var(--f-ui);">
+      <span>$H_0$</span><input class="w-select" data-k="H0" type="number" step="0.1" value="67.4" style="width: 6em;">
+      <span>$\Omega_{m,0}$</span><input class="w-select" data-k="Om" type="number" step="0.001" value="0.315" style="width: 6em;">
+      <span>$\Omega_{\Lambda,0}$</span><input class="w-select" data-k="OL" type="number" step="0.001" value="0.685" style="width: 6em;">
+      <span>$z$</span><input class="w-select" data-k="z" type="number" min="0" step="0.1" value="1" style="width: 6em;">
+      <label class="w-toggle" style="grid-column: 1 / -1;"><input type="checkbox" data-k="flat" checked> Flat, $\kappa = 0$</label>
+      <label class="w-toggle" style="grid-column: 1 / -1;"><input type="checkbox" data-k="rad" checked> Include radiation</label>
+      <p class="aside" style="grid-column: 1 / -1; margin: 0;">$H_0$ in km/s/Mpc. Defaults: Planck 2018.</p>
+    </div>
+    <table class="w-table" style="font-size: 0.8em;">
+      <tr><th colspan="2">Results</th></tr>
+      <tr><td>Radiation, $\Omega_{r,0}$</td><td data-v="Orv" style="white-space: nowrap;"></td></tr>
+      <tr><td>Curvature, $\Omega_{k,0} = 1 - \Omega_0$</td><td data-v="Ok" style="white-space: nowrap;"></td></tr>
+      <tr><td>Age today, $t_0$</td><td data-v="t0" style="white-space: nowrap;"></td></tr>
+      <tr><td>Age at $z$, $t_e$</td><td data-v="te" style="white-space: nowrap;"></td></tr>
+      <tr><td>Lookback time, $t_0 - t_e$</td><td data-v="look" style="white-space: nowrap;"></td></tr>
+      <tr><td>Proper distance today, $d_p(t_0)$</td><td data-v="dp0" style="white-space: nowrap;"></td></tr>
+      <tr><td>Proper distance at emission, $d_p(t_e)$</td><td data-v="dpe" style="white-space: nowrap;"></td></tr>
+      <tr><td>Luminosity distance, $d_L$</td><td data-v="dL" style="white-space: nowrap;"></td></tr>
+      <tr><td>Angular-diameter distance, $d_A$</td><td data-v="dA" style="white-space: nowrap;"></td></tr>
+      <tr><td>1″ on the sky at $z$</td><td data-v="scale" style="white-space: nowrap;"></td></tr>
+      <tr><td>Future</td><td data-v="fate" style="white-space: nowrap;"></td></tr>
+    </table>
+    <div class="w-fig" data-widget="calc" style="display: flex; flex-direction: column; gap: 12px;"></div>
+  </div>
+  <aside class="notes">Like Ned Wright's calculator: type the parameters. With "Flat" ticked, ΩΛ,0 = 1 − Ωm,0 − Ωr,0 is filled in. Defaults: Planck 2018 (H0 = 67.4, Ωm,0 = 0.315).
+    The same integrals as on the previous slides, done numerically in the browser (t = ∫ da/(aH), d_p(t0) = c∫ da/(a²H)). d_L and d_A come in Lecture 7; for a curved universe they use S_κ(r) instead of r.
+    Right: a(t) for this universe (gold) among the four universes of the Ωm–ΩΛ slides, then d_p today and at emission against z, with the dot at the chosen z. Check against Ned Wright's calculator or astropy (next slide) with the same numbers.
+    Radiation: Ωr,0 h² = 4.16×10⁻⁵ (photons + neutrinos). Things to try: z = 1100 (the CMB): about 0.37 Myr after the Big Bang; Ωm,0 = 0.315, ΩΛ,0 = 0 without "Flat"; the maximum of d_p(te).</aside>
+</section>
+
 <section id="calculators">
-  <h2>Cosmology calculators</h2>
+  <h2>More cosmology calculators</h2>
   <ul>
     <li>Online: <a href="https://www.astro.ucla.edu/~wright/CosmoCalc.html" target="_blank">Ned Wright's cosmology calculator</a></li>
     <li>In Python: <a href="https://docs.astropy.org/en/stable/cosmology/index.html" target="_blank"><code>astropy.cosmology</code></a></li>
@@ -165,7 +199,7 @@ cosmo = FlatLambdaCDM(H0=68, Om0=0.31)  # flat
 cosmo.age(0)                # age today
 cosmo.comoving_distance(1)  # d_p(t0) at z = 1</pre>
   <p>You will use one in today's exercises.</p>
-  <aside class="notes">Both do the integrals of the previous slide numerically. astropy also has LambdaCDM (with curvature) and wCDM (with w ≠ −1). Without Tcmb0, FlatLambdaCDM leaves out radiation: fine for anything after z ~ 100.</aside>
+  <aside class="notes">Like ours, both do the integrals of the general solution numerically. astropy also has LambdaCDM (with curvature) and wCDM (with w ≠ −1). Without Tcmb0, FlatLambdaCDM leaves out radiation: fine for anything after z ~ 100.</aside>
 </section>
 
 <!-- ============ 3 · Combinations ============ -->
@@ -260,7 +294,7 @@ cosmo.comoving_distance(1)  # d_p(t0) at z = 1</pre>
     </div>
   </div>
   <p class="w-out olbers-out" style="text-align: center; margin-top: 0.8em;">$\Omega_0$ = <span data-v="O0"></span> (<span data-v="k"></span>): <span data-v="start"></span><br>
-    <strong style="color: var(--accent);">Future: <span data-v="end"></span>; the expansion today is <span data-v="accel"></span>.</strong><br>
+    <strong style="color: var(--ink);">Future: <span data-v="end"></span>; the expansion today is <span data-v="accel"></span>.</strong><br>
     <span class="aside">Click the plane to pick a universe. ★: our universe.</span></p>
   <aside class="notes">The dashed line is flat universes. Above the blue line there is no Big Bang (bounce); below the red line the universe recollapses. Close to the blue line: loitering, the closer the longer.
     Expansion today speeds up when ΩΛ,0 > Ωm,0/2 (from the acceleration equation, q0 = Ωm,0/2 − ΩΛ,0 < 0).
@@ -331,6 +365,7 @@ cosmo.comoving_distance(1)  # d_p(t0) at z = 1</pre>
     <div class="w-fig" data-widget="dz" data-key></div>
     <div class="w-fig" data-widget="dz" data-when="emission"></div>
   </div>
+  <label class="w-toggle" style="justify-content: center;"><input type="checkbox" data-k="flip"> Flip the redshift axis: the past on the left, as in $a(t)$</label>
   <p class="aside">Same models and colours as for $a(t)$, all with the same $H_0$. At small $z$ they agree: Hubble's law, $d_p \approx cz/H_0$. At emission, distance has a <strong>maximum</strong>: the most distant galaxies were close to us when their light left.</p>
   <aside class="notes">After Ryden Fig. 5.9. Today: the Benchmark curve flattens towards its horizon, about 3.2 c/H0 = 14 Gpc. At emission: in the Benchmark Model the maximum is near z ≈ 1.6, at about 0.4 c/H0 ≈ 1.8 Gpc.
     The models differ most at z ~ 1: measuring distances out there tells them apart (Lecture 7).</aside>

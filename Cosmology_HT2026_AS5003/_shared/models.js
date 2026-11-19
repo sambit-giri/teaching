@@ -114,10 +114,11 @@ export function singlePlot(C, { show = Object.keys(single), extra = [], height =
 }
 
 // a(t) axes shared by Lectures 5 and 6: time H0(t − t0) over range (default sRange) and a over [0, aMax],
-// with equal units on both axes. height sets the size; the width follows. Returns the Plot figure.
-export function aPlot(C, marks, { height = 420, fontSize = "16px", font, range = sRange } = {}) {
+// with equal units on both axes. height sets the size; the width follows, unless width is given (a
+// small plot that cannot keep equal units). Returns the Plot figure.
+export function aPlot(C, marks, { height = 420, width, fontSize = "16px", font, range = sRange } = {}) {
   const margin = { marginLeft: 50, marginBottom: 46, marginTop: 32, marginRight: 16 };
-  const width = Math.round((height - margin.marginTop - margin.marginBottom) * (range[1] - range[0]) / aMax + margin.marginLeft + margin.marginRight);
+  width ??= Math.round((height - margin.marginTop - margin.marginBottom) * (range[1] - range[0]) / aMax + margin.marginLeft + margin.marginRight);
   return Plot.plot(withAxes({
     width, height, ...margin,
     style: { background: "transparent", color: C.ink, fontSize, fontFamily: font },

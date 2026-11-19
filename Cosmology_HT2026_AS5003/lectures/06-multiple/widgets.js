@@ -1,7 +1,7 @@
 // Lecture 6 widgets. Each slide with a widget has a figure box <div class="w-fig" data-widget="name">
 // and inputs with a data-k="name" attribute; the widget redraws when an input changes and when the
 // light/dark theme is switched. Charts use Observable Plot and d3 (from the CDN).
-import { hubbleTime, benchmark, E, simpson } from "../../_shared/cosmo.js";
+import { hubbleTime, benchmark, E, simpson, c_kms } from "../../_shared/cosmo.js";
 import { single, singlePlot, aPlot, evolve, aMax } from "../../_shared/models.js";
 import { withAxes } from "../../_shared/plot.js";
 
@@ -18,11 +18,11 @@ const crunchLine = (m) => m <= 1 ? 0 : 4 * m * Math.cos(Math.acos((1 - m) / m) /
 // a(t) curves for matter + Λ + curvature, against H0(t − t0): the axes of Lecture 5, centred on today
 const sRange = [-3.2, 3.2];
 const history = (Om, OL) => evolve({ Om, OL }, sRange[1] + 0.2, aMax + 0.5);
-function fatePlot(C, curves, { height = 400, extra = [] } = {}) {
+function fatePlot(C, curves, { height = 400, width, fontSize, extra = [], today = true } = {}) {
   const marks = [
     Plot.ruleX([0], { stroke: C.edge, strokeDasharray: "4 4" }),
-    Plot.dot([{ s: 0, a: 1 }], { x: "s", y: "a", r: 5, fill: C.ink }),
-    Plot.text([{ s: 0, a: 1 }], { x: "s", y: "a", text: () => "today", dx: -8, dy: -12, textAnchor: "end", fill: C.ink }),
+    ...(today ? [Plot.dot([{ s: 0, a: 1 }], { x: "s", y: "a", r: 5, fill: C.ink }),
+      Plot.text([{ s: 0, a: 1 }], { x: "s", y: "a", text: () => "today", dx: -8, dy: -12, textAnchor: "end", fill: C.ink })] : []),
   ];
   for (const c of curves) {
     const className = c.step ? `step-${c.step}` : undefined;
@@ -35,14 +35,14 @@ function fatePlot(C, curves, { height = 400, extra = [] } = {}) {
     marks.push(Plot.line([{ s: s0, a }, { s: s0 + 0.5, a }], { x: "s", y: "a", stroke: c.colour, strokeWidth: c.width ?? 3, strokeDasharray: c.dash }),
       Plot.text([{ s: s0 + 0.6, a }], { x: "s", y: "a", text: () => c.key, textAnchor: "start", fill: c.colour, fontWeight: 700 }));
   });
-  return aPlot(C, [...marks, ...extra], { height, font: css("--f-ui"), range: sRange });
+  return aPlot(C, [...marks, ...extra], { height, width, fontSize, font: css("--f-ui"), range: sRange });
 }
 
 // The scale factor where the expansion stops (H = 0) between a1 and a2, or null: the first sign change
-// of E² = Ωm/a³ + ΩΛ + (1 − Ωm − ΩΛ)/a², found on a log grid and refined by bisection. The fate does
-// not depend on how far the a(t) curves are drawn, so a Big Crunch at a = 100 is still found.
-function turning(Om, OL, a1, a2) {
-  const E2 = (a) => Om / a ** 3 + OL + (1 - Om - OL) / a ** 2;
+// of E² = Ωr/a⁴ + Ωm/a³ + ΩΛ + (1 − Ωr − Ωm − ΩΛ)/a², found on a log grid and refined by bisection. The
+// fate does not depend on how far the a(t) curves are drawn, so a Big Crunch at a = 100 is still found.
+function turning(Om, OL, a1, a2, Or = 0) {
+  const E2 = (a) => Or / a ** 4 + Om / a ** 3 + OL + (1 - Or - Om - OL) / a ** 2;
   const n = 3000, r = (a2 / a1) ** (1 / n);
   for (let i = 1, lo = a1; i <= n; i++, lo *= r) {
     let hi = lo * r;
@@ -156,6 +156,68 @@ const widgets = {
     mid.after(aplot);
   },
 
+  // a cosmology calculator, after Ned Wright's: number fields H0, Om, OL (OL = 1 − Ωm − Ωr when "flat"
+  // is ticked), a checkbox for radiation and a redshift z. The integrals are done in ln a; distances as
+  // in Ryden ch. 7, with Sκ(r) for curved space. Three small plots go in the box: a(t) with the four
+  // universes of Ryden Fig. 5.7, and the proper distance today and at emission against z.
+  calc: (box, s) => {
+    const C = colours(), sec = box.closest("section");
+    const H0 = s.H0 > 0 ? s.H0 : 67.4, h = H0 / 100, Or = s.rad ? 4.16e-5 / h ** 2 : 0, Om = s.Om;
+    const olIn = sec.querySelector('[data-k="OL"]');
+    olIn.disabled = s.flat;
+    if (s.flat) olIn.value = +(1 - Om - Or).toFixed(5);
+    const OL = s.flat ? 1 - Om - Or : s.OL, Ok = 1 - Or - Om - OL, z = Math.max(0, s.z || 0), ae = 1 / (1 + z);
+    const Ez = (a) => Math.sqrt(Or / a ** 4 + Om / a ** 3 + OL + Ok / a ** 2);
+    const tH = hubbleTime(H0), dH = c_kms / H0;           // Gyr and Mpc
+    const amin = turning(Om, OL, 1, 1e-10, Or), amax = turning(Om, OL, 1, 1e8, Or);
+    const reached = amin === null || amin < ae;           // light from z left after the bounce
+    const tOf = (a) => simpson((x) => 1 / Ez(Math.exp(x)), Math.log(1e-10), Math.log(a), 4000);
+    const r = reached ? simpson((x) => 1 / (Math.exp(x) * Ez(Math.exp(x))), Math.log(ae), 0, 2000) : NaN;
+    const Sk = Ok > 1e-6 ? Math.sinh(Math.sqrt(Ok) * r) / Math.sqrt(Ok) : Ok < -1e-6 ? Math.sin(Math.sqrt(-Ok) * r) / Math.sqrt(-Ok) : r;
+    const t0 = amin === null ? tOf(1) : Infinity, te = amin === null ? tOf(ae) : Infinity, look = reached ? simpson((x) => 1 / Ez(Math.exp(x)), Math.log(ae), 0, 2000) : NaN;
+    const gyr = (x) => (isFinite(x) ? `${(x * tH).toFixed(2)} Gyr` : "∞ (no Big Bang)");
+    const mpc = (x) => (isFinite(x) ? `${(x * dH).toFixed(x * dH < 100 ? 1 : 0)} Mpc (${(x * dH * 3.2616e-3).toFixed(1)} Gly)` : "—");
+    const fmt = (x, n = 3) => (Math.abs(x) < 0.5 * 10 ** -n ? (0).toFixed(n) : x.toFixed(n)).replace("-", "−");
+    fill(box, {
+      Orv: s.rad ? `${(Or * 1e5).toFixed(1)}×10⁻⁵` : "0",
+      Ok: `${fmt(Ok)} (${Math.abs(Ok) < 5e-4 ? "flat" : Ok > 0 ? "κ = −1" : "κ = +1"})`,
+      t0: gyr(t0), te: reached ? gyr(te) : "— (before the bounce)", look: reached ? `${(look * tH).toFixed(2)} Gyr` : "—",
+      dp0: mpc(r), dpe: mpc(r * ae), dL: mpc(Sk * (1 + z)), dA: mpc(Sk * ae),
+      scale: reached && z > 0 ? `${(Sk * ae * dH * 1000 * Math.PI / 648000).toFixed(2)} kpc` : "—",
+      fate: amax !== null ? `Big Crunch, aₘₐₓ = ${amax.toPrecision(3)}` : "expands forever",
+    });
+
+    // 1. a(t): the four universes of the Ωm–ΩΛ slides, and this one as the wide gold curve
+    const W = 380, fs = "13px";
+    const aplot = fatePlot(C, [{ pts: history(Om, OL).pts, colour: C.gold, width: 10, opacity: 0.45 }, ...fates(C).map((f) => ({ ...f, step: undefined, ...(f.name === "Loitering" ? { at: { s: -3.1, a: 0.5 }, dy: -10 } : {}) }))],
+      { height: 210, width: W, fontSize: fs, today: false });
+    // 2, 3. proper distance today and at emission against z, from r(z) built up in ln a, in Gpc;
+    // the dot is the chosen z. High z on the left, so that time runs left to right as in a(t)
+    const zs = [], rs = [];
+    let rr = 0, x = 0;
+    const lo = Math.log(1 / 1001), dx = (lo - 0) / 3000;
+    for (let i = 0; i <= 3000; i++, x += dx) {
+      const a = Math.exp(x);
+      if (amin !== null && a <= amin * 1.0001) break;
+      if (i) { const a0 = Math.exp(x - dx); rr += -0.5 * (1 / (a0 * Ez(a0)) + 1 / (a * Ez(a))) * dx; }
+      zs.push(1 / a - 1); rs.push(rr);
+    }
+    const pts = zs.map((zz, i) => ({ z: zz, d0: rs[i] * dH / 1000, de: rs[i] * dH / 1000 / (1 + zz) })).filter((q) => q.z >= 0.01);
+    const dPlot = (key, label, here) => {
+      const ymax = Math.max(1e-3, d3.max(pts, (q) => q[key]) ?? 1) * 1.08;
+      return Plot.plot(withAxes({
+        width: W, height: 150, marginLeft: 50, marginBottom: 38, marginTop: 24, marginRight: 16, style: style(C, fs),
+        x: { type: "log", domain: [0.01, 1000], reverse: true, tickFormat: (d) => (Number.isInteger(Math.log10(d)) ? String(d) : ""), label: "← redshift z", labelAnchor: "left", labelArrow: "none" },
+        y: { domain: [0, ymax], ticks: 4, label, labelAnchor: "top", labelArrow: "none" },
+        marks: [
+          Plot.line(pts, { x: "z", y: key, stroke: C.gold, strokeWidth: 8, strokeOpacity: 0.45 }),
+          ...(reached && z >= 0.01 && z <= 1000 ? [Plot.dot([{ z, d: here }], { x: "z", y: "d", r: 5, fill: C.ink })] : []),
+        ],
+      }, C.ink));
+    };
+    box.replaceChildren(aplot, dPlot("d0", "↑ dp(t₀), today (Gpc)", r * dH / 1000), dPlot("de", "↑ dp(tₑ), at emission (Gpc)", r * ae * dH / 1000));
+  },
+
   // radiation + matter, flat (Ryden eq. 5.110): a(t) on log axes, with the radiation-only and
   // matter-only power laws it follows before and after radiation–matter equality
   rm: (box) => {
@@ -254,8 +316,8 @@ const widgets = {
 
   // proper distance against redshift (after Ryden Fig. 5.9), today or at emission (data-when="emission"),
   // for the Benchmark Model and the empty, matter-only and Λ-only universes, styled as in the a(t) plot.
-  // data-key on the box draws the key.
-  dz: (box) => {
+  // data-key on the box draws the key. A checkbox data-k="flip" puts high z on the left (time left to right).
+  dz: (box, s) => {
     const C = colours(), emit = box.dataset.when === "emission";
     const zs = d3.range(-2, 3.0001, 0.02).map((x) => 10 ** x);
     const bench = (z) => simpson((x) => 1 / (Math.exp(x) * E(Math.exp(x))), -Math.log(1 + z), 0, 200);
@@ -270,12 +332,15 @@ const widgets = {
       { x: "z", y: "d", stroke: m.c, strokeWidth: m.width ?? 3, strokeDasharray: m.dash, clip: true }));
     if ("key" in box.dataset) models.forEach((m, i) => {
       const d = (0.9 - 0.08 * i) * ymax;
-      marks.push(Plot.line([{ z: 0.013, d }, { z: 0.04, d }], { x: "z", y: "d", stroke: m.c, strokeWidth: m.width ?? 3, strokeDasharray: m.dash }),
-        Plot.text([{ z: 0.05, d }], { x: "z", y: "d", text: () => m.key, textAnchor: "start", fill: m.c, fontWeight: 700 }));
+      // in the empty top left, or the top right when the axis is flipped
+      const [z1, z2, zt] = s.flip ? [1.0, 0.4, 0.33] : [0.013, 0.04, 0.05];
+      marks.push(Plot.line([{ z: z1, d }, { z: z2, d }], { x: "z", y: "d", stroke: m.c, strokeWidth: m.width ?? 3, strokeDasharray: m.dash }),
+        Plot.text([{ z: zt, d }], { x: "z", y: "d", text: () => m.key, textAnchor: "start", fill: m.c, fontWeight: 700 }));
     });
     box.replaceChildren(Plot.plot(withAxes({
       width: 520, height: 380, marginLeft: 56, marginBottom: 46, marginTop: 32, marginRight: 20, style: style(C),
-      x: { type: "log", domain: [0.01, 1000], tickFormat: (d) => (Number.isInteger(Math.log10(d)) ? String(d) : ""), label: "redshift z →", labelAnchor: "right", labelArrow: "none" },
+      x: { type: "log", domain: [0.01, 1000], reverse: !!s.flip, tickFormat: (d) => (Number.isInteger(Math.log10(d)) ? String(d) : ""),
+        label: s.flip ? "← redshift z" : "redshift z →", labelAnchor: s.flip ? "left" : "right", labelArrow: "none" },
       y: { domain: [0, ymax], label: emit ? "↑ dp(tₑ), at emission (c/H₀)" : "↑ dp(t₀), today (c/H₀)", labelAnchor: "top", labelArrow: "none" },
       marks,
     }, C.ink)));
