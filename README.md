@@ -18,11 +18,15 @@ assets/
   site.css                     style of the hand-written pages (landing, lecture lists, notation)
   theme.js                     light/dark switch (button, or press T)
   slides.css, slides.js        look and set-up of the slide decks (reveal.js, KaTeX, text fitting)
+tools/cosmology-calculator/     teaching tool, not tied to a course
+  index.html                   the calculator page; values go in the URL, e.g. ?H0=70&Om=0.3&flat=0&OL=0&z=2
+  cosmocalc.js                 the engine (no imports); Lecture 6 of AS5003 uses it too
 Cosmology_HT2026_AS5003/       one folder per course, served at /teaching/<folder>/
   index.html                   the lecture list (hand-written)
   notation.html                reference page: Ryden's notation and benchmark model
   figures/                     figures shared by the lectures; CREDITS.md lists sources and licences
   _shared/cosmo.js             cosmology functions shared by the lectures
+  _shared/calculator.js        plots of the cosmology calculator on the Lecture 6 slide
   lectures/NN-topic/
     index.html                 the slides: one <section> per slide, in Keynote order
     *.js                       the slides' interactive widgets ("Try it" slides)

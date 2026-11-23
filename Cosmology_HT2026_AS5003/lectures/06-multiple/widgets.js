@@ -1,9 +1,11 @@
 // Lecture 6 widgets. Each slide with a widget has a figure box <div class="w-fig" data-widget="name">
 // and inputs with a data-k="name" attribute; the widget redraws when an input changes and when the
 // light/dark theme is switched. Charts use Observable Plot and d3 (from the CDN).
-import { hubbleTime, benchmark, E, simpson, c_kms } from "../../_shared/cosmo.js";
+import { hubbleTime, benchmark, E, simpson } from "../../_shared/cosmo.js";
 import { single, singlePlot, aMax, fateRange, history, fatePlot, fates, showSteps, turning, bounceLine, crunchLine } from "../../_shared/models.js";
 import { withAxes } from "../../_shared/plot.js";
+import { calcPlots } from "../../_shared/calculator.js";
+import { calc } from "../../../tools/cosmology-calculator/cosmocalc.js";
 
 const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 const colours = () => Object.fromEntries(["ink", "ink-soft", "accent", "hot", "cool", "good", "gold", "edge", "bg"].map((k) => [k.replace("-", "_"), css(`--${k}`)]));
@@ -87,66 +89,15 @@ const widgets = {
     mid.after(aplot);
   },
 
-  // a cosmology calculator, after Ned Wright's: number fields H0, Om, OL (OL = 1 − Ωm − Ωr when "flat"
-  // is ticked), a checkbox for radiation and a redshift z. The integrals are done in ln a; distances as
-  // in Ryden ch. 7, with Sκ(r) for curved space. Three small plots go in the box: a(t) with the four
-  // universes of Ryden Fig. 5.7, and the proper distance today and at emission against z.
+  // the cosmology calculator (engine in tools/cosmology-calculator/, also behind the standalone page):
+  // number fields H0, Om, OL (OL = 1 − Ωm − Ωr when "flat" is ticked), radiation and a redshift z
   calc: (box, s) => {
-    const C = colours(), sec = box.closest("section");
-    const H0 = s.H0 > 0 ? s.H0 : 67.4, h = H0 / 100, Or = s.rad ? 4.16e-5 / h ** 2 : 0, Om = s.Om;
-    const olIn = sec.querySelector('[data-k="OL"]');
+    const olIn = box.closest("section").querySelector('[data-k="OL"]');
     olIn.disabled = s.flat;
-    if (s.flat) olIn.value = +(1 - Om - Or).toFixed(5);
-    const OL = s.flat ? 1 - Om - Or : s.OL, Ok = 1 - Or - Om - OL, z = Math.max(0, s.z || 0), ae = 1 / (1 + z);
-    const Ez = (a) => Math.sqrt(Or / a ** 4 + Om / a ** 3 + OL + Ok / a ** 2);
-    const tH = hubbleTime(H0), dH = c_kms / H0;           // Gyr and Mpc
-    const amin = turning(Om, OL, 1, 1e-10, Or), amax = turning(Om, OL, 1, 1e8, Or);
-    const reached = amin === null || amin < ae;           // light from z left after the bounce
-    const tOf = (a) => simpson((x) => 1 / Ez(Math.exp(x)), Math.log(1e-10), Math.log(a), 4000);
-    const r = reached ? simpson((x) => 1 / (Math.exp(x) * Ez(Math.exp(x))), Math.log(ae), 0, 2000) : NaN;
-    const Sk = Ok > 1e-6 ? Math.sinh(Math.sqrt(Ok) * r) / Math.sqrt(Ok) : Ok < -1e-6 ? Math.sin(Math.sqrt(-Ok) * r) / Math.sqrt(-Ok) : r;
-    const t0 = amin === null ? tOf(1) : Infinity, te = amin === null ? tOf(ae) : Infinity, look = reached ? simpson((x) => 1 / Ez(Math.exp(x)), Math.log(ae), 0, 2000) : NaN;
-    const gyr = (x) => (isFinite(x) ? `${(x * tH).toFixed(2)} Gyr` : "∞ (no Big Bang)");
-    const mpc = (x) => (isFinite(x) ? `${(x * dH).toFixed(x * dH < 100 ? 1 : 0)} Mpc (${(x * dH * 3.2616e-3).toFixed(1)} Gly)` : "—");
-    const fmt = (x, n = 3) => (Math.abs(x) < 0.5 * 10 ** -n ? (0).toFixed(n) : x.toFixed(n)).replace("-", "−");
-    fill(box, {
-      Orv: s.rad ? `${(Or * 1e5).toFixed(1)}×10⁻⁵` : "0",
-      Ok: `${fmt(Ok)} (${Math.abs(Ok) < 5e-4 ? "flat" : Ok > 0 ? "κ = −1" : "κ = +1"})`,
-      t0: gyr(t0), te: reached ? gyr(te) : "— (before the bounce)", look: reached ? `${(look * tH).toFixed(2)} Gyr` : "—",
-      dp0: mpc(r), dpe: mpc(r * ae), dL: mpc(Sk * (1 + z)), dA: mpc(Sk * ae),
-      scale: reached && z > 0 ? `${(Sk * ae * dH * 1000 * Math.PI / 648000).toFixed(2)} kpc` : "—",
-      fate: amax !== null ? `Big Crunch, aₘₐₓ = ${amax.toPrecision(3)}` : "expands forever",
-    });
-
-    // 1. a(t): the four universes of the Ωm–ΩΛ slides, and this one as the wide gold curve
-    const W = 380, fs = "13px";
-    const aplot = fatePlot(C, [{ pts: history(Om, OL).pts, colour: C.gold, width: 10, opacity: 0.45 }, ...fates(C).map((f) => ({ ...f, step: undefined, ...(f.name === "Loitering" ? { at: { s: -3.1, a: 0.5 }, dy: -10 } : {}) }))],
-      { height: 210, width: W, fontSize: fs, today: false });
-    // 2, 3. proper distance today and at emission against z, from r(z) built up in ln a, in Gpc;
-    // the dot is the chosen z. High z on the left, so that time runs left to right as in a(t)
-    const zs = [], rs = [];
-    let rr = 0, x = 0;
-    const lo = Math.log(1 / 1001), dx = (lo - 0) / 3000;
-    for (let i = 0; i <= 3000; i++, x += dx) {
-      const a = Math.exp(x);
-      if (amin !== null && a <= amin * 1.0001) break;
-      if (i) { const a0 = Math.exp(x - dx); rr += -0.5 * (1 / (a0 * Ez(a0)) + 1 / (a * Ez(a))) * dx; }
-      zs.push(1 / a - 1); rs.push(rr);
-    }
-    const pts = zs.map((zz, i) => ({ z: zz, d0: rs[i] * dH / 1000, de: rs[i] * dH / 1000 / (1 + zz) })).filter((q) => q.z >= 0.01);
-    const dPlot = (key, label, here) => {
-      const ymax = Math.max(1e-3, d3.max(pts, (q) => q[key]) ?? 1) * 1.08;
-      return Plot.plot(withAxes({
-        width: W, height: 150, marginLeft: 50, marginBottom: 38, marginTop: 24, marginRight: 16, style: style(C, fs),
-        x: { type: "log", domain: [0.01, 1000], reverse: true, tickFormat: (d) => (Number.isInteger(Math.log10(d)) ? String(d) : ""), label: "← redshift z", labelAnchor: "left", labelArrow: "none" },
-        y: { domain: [0, ymax], ticks: 4, label, labelAnchor: "top", labelArrow: "none" },
-        marks: [
-          Plot.line(pts, { x: "z", y: key, stroke: C.gold, strokeWidth: 8, strokeOpacity: 0.45 }),
-          ...(reached && z >= 0.01 && z <= 1000 ? [Plot.dot([{ z, d: here }], { x: "z", y: "d", r: 5, fill: C.ink })] : []),
-        ],
-      }, C.ink));
-    };
-    box.replaceChildren(aplot, dPlot("d0", "↑ dp(t₀), today (Gpc)", r * dH / 1000), dPlot("de", "↑ dp(tₑ), at emission (Gpc)", r * ae * dH / 1000));
+    const res = calc(s);
+    if (s.flat) olIn.value = +res.OL.toFixed(5);
+    fill(box, res.text);
+    box.replaceChildren(...calcPlots(colours(), res, { font: css("--f-ui") }));
   },
 
   // radiation + matter, flat (Ryden eq. 5.110): a(t) on log axes, with the radiation-only and
