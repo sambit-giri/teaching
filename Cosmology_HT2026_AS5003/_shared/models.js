@@ -1,4 +1,4 @@
-// Model universes for the Lecture 5 and 6 widgets (Ryden ch. 5). Time is s = H0 (t − t0), distances
+// Model universes for the Lecture 5–8 widgets (Ryden ch. 5). Time is s = H0 (t − t0), distances
 // are in units of the Hubble distance c/H0, and a(t0) = 1. Charts use Observable Plot (global Plot).
 import { withAxes } from "./plot.js";
 
@@ -127,3 +127,78 @@ export function aPlot(C, marks, { height = 420, width, fontSize = "16px", font, 
     marks,
   }, C.ink));
 }
+
+// Boundaries in the Ωm,0–ΩΛ,0 plane for matter + Λ + curvature (Carroll, Press & Turner 1992):
+// above bounceLine there is no Big Bang; below crunchLine the universe recollapses.
+export const bounceLine = (m) => m <= 0.5 ? 4 * m * Math.cosh(Math.acosh((1 - m) / m) / 3) ** 3 : 4 * m * Math.cos(Math.acos((1 - m) / m) / 3) ** 3;
+export const crunchLine = (m) => m <= 1 ? 0 : 4 * m * Math.cos(Math.acos((1 - m) / m) / 3 + 4 * Math.PI / 3) ** 3;
+
+// a(t) curves for matter + Λ + curvature from Lecture 6 on, against H0(t − t0): the axes of Lecture 5,
+// centred on today
+export const fateRange = [-3.2, 3.2];
+export const history = (Om, OL) => evolve({ Om, OL }, fateRange[1] + 0.2, aMax + 0.5);
+
+// The a(t) plot of Lecture 6 and later. curves: { pts, colour, width, opacity, dash, label, at, anchor,
+// dx, dy, key, step }; a curve with a key gets a row in the key at the top left, and step puts the
+// class step-k on its marks (shown by a later click). today: mark today. extra: more marks, on top.
+export function fatePlot(C, curves, { height = 400, width, fontSize, extra = [], today = true } = {}) {
+  const marks = [
+    Plot.ruleX([0], { stroke: C.edge, strokeDasharray: "4 4" }),
+    ...(today ? [Plot.dot([{ s: 0, a: 1 }], { x: "s", y: "a", r: 5, fill: C.ink }),
+      Plot.text([{ s: 0, a: 1 }], { x: "s", y: "a", text: () => "today", dx: -8, dy: -12, textAnchor: "end", fill: C.ink })] : []),
+  ];
+  for (const c of curves) {
+    const className = c.step ? `step-${c.step}` : undefined;
+    marks.push(Plot.line(c.pts, { x: "s", y: "a", stroke: c.colour, strokeWidth: c.width ?? 3, strokeOpacity: c.opacity, strokeDasharray: c.dash, clip: true, className }));
+    if (c.label) marks.push(Plot.text([c.at], { x: "s", y: "a", text: () => c.label, fill: c.colour, fontWeight: 700, textAnchor: c.anchor ?? "start", dx: c.dx ?? 0, dy: c.dy ?? 0, clip: true, className }));
+  }
+  // a key in the empty top left, as in Lecture 5, for the curves with a key
+  curves.filter((c) => c.key).forEach((c, i) => {
+    const a = (0.82 - 0.09 * i) * aMax, s0 = fateRange[0] + 0.1, className = c.step ? `step-${c.step}` : undefined;
+    marks.push(Plot.line([{ s: s0, a }, { s: s0 + 0.5, a }], { x: "s", y: "a", stroke: c.colour, strokeWidth: c.width ?? 3, strokeDasharray: c.dash, className }),
+      Plot.text([{ s: s0 + 0.6, a }], { x: "s", y: "a", text: () => c.key, textAnchor: "start", fill: c.colour, fontWeight: 700, className }));
+  });
+  const font = getComputedStyle(document.documentElement).getPropertyValue("--f-ui").trim();
+  return aPlot(C, [...marks, ...extra], { height, width, fontSize, font, range: fateRange });
+}
+
+// With data-steps on the box, the curves of step k show once k groups of clicks on the slide are shown
+export function showSteps(box) {
+  const sec = box.closest("section");
+  const update = () => {
+    const shown = new Set([...sec.querySelectorAll(".fragment.visible")].map((f) => f.dataset.fragmentIndex)).size;
+    for (const g of box.querySelectorAll("[class*='step-']")) {
+      const k = +[...g.classList].find((c) => c.startsWith("step-")).slice(5);
+      g.style.opacity = k <= shown ? 1 : 0;
+    }
+  };
+  update();
+  if (!box.dataset.bound) {
+    box.dataset.bound = "1";
+    for (const ev of ["fragmentshown", "fragmenthidden", "slidechanged"]) Reveal.on(ev, update);
+  }
+}
+
+// The scale factor where the expansion stops (H = 0) between a1 and a2, or null: the first sign change
+// of E² = Ωr/a⁴ + Ωm/a³ + ΩΛ + (1 − Ωr − Ωm − ΩΛ)/a², found on a log grid and refined by bisection. The
+// fate does not depend on how far the a(t) curves are drawn, so a Big Crunch at a = 100 is still found.
+export function turning(Om, OL, a1, a2, Or = 0) {
+  const E2 = (a) => Or / a ** 4 + Om / a ** 3 + OL + (1 - Or - Om - OL) / a ** 2;
+  const n = 3000, r = (a2 / a1) ** (1 / n);
+  for (let i = 1, lo = a1; i <= n; i++, lo *= r) {
+    let hi = lo * r;
+    if (E2(hi) > 0) continue;
+    for (let j = 0; j < 50; j++) { const mid = Math.sqrt(lo * hi); if (E2(mid) > 0) lo = mid; else hi = mid; }
+    return lo;
+  }
+  return null;
+}
+
+// Ryden's Figure 5.7: four universes with Ωm,0 = 0.31, told apart by line style as well as colour
+// (not gold, which is the chosen universe on the slider slides). step: the click that shows the curve.
+export const fates = (C) => [
+  { name: "Big Chill", OL: 0.69, colour: C.good, at: { s: 1.1, a: 2.3 }, dx: 10, step: 1 },
+  { name: "Big Crunch", OL: -0.31, colour: C.hot, dash: "8 5", at: { s: 1.3, a: 0.55 }, step: 1 },
+  { name: "Loitering", OL: 1.7289, colour: C.cool, dash: "2 4", at: { s: -3.1, a: 0.2 }, step: 2 },
+  { name: "Big Bounce", OL: 1.8, colour: C.accent, dash: "12 4 3 4", at: { s: 0.6, a: 3.6 }, anchor: "end", step: 2 },
+].map((f) => ({ ...f, pts: history(0.31, f.OL).pts, label: f.name }));

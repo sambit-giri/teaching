@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lecture 8 · Cosmic dynamics: review · Cosmology AS5003</title>
+<script src="../../../assets/theme.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<link rel="stylesheet" href="../../../assets/tokens.css">
+<link rel="stylesheet" href="../../../assets/slides.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/notes/notes.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<script defer src="../../../assets/slides.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.16/dist/plot.umd.min.js"></script>
+<script type="module" src="widgets.js"></script>
+<style>
+  /* the map of chapters 3–6: boxes joined by arrows, each box links to its lecture */
+  .reveal .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 34px 46px; margin-top: 0.6em; }
+  .reveal .flow a { position: relative; display: block; padding: 12px 16px; border: 1px solid var(--edge); border-radius: 12px;
+    background: var(--card); color: var(--ink); text-decoration: none; font: 500 0.7em/1.35 var(--f-ui); }
+  .reveal .flow a strong { display: block; font-size: 1.15em; color: var(--accent); }
+  .reveal .flow a:hover { border-color: var(--accent); }
+  .reveal .flow a.right::after { content: "→"; position: absolute; right: -36px; top: 50%; transform: translateY(-50%); color: var(--ink-soft); font-size: 1.6em; }
+  .reveal .flow a.down::after { content: "↓"; position: absolute; left: 50%; bottom: -36px; transform: translateX(-50%); color: var(--ink-soft); font-size: 1.6em; }
+  .reveal .flow a.left::after { content: "←"; position: absolute; left: -36px; top: 50%; transform: translateY(-50%); color: var(--ink-soft); font-size: 1.6em; }
+</style>
+</head>
+<body>
+<a class="deck-home" href="../../">&larr; AS5003</a>
+<div class="reveal"><div class="slides">
+<!-- One <section> per slide. A review of Ryden ch. 3–6, after HT25's "Cosmic dynamics review" sheet and
+     the HT22 Lecture 8 deck; the id is the slide's link (#/id). Each summary slide links to its lecture.
+     class="fragment"          appears on the next click, like a Keynote build
+     <section data-text-size="1.2">   fixes the text size of a slide (1 = 30px) instead of the automatic fit
+     style="font-size: 0.8em" on a <p>, <li> or <ul>   makes that part smaller (or larger) than the rest
+     $...$ and $$...$$          maths (LaTeX)
+     "Try it" slides: <div class="w-fig" data-widget="..."> is drawn by widgets.js from the inputs with data-k.
+     Questions: <div class="choices"> of <details class="yes|no|partly">; a click on an option opens its verdict.
+     Edit and see the result:  ./build.sh --edit, then reload the page after saving. -->
+
+<section id="title" class="cover">
+  <p class="kicker">Stockholm University · Department of Astronomy</p>
+  <h1>AS5003 (Cosmology) HT26</h1>
+  <p class="sub">Lecture 8 (26 Nov 2026)</p>
+  <!-- every lecture: the timeline first, then one figure for the lecture's theme -->
+  <div class="cover-figs">
+    <figure>
+      <img src="../../figures/history-of-universe-timeline.jpg" alt="Timeline of the Universe from the Big Bang to today">
+      <p class="credit">Image credit: NASA</p>
+    </figure>
+    <figure>
+      <div class="w-fig" data-widget="zoo" data-w="520" data-h="395" style="align-self: start;"></div>
+      <p class="credit">Distances to a source at redshift $z$ in the Benchmark Model</p>
+    </figure>
+  </div>
+</section>
+
+<section id="admin">
+  <h2>Practical information</h2>
+  <ul>
+    <li><strong>No lecture on Tuesday 1 December.</strong> Next lecture: <strong>Thursday 3 December</strong>, dark matter.</li>
+    <li><strong>Home assignment:</strong> <a href="https://canvas.su.se/courses/12102/modules/items/204294" target="_blank"><em>Problem set 4</em></a> is due <strong>Thursday 3 December</strong>, in Canvas.</li>
+    <li><strong>Literature review:</strong> the written report is due <strong>Tuesday 15 December</strong>; the presentations are on <strong style="white-space: nowrap;">Thursday 17</strong> and <strong style="white-space: nowrap;">Friday 18 December</strong>.</li>
+  </ul>
+</section>
+
+<section id="plan">
+  <h2>Today's plan</h2>
+  <ol>
+    <li>The big picture: how chapters 3–6 fit together</li>
+    <li>The key results, one slide per topic</li>
+    <li>Check your understanding</li>
+    <li>Exercises: the ones you asked for</li>
+  </ol>
+</section>
+
+<!-- ============ The big picture ============ -->
+
+<section id="map" data-text-size="1">
+  <h2>The story so far</h2>
+  <div class="flow">
+    <a class="right" href="../03-curvature/#/robertson-walker" target="_blank" style="grid-area: 1 / 1;"><strong>Geometry</strong>Homogeneous and isotropic: the Robertson–Walker metric, with $a(t)$ and $\kappa$</a>
+    <a class="right fragment" href="../03-curvature/#/proper-distance" target="_blank" style="grid-area: 1 / 2;"><strong>Distances</strong>Light travels on $ds = 0$: proper distance, redshift $1 + z = 1/a$</a>
+    <a class="right fragment" href="../04-friedmann/#/friedmann" target="_blank" style="grid-area: 1 / 3;"><strong>Dynamics</strong>General relativity: the Friedmann, fluid and acceleration equations</a>
+    <a class="down fragment" href="../04-friedmann/#/eos" target="_blank" style="grid-area: 1 / 4;"><strong>Contents</strong>Equation of state $P = w\varepsilon$: $\varepsilon \propto a^{-3(1+w)}$</a>
+    <a class="left fragment" href="../05-single/#/flat-general" target="_blank" style="grid-area: 2 / 4;"><strong>Model universes</strong>$a(t)$ for one or several components: the Benchmark Model</a>
+    <a class="left fragment" href="../06-multiple/#/distances-z" target="_blank" style="grid-area: 2 / 3;"><strong>Predictions</strong>Distances against redshift in each model universe</a>
+    <a class="left fragment" href="../07-parameters/#/measure" target="_blank" style="grid-area: 2 / 2;"><strong>Observations</strong>Standard candles and yardsticks: $d_L$ and $d_A$ against $z$</a>
+    <a class="fragment" href="../07-parameters/#/sn-plane" target="_blank" style="grid-area: 2 / 1;"><strong>Parameters</strong>Fit the models: $H_0$, $q_0$, $\Omega_{m,0}$, $\Omega_{\Lambda,0}$, …</a>
+  </div>
+  <p class="aside fragment" style="margin-top: 1.2em;">Each box links to the slides where it was introduced.</p>
+  <aside class="notes">Walk around the loop: from symmetry to the metric, from the metric to distances and redshift, from GR to the equations for a(t), with the contents, the solutions, the distances they predict, and back to measurements that pin down the parameters.
+    The second row runs right to left (the arrows point left).</aside>
+</section>
+
+<!-- ============ Key results ============ -->
+
+<section id="metric" data-text-size="0.9">
+  <p class="kicker">Chapter 3 · <a href="../03-curvature/" target="_blank">Lecture 3</a></p>
+  <h2>The Robertson–Walker metric</h2>
+  <div style="display: flex; align-items: center; justify-content: center; gap: 2em;">
+    <div>$$ds^2 = -c^2dt^2 + a(t)^2\left[dr^2 + S_\kappa(r)^2\,d\Omega^2\right]$$</div>
+    <div>$$S_\kappa(r) = \begin{cases} R_0\sin(r/R_0) & \kappa = +1\\ r & \kappa = 0\\ R_0\sinh(r/R_0) & \kappa = -1\end{cases}$$</div>
+  </div>
+  <ul>
+    <li>$a(t)$: the scale factor, $a(t_0) = 1$. $\;r, \theta, \phi$: comoving coordinates.</li>
+    <li class="fragment">Light: $ds = 0$. A photon coming radially towards us: $\;c\,dt = a(t)\,dr$.</li>
+    <li class="fragment">Redshift: $\;1 + z = \dfrac{\lambda_\text{obs}}{\lambda_\text{em}} = \dfrac{1}{a(t_e)}$. At small $z$: $cz = H_0 d$, with $H_0 = \dot a/a$ today.</li>
+  </ul>
+</section>
+
+<section id="distances">
+  <p class="kicker">Chapters 3–4 · <a href="../03-curvature/#/proper-distance" target="_blank">Lecture 3</a>, <a href="../04-friedmann/#/horizon" target="_blank">Lecture 4</a></p>
+  <h2>Distances in an expanding universe</h2>
+  <ul>
+    <li><strong>Proper distance</strong> at time $t$ (the length at fixed $t$): $\;d_p(t) = a(t)\,r$</li>
+    <li class="fragment">To a source whose light, emitted at $t_e$, reaches us today:
+      $$r = d_p(t_0) = c\int_{t_e}^{t_0}\frac{dt}{a(t)}, \qquad d_p(t_e) = a(t_e)\,d_p(t_0) = \frac{d_p(t_0)}{1+z}$$</li>
+    <li class="fragment"><strong>Horizon distance</strong>: the proper distance to the farthest light we can see, emitted at $t = 0$:
+      $$d_\text{hor}(t_0) = c\int_0^{t_0}\frac{dt}{a(t)}$$</li>
+  </ul>
+  <aside class="notes">The comoving distance r does not change with time; the proper distance grows with a(t). Light-travel distance c(t0 − te) is yet another distance: between d_p(te) and d_p(t0).</aside>
+</section>
+
+<section id="equations" data-text-size="0.95">
+  <p class="kicker">Chapter 4 · <a href="../04-friedmann/" target="_blank">Lecture 4</a></p>
+  <h2>The equations for $a(t)$</h2>
+  <div class="cols" style="grid-template-columns: 1fr auto; gap: 40px; align-items: start;">
+    <div>
+      <p><strong>Friedmann:</strong> $\;\left(\dfrac{\dot a}{a}\right)^2 = \dfrac{8\pi G}{3c^2}\,\varepsilon - \dfrac{\kappa c^2}{R_0^2\,a^2}$</p>
+      <p><strong>Fluid:</strong> $\;\dot\varepsilon + 3\,\dfrac{\dot a}{a}\,(\varepsilon + P) = 0$</p>
+      <p><strong>Acceleration:</strong> $\;\dfrac{\ddot a}{a} = -\dfrac{4\pi G}{3c^2}\,(\varepsilon + 3P)$</p>
+      <p class="fragment"><strong>Equation of state:</strong> $\;P = w\,\varepsilon$ $\;\Rightarrow\;$ $\varepsilon(a) = \varepsilon_0\,a^{-3(1+w)}$</p>
+      <p class="aside">Two of the three equations are independent: the acceleration equation follows from the other two.</p>
+    </div>
+    <table class="w-table fragment">
+      <tr><th>Component</th><th>$w$</th><th>$\varepsilon \propto$</th></tr>
+      <tr><td class="c-accent">Matter</td><td>$0$</td><td>$a^{-3}$</td></tr>
+      <tr><td class="c-hot">Radiation</td><td>$1/3$</td><td>$a^{-4}$</td></tr>
+      <tr><td class="c-good">Cosmological constant</td><td>$-1$</td><td>$a^{0}$</td></tr>
+    </table>
+  </div>
+  <aside class="notes">Anything with w &lt; −1/3 makes the expansion speed up (ε + 3P &lt; 0): dark energy. Photon number density ∝ a⁻³, and each photon's energy ∝ 1/a: radiation ∝ a⁻⁴.</aside>
+</section>
+
+<section id="omega">
+  <p class="kicker">Chapters 4–5 · <a href="../04-friedmann/#/omega" target="_blank">Lecture 4</a>, <a href="../06-multiple/#/friedmann-omega" target="_blank">Lecture 6</a></p>
+  <h2>Critical density and $\Omega$</h2>
+  <p>The <strong>critical density</strong> makes the universe flat: $\;\varepsilon_c(t) = \dfrac{3c^2H(t)^2}{8\pi G}$, $\;\Omega \equiv \dfrac{\varepsilon}{\varepsilon_c}$</p>
+  <ul>
+    <li>$\Omega_0 > 1$: $\kappa = +1$ &nbsp;·&nbsp; $\Omega_0 = 1$: flat &nbsp;·&nbsp; $\Omega_0 < 1$: $\kappa = -1$</li>
+  </ul>
+  <div class="fragment">
+    <p>The Friedmann equation with all components:</p>
+    $$\frac{H^2}{H_0^2} = \htmlClass{c-hot}{\frac{\Omega_{r,0}}{a^4}} + \htmlClass{c-accent}{\frac{\Omega_{m,0}}{a^3}} + \htmlClass{c-good}{\Omega_{\Lambda,0}} + \htmlClass{c-soft}{\frac{1 - \Omega_0}{a^2}}$$
+  </div>
+  <p class="fragment">Acceleration today: $\;q_0 = \Omega_{r,0} + \tfrac{1}{2}\,\Omega_{m,0} - \Omega_{\Lambda,0}$ <span class="aside">(<a href="../07-parameters/#/q0" target="_blank">Lecture 7</a>)</span></p>
+</section>
+
+<section id="single" data-text-size="0.85">
+  <p class="kicker">Chapter 5 · <a href="../05-single/" target="_blank">Lecture 5</a></p>
+  <h2>Universes with one component</h2>
+  <div class="cols" style="grid-template-columns: 1fr auto; gap: 30px;">
+    <table class="w-table" style="align-self: center;">
+      <tr><th>Universe</th><th>$a(t)$</th><th>Age $t_0$</th></tr>
+      <tr><td>Empty (Milne), $\kappa = -1$</td><td>$t/t_0$</td><td>$1/H_0$</td></tr>
+      <tr><td class="c-accent">Matter (Einstein–de Sitter)</td><td>$(t/t_0)^{2/3}$</td><td>$\frac{2}{3}\,H_0^{-1}$</td></tr>
+      <tr><td class="c-hot">Radiation</td><td>$(t/t_0)^{1/2}$</td><td>$\frac{1}{2}\,H_0^{-1}$</td></tr>
+      <tr><td class="c-good">$\Lambda$ (de Sitter)</td><td>$e^{H_0(t - t_0)}$</td><td>$\infty$</td></tr>
+    </table>
+    <div class="w-fig" data-widget="single" data-h="400"></div>
+  </div>
+  <p class="aside">Flat, one component with $w \ne -1$: $\;a \propto t^{2/(3+3w)}$, $\;t_0 = \dfrac{2}{3(1+w)}\,H_0^{-1}$.</p>
+</section>
+
+<section id="multiple" data-text-size="0.8">
+  <p class="kicker">Chapter 5 · <a href="../06-multiple/" target="_blank">Lecture 6</a></p>
+  <h2>Universes with several components</h2>
+  <div class="cols" style="grid-template-columns: 1fr auto; gap: 30px;">
+    <div>
+      <p>In general, integrate numerically:</p>
+      $$H_0\,t = \int_0^a \frac{da'}{\left[\Omega_{r,0}\,a'^{-2} + \Omega_{m,0}\,a'^{-1} + \Omega_{\Lambda,0}\,a'^2 + (1 - \Omega_0)\right]^{1/2}}$$
+      <ul>
+        <li class="fragment">Matter + curvature: <strong>density is destiny</strong>. With $\Lambda$: Big Chill, Big Crunch, loitering, Big Bounce.</li>
+        <li class="fragment">The <strong>Benchmark Model</strong>: flat, $\Omega_{r,0} = 9.0\times10^{-5}$, $\Omega_{m,0} = 0.31$, $\Omega_{\Lambda,0} = 0.69$, $H_0 = 68$ km/s/Mpc; $t_0 = 13.7$ Gyr. Radiation, then matter, then $\Lambda$ dominate.</li>
+      </ul>
+    </div>
+    <div class="w-fig" data-widget="fates" data-h="380"></div>
+  </div>
+</section>
+
+<section id="observed" data-text-size="0.95">
+  <p class="kicker">Chapter 6 · <a href="../07-parameters/" target="_blank">Lecture 7</a></p>
+  <h2>Measuring distances</h2>
+  <div class="cols" style="grid-template-columns: 1fr 1fr; gap: 40px;">
+    <div>
+      <p><strong>Standard candle</strong> (known $L$), flux $f$:</p>
+      $$d_L \equiv \left(\frac{L}{4\pi f}\right)^{1/2} = S_\kappa(r)\,(1+z)$$
+      <p class="aside">Flat: $d_L = d_p(t_0)\,(1+z)$</p>
+    </div>
+    <div class="fragment">
+      <p><strong>Standard yardstick</strong> (known $\ell$), angle $\delta\theta$:</p>
+      $$d_A \equiv \frac{\ell}{\delta\theta} = \frac{S_\kappa(r)}{1+z}$$
+      <p class="aside">Flat: $d_A = d_p(t_0)/(1+z) = d_p(t_e)$</p>
+    </div>
+  </div>
+  <div class="fragment">
+    <p>Distance modulus: $\;m - M = 5\log_{10}\left(\dfrac{d_L}{1\ \text{Mpc}}\right) + 25$</p>
+    <p>Type Ia supernovae at $z \gtrsim 0.3$ are fainter than in an empty universe: the expansion is speeding up.</p>
+  </div>
+</section>
+
+<section id="zoo-try" data-text-size="0.8">
+  <h2>Try it: all the distances</h2>
+  <div class="cols" style="grid-template-columns: 1fr auto; gap: 24px; align-items: start;">
+    <div>
+      <select class="w-select" data-k="model" aria-label="Model universe">
+        <option value="benchmark" selected>Benchmark Model</option>
+        <option value="matter">Matter only (Einstein–de Sitter)</option>
+        <option value="radiation">Radiation only</option>
+        <option value="lambda">Λ only (de Sitter)</option>
+        <option value="milne">Empty (Milne)</option>
+      </select>
+      <ul style="margin-top: 0.8em;">
+        <li>At $z \ll 1$ all distances agree: Hubble's law.</li>
+        <li>Flat: $d_A = d_p(t_e) < c(t_0 - t_e) < d_p(t_0) < d_L$</li>
+        <li>Horizon today: <span data-v="hor"></span></li>
+        <li>Receding faster than light today ($d_p(t_0) > c/H_0$) for $z >$ <span data-v="zc"></span>, and we see them!</li>
+      </ul>
+    </div>
+    <div class="w-fig" data-widget="zoo" data-key data-w="660" data-h="500"></div>
+  </div>
+  <aside class="notes">Log axes. The colours mark the kind of distance here, not a component.
+    Questions to ask: which distance is largest? Which one has a maximum (d_p(te) and d_A, except in de Sitter)? Which universes have a finite horizon (with matter or radiation)? In the empty universe, d_A ≠ d_p(te): it is curved.
+    Faster than light: Hubble's law v = H0 d_p holds exactly for the proper distance; v > c is allowed (it is space that expands), and the light we see now left those galaxies when they were closer.</aside>
+</section>
+
+<section id="confusions" data-text-size="0.95">
+  <h2>Common confusions</h2>
+  <ul>
+    <li class="fragment"><strong>The Hubble "constant" changes with time</strong>: $H_0$ is its value today. $H(t)$ is the same everywhere at a given time.</li>
+    <li class="fragment"><strong>Hubble time $\ne$ age</strong>: $t_0 = 1/H_0$ only for the empty universe (Benchmark: $t_0 = 0.95/H_0$).</li>
+    <li class="fragment"><strong>Hubble distance $c/H_0$ $\ne$ horizon distance</strong>: the horizon is $c\int dt/a$ from the Big Bang (Benchmark: $3.2\,c/H_0$).</li>
+    <li class="fragment"><strong>Redshift is not a Doppler shift</strong>: it is the stretching of space while the light travels, $1 + z = 1/a(t_e)$.</li>
+    <li class="fragment"><strong>Accelerating $\ne$ $H$ growing</strong>: $\ddot a > 0$, but in the Benchmark Model $H$ still falls towards $H_0\sqrt{\Omega_{\Lambda,0}}$.</li>
+  </ul>
+  <aside class="notes">Most of these came up in the exercises and the problem sets. Each one in one sentence: ask the students to explain it to their neighbour.</aside>
+</section>
+
+<!-- ============ Check your understanding ============ -->
+
+<section id="quiz-distances" data-text-size="1">
+  <p class="kicker">Think-Pair-Share</p>
+  <h2 style="margin-bottom: 0.15em;">A galaxy at $z = 2$ in a flat universe: which order is right?</h2>
+  <p class="aside">Think alone, discuss with your neighbour, then share. Click an option to check.</p>
+  <div class="choices" style="margin-top: 12px;">
+    <details class="no">
+      <summary>d<sub>L</sub> &lt; d<sub>p</sub>(t<sub>0</sub>) &lt; d<sub>A</sub></summary>
+      <p><b>No: backwards.</b> $d_L = d_p(t_0)(1+z)$ is the largest, $d_A = d_p(t_0)/(1+z)$ the smallest.</p>
+    </details>
+    <details class="yes">
+      <summary>d<sub>A</sub> &lt; d<sub>p</sub>(t<sub>0</sub>) &lt; d<sub>L</sub></summary>
+      <p><b>Yes.</b> With $1 + z = 3$: $d_A = d_p(t_0)/3$ and $d_L = 3\,d_p(t_0)$, whatever the contents, as long as the universe is flat.</p>
+    </details>
+    <details class="no">
+      <summary>All three are equal</summary>
+      <p><b>No.</b> Only at $z \ll 1$, where all distances agree (Hubble's law).</p>
+    </details>
+    <details class="partly">
+      <summary>It depends on what the universe contains</summary>
+      <p><b>The values do, the order does not.</b> $d_p(t_0)$ depends on $\Omega_{m,0}$, $\Omega_{\Lambda,0}$, …, but the factors $(1+z)$ do not.</p>
+    </details>
+  </div>
+</section>
+
+<section id="quiz-acceleration" data-text-size="1">
+  <p class="kicker">Think-Pair-Share</p>
+  <h2 style="margin-bottom: 0.15em;">The expansion is speeding up today. What must be true?</h2>
+  <p class="aside">Think alone, discuss with your neighbour, then share. Click an option to check.</p>
+  <div class="choices" style="margin-top: 12px;">
+    <details class="no">
+      <summary>H is increasing with time</summary>
+      <p><b>No.</b> $\ddot a > 0$ means $\dot a$ grows, but $H = \dot a/a$ can still fall: in the Benchmark Model it falls towards $H_0\sqrt{\Omega_{\Lambda,0}}$.</p>
+    </details>
+    <details class="no">
+      <summary>Ω<sub>Λ,0</sub> &gt; Ω<sub>m,0</sub></summary>
+      <p><b>Not needed.</b> That is $\Lambda$ <em>dominating</em>. Acceleration needs less: $q_0 < 0$.</p>
+    </details>
+    <details class="yes">
+      <summary>Ω<sub>Λ,0</sub> &gt; Ω<sub>r,0</sub> + Ω<sub>m,0</sub>/2</summary>
+      <p><b>Yes.</b> $q_0 = \Omega_{r,0} + \tfrac{1}{2}\Omega_{m,0} - \Omega_{\Lambda,0} < 0$, from the acceleration equation.</p>
+    </details>
+    <details class="no">
+      <summary>The universe is flat</summary>
+      <p><b>No.</b> Curvature does not enter $q_0$. The supernovae alone allow curved universes; the CMB (Lecture 11) shows ours is close to flat.</p>
+    </details>
+  </div>
+</section>
+
+<section id="quiz-faster" data-text-size="1">
+  <p class="kicker">Think-Pair-Share</p>
+  <h2 style="margin-bottom: 0.15em;">Can we see galaxies that are receding from us faster than light?</h2>
+  <p class="aside">Think alone, discuss with your neighbour, then share. Click an option to check.</p>
+  <div class="choices" style="margin-top: 12px;">
+    <details class="no">
+      <summary>No <span>nothing moves faster than light</span></summary>
+      <p><b>No.</b> Special relativity limits motion <em>through</em> space. The recession speed $H_0\,d_p(t_0)$ comes from the expansion of space, and can exceed $c$.</p>
+    </details>
+    <details class="yes">
+      <summary>Yes <span>we see many</span></summary>
+      <p><b>Yes.</b> In the Benchmark Model, every galaxy with $z \gtrsim 1.5$ has $d_p(t_0) > c/H_0$. Their light left when they were closer, and has been reaching us since (see the previous "Try it").</p>
+    </details>
+    <details class="partly">
+      <summary>Only in an accelerating universe</summary>
+      <p><b>No.</b> In the Einstein–de Sitter universe too: $d_p(t_0) > c/H_0$ for $z > 3$.</p>
+    </details>
+  </div>
+</section>
+
+<section id="exercises">
+  <h2>Exercise session</h2>
+  <ul>
+    <li>The exercises you asked for</li>
+    <li>The exercise sheets of Lectures 2–7 are on Canvas</li>
+  </ul>
+  <!-- TODO: Canvas links to the exercise sheets; add the exercises chosen by the students -->
+</section>
+
+<section id="before-next-time">
+  <h2>Before next time</h2>
+  <ul>
+    <li>Next lecture: <strong>Thursday 3 December</strong> (no lecture on Tuesday 1 December)</li>
+    <li><a href="https://canvas.su.se/courses/12102/modules/items/204294" target="_blank"><em>Problem set 4</em></a> is due <strong>Thursday 3 December</strong>, in Canvas</li>
+    <li>Read <strong>Ryden chapter 7</strong>: dark matter</li>
+  </ul>
+</section>
+
+</div></div>
+</body>
+</html>

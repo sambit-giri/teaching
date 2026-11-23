@@ -2,56 +2,13 @@
 // and inputs with a data-k="name" attribute; the widget redraws when an input changes and when the
 // light/dark theme is switched. Charts use Observable Plot and d3 (from the CDN).
 import { hubbleTime, benchmark, E, simpson, c_kms } from "../../_shared/cosmo.js";
-import { single, singlePlot, aPlot, evolve, aMax } from "../../_shared/models.js";
+import { single, singlePlot, aMax, fateRange, history, fatePlot, fates, showSteps, turning, bounceLine, crunchLine } from "../../_shared/models.js";
 import { withAxes } from "../../_shared/plot.js";
 
 const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 const colours = () => Object.fromEntries(["ink", "ink-soft", "accent", "hot", "cool", "good", "gold", "edge", "bg"].map((k) => [k.replace("-", "_"), css(`--${k}`)]));
 const style = (C, fontSize = "16px") => ({ background: "transparent", color: C.ink, fontSize, fontFamily: css("--f-ui") });
 const tH = hubbleTime(benchmark.H0);                     // 1/H0 in Gyr
-
-// Boundaries in the Ωm,0–ΩΛ,0 plane for matter + Λ + curvature (Carroll, Press & Turner 1992):
-// above bounceLine there is no Big Bang; below crunchLine the universe recollapses.
-const bounceLine = (m) => m <= 0.5 ? 4 * m * Math.cosh(Math.acosh((1 - m) / m) / 3) ** 3 : 4 * m * Math.cos(Math.acos((1 - m) / m) / 3) ** 3;
-const crunchLine = (m) => m <= 1 ? 0 : 4 * m * Math.cos(Math.acos((1 - m) / m) / 3 + 4 * Math.PI / 3) ** 3;
-
-// a(t) curves for matter + Λ + curvature, against H0(t − t0): the axes of Lecture 5, centred on today
-const sRange = [-3.2, 3.2];
-const history = (Om, OL) => evolve({ Om, OL }, sRange[1] + 0.2, aMax + 0.5);
-function fatePlot(C, curves, { height = 400, width, fontSize, extra = [], today = true } = {}) {
-  const marks = [
-    Plot.ruleX([0], { stroke: C.edge, strokeDasharray: "4 4" }),
-    ...(today ? [Plot.dot([{ s: 0, a: 1 }], { x: "s", y: "a", r: 5, fill: C.ink }),
-      Plot.text([{ s: 0, a: 1 }], { x: "s", y: "a", text: () => "today", dx: -8, dy: -12, textAnchor: "end", fill: C.ink })] : []),
-  ];
-  for (const c of curves) {
-    const className = c.step ? `step-${c.step}` : undefined;
-    marks.push(Plot.line(c.pts, { x: "s", y: "a", stroke: c.colour, strokeWidth: c.width ?? 3, strokeOpacity: c.opacity, strokeDasharray: c.dash, clip: true, className }));
-    if (c.label) marks.push(Plot.text([c.at], { x: "s", y: "a", text: () => c.label, fill: c.colour, fontWeight: 700, textAnchor: c.anchor ?? "start", dx: c.dx ?? 0, dy: c.dy ?? 0, clip: true, className }));
-  }
-  // a key in the empty top left, as in Lecture 5, for the curves with a key
-  curves.filter((c) => c.key).forEach((c, i) => {
-    const a = (0.82 - 0.09 * i) * aMax, s0 = sRange[0] + 0.1;
-    marks.push(Plot.line([{ s: s0, a }, { s: s0 + 0.5, a }], { x: "s", y: "a", stroke: c.colour, strokeWidth: c.width ?? 3, strokeDasharray: c.dash }),
-      Plot.text([{ s: s0 + 0.6, a }], { x: "s", y: "a", text: () => c.key, textAnchor: "start", fill: c.colour, fontWeight: 700 }));
-  });
-  return aPlot(C, [...marks, ...extra], { height, width, fontSize, font: css("--f-ui"), range: sRange });
-}
-
-// The scale factor where the expansion stops (H = 0) between a1 and a2, or null: the first sign change
-// of E² = Ωr/a⁴ + Ωm/a³ + ΩΛ + (1 − Ωr − Ωm − ΩΛ)/a², found on a log grid and refined by bisection. The
-// fate does not depend on how far the a(t) curves are drawn, so a Big Crunch at a = 100 is still found.
-function turning(Om, OL, a1, a2, Or = 0) {
-  const E2 = (a) => Or / a ** 4 + Om / a ** 3 + OL + (1 - Or - Om - OL) / a ** 2;
-  const n = 3000, r = (a2 / a1) ** (1 / n);
-  for (let i = 1, lo = a1; i <= n; i++, lo *= r) {
-    let hi = lo * r;
-    if (E2(hi) > 0) continue;
-    for (let j = 0; j < 50; j++) { const mid = Math.sqrt(lo * hi); if (E2(mid) > 0) lo = mid; else hi = mid; }
-    return lo;
-  }
-  return null;
-}
 
 // One line about a universe's history (matter + Λ + curvature)
 function describe(Om, OL) {
@@ -65,32 +22,6 @@ function describe(Om, OL) {
 }
 
 const fill = (box, v) => { for (const el of box.closest("section").querySelectorAll("[data-v]")) el.textContent = v[el.dataset.v] ?? ""; };
-
-// Ryden's Figure 5.7: four universes with Ωm,0 = 0.31, told apart by line style as well as colour
-// (not gold, which is the chosen universe on the slider slides). step: the click that shows the curve.
-const fates = (C) => [
-  { name: "Big Chill", OL: 0.69, colour: C.good, at: { s: 1.1, a: 2.3 }, dx: 10, step: 1 },
-  { name: "Big Crunch", OL: -0.31, colour: C.hot, dash: "8 5", at: { s: 1.3, a: 0.55 }, step: 1 },
-  { name: "Loitering", OL: 1.7289, colour: C.cool, dash: "2 4", at: { s: -3.1, a: 0.2 }, step: 2 },
-  { name: "Big Bounce", OL: 1.8, colour: C.accent, dash: "12 4 3 4", at: { s: 0.6, a: 3.6 }, anchor: "end", step: 2 },
-].map((f) => ({ ...f, pts: history(0.31, f.OL).pts, label: f.name }));
-
-// With data-steps on the box, the curves of step k show once k groups of clicks on the slide are shown
-function showSteps(box) {
-  const sec = box.closest("section");
-  const update = () => {
-    const shown = new Set([...sec.querySelectorAll(".fragment.visible")].map((f) => f.dataset.fragmentIndex)).size;
-    for (const g of box.querySelectorAll("[class*='step-']")) {
-      const k = +[...g.classList].find((c) => c.startsWith("step-")).slice(5);
-      g.style.opacity = k <= shown ? 1 : 0;
-    }
-  };
-  update();
-  if (!box.dataset.bound) {
-    box.dataset.bound = "1";
-    for (const ev of ["fragmentshown", "fragmenthidden", "slidechanged"]) Reveal.on(ev, update);
-  }
-}
 
 const widgets = {
   single: (box) => box.replaceChildren(singlePlot(colours(), { height: +(box.dataset.h ?? 400), font: css("--f-ui") })),
@@ -272,7 +203,7 @@ const widgets = {
     const note = `t₀ = ${(tau0 * tH).toFixed(1)} Gyr`;
     if (!log) {
       const mL = { x: tauAt(amL) - tau0, a: amL };
-      const lambda = d3.range(sRange[0], sRange[1] + 1e-4, 0.01).map((x) => ({ s: x, a: Math.exp(x) })).filter((q) => q.a <= aMax + 0.5);
+      const lambda = d3.range(fateRange[0], fateRange[1] + 1e-4, 0.01).map((x) => ({ s: x, a: Math.exp(x) })).filter((q) => q.a <= aMax + 0.5);
       const curves = [
         { ...bench, pts: pts.map((q) => ({ s: q.tau - tau0, a: q.a })) },
         { pts: history(0, 0).pts, colour: C.ink_soft, dash: single.milne.dash, key: single.milne.label },
