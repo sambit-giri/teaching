@@ -27,7 +27,9 @@ Cosmology_HT2026_AS5003/       one folder per course, served at /teaching/<folde
     index.html                 the slides: one <section> per slide, in Keynote order
     *.js                       the slides' interactive widgets ("Try it" slides)
     *.bin                      data used by the widgets; make_*.py rebuilds a data file from its source
+    slides.pdf                 the slides as a PDF, made by make_pdfs.py
 build.sh                       builds the site into _site/
+make_pdfs.py                   makes each deck's slides.pdf (see Slides)
 ```
 
 Links for Canvas:
@@ -75,8 +77,16 @@ the options:
 - `<div class="wall" data-wall="name"></div>` is an answer wall: type a phrase in class and press
   Enter. Phrases stay in that browser until "Clear".
 
-PDF: open a deck with `?print-pdf` added to the URL (e.g. `.../01-observables/?print-pdf`) and
-print to PDF from Chrome.
+PDF: each deck has a `slides.pdf` (light theme, one page per slide, all clicks shown), linked from
+the course's lecture list. After changing a deck, rebuild its PDF and commit it with the deck:
+
+```sh
+pip install playwright && python -m playwright install chromium   # once
+python make_pdfs.py 07-parameters    # or no argument for every deck
+```
+
+The PDF button on the slides (or `?print-pdf` in the URL, then print) gives the same layout in the
+browser.
 
 ## Data credits
 

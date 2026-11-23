@@ -163,10 +163,12 @@ export function fatePlot(C, curves, { height = 400, width, fontSize, extra = [],
 }
 
 // With data-steps on the box, the curves of step k show once k groups of clicks on the slide are shown
+// (all of them in the PDF layout, which shows every click)
 export function showSteps(box) {
   const sec = box.closest("section");
   const update = () => {
-    const shown = new Set([...sec.querySelectorAll(".fragment.visible")].map((f) => f.dataset.fragmentIndex)).size;
+    const shown = /print-pdf/.test(location.search) ? Infinity
+      : new Set([...sec.querySelectorAll(".fragment.visible")].map((f) => f.dataset.fragmentIndex)).size;
     for (const g of box.querySelectorAll("[class*='step-']")) {
       const k = +[...g.classList].find((c) => c.startsWith("step-")).slice(5);
       g.style.opacity = k <= shown ? 1 : 0;
