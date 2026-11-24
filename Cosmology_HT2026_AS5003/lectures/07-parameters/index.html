@@ -42,7 +42,7 @@
       <p class="credit">Image credit: NASA</p>
     </figure>
     <figure>
-      <div class="w-fig" data-widget="hubble" data-mode="cover" data-w="520" data-h="395" style="align-self: start;"></div>
+      <div class="w-fig" data-widget="hubble" data-w="520" data-h="395" style="align-self: start;"></div>
       <p class="credit">580 type Ia supernovae (Union2.1, Suzuki et al. 2012) and the Benchmark Model</p>
     </figure>
   </div>
@@ -57,7 +57,7 @@
         <li><a href="https://canvas.su.se/courses/12102/modules/items/204294" target="_blank"><em>Problem set 4</em></a> is due <strong>Thursday 3 December</strong>, in Canvas.</li>
       </ul>
     </li>
-    <li><strong>Thursday:</strong> a recap of chapters 3–6, and exercises. Tell me which topics or exercises you want to go through (at the end of today's class, or by email).</li>
+    <li><strong>Next lecture:</strong> a recap of chapters 2–6, and exercises. Tell me which topics or exercises you want to go through in the <em>anonymous</em> Canvas survey <a href="https://canvas.su.se/courses/12102/assignments/36079" target="_blank"><em>Recap topics</em></a> by <strong>Wednesday 25 November, 13:00</strong>.</li>
     <li><strong>Literature review:</strong> the written report is due <strong>Tuesday 15 December</strong>; the presentations are on <strong style="white-space: nowrap;">Thursday 17</strong> and <strong style="white-space: nowrap;">Friday 18 December</strong>.</li>
   </ul>
 </section>
@@ -69,7 +69,7 @@
     <div>
       <ul>
         <li>One component: analytic solutions for $a(t)$.</li>
-        <li>Several components: integrate the Friedmann equation numerically (matter + curvature, matter + $\Lambda$, radiation + matter, …).</li>
+        <li>Several components: integrate the Friedmann equation numerically (matter + curvature, matter + $\Lambda$, radiation + matter, …), or use a <a href="https://sambit-giri.github.io/teaching/tools/cosmology-calculator/" target="_blank">cosmology calculator</a>.</li>
         <li>With $\Lambda$, the fate depends on both $\Omega_{m,0}$ and $\Omega_{\Lambda,0}$.</li>
         <li>The <strong>Benchmark Model</strong>: flat, with $\Omega_{r,0} = 9.0\times10^{-5}$, $\Omega_{m,0} = 0.31$, $\Omega_{\Lambda,0} = 0.69$, $H_0 = 68$ km/s/Mpc.</li>
       </ul>
@@ -99,7 +99,7 @@
   <h2>Goals of this week</h2>
   <ul>
     <li>How we <strong>measure</strong> distances, and from them the cosmological <span style="white-space: nowrap;">parameters <span class="hl-tag">← today</span></span></li>
-    <li>Put together what we have learnt about <span style="white-space: nowrap;"><strong>cosmic dynamics</strong> <span class="hl-tag">← Thursday</span></span></li>
+    <li>Put together what we have learnt about <span style="white-space: nowrap;"><strong>cosmic dynamics</strong> <span class="hl-tag">← next lecture</span></span></li>
   </ul>
 </section>
 
@@ -119,7 +119,9 @@
   <p class="kicker">A search for two numbers</p>
   <h2>Taylor-expanding the scale factor</h2>
   <p>We cannot observe $a(t)$ directly. Near today, expand it:</p>
-  $$a(t) \approx 1 + \left.\frac{\dot a}{a}\right|_{t_0}(t - t_0) + \frac{1}{2}\left.\frac{\ddot a}{a}\right|_{t_0}(t - t_0)^2$$
+  $$a(t) = a(t_0) + \left.\dot a\right|_{t_0}(t - t_0) + \frac{1}{2}\left.\ddot a\right|_{t_0}(t - t_0)^2 + \dots$$
+  <p>Divide by $a(t_0)$:</p>
+  $$\frac{a(t)}{a(t_0)} \approx 1 + \left.\frac{\dot a}{a}\right|_{t_0}(t - t_0) + \frac{1}{2}\left.\frac{\ddot a}{a}\right|_{t_0}(t - t_0)^2$$
   <div class="fragment">
     $$a(t) \approx 1 + H_0\,(t - t_0) - \frac{1}{2}\,q_0\,H_0^2\,(t - t_0)^2$$
     <p>with the <strong>deceleration parameter</strong> $\;q_0 \equiv -\left.\dfrac{\ddot a\,a}{\dot a^2}\right|_{t_0}$</p>
@@ -128,50 +130,60 @@
     <li>$q_0 > 0$: the expansion slows down. $q_0 < 0$: it speeds up.</li>
     <li>No physics yet: just a description of the expansion near $t_0$.</li>
   </ul>
-  <aside class="notes">Divide the Taylor series by a(t0) = 1. The sign of q0, and its name, come from the 1950s, when everyone expected the expansion to slow down (matter only).
+  <aside class="notes">Before the click, on the board: a(t0) = 1, and ȧ/a at t0 is H0. ä/a at t0 is the acceleration term; write it as −q0 H0², which defines q0. Then click.
+    Why q0 = −ä a/ȧ² and not just −ä/a: dividing by H0² makes it dimensionless (ä/a is 1/time²), so the series is in the pure number H0(t − t0) and q0 is independent of H0, which was uncertain by a factor 2 for decades. The minus sign: in the 1950s everyone expected the expansion to slow down (matter only), so a positive number for deceleration. It also comes out simply in the Ω's: q0 = ½ Σ Ωi (1 + 3wi), e.g. 1/2 for matter only (next slide).
     Allan Sandage (1970) called all of cosmology "a search for two numbers": H0 and q0.</aside>
 </section>
 
-<section id="q0">
+<section id="q0" data-text-size="0.75">
   <p class="kicker">A search for two numbers</p>
   <h2>$q_0$ from the acceleration equation</h2>
   <div class="cols" style="grid-template-columns: 1fr auto; gap: 30px;">
     <div>
-      <p>Divide the acceleration equation by $H^2$:</p>
-      $$-\frac{\ddot a}{aH^2} = \frac{1}{2}\sum_i \Omega_i\,(1 + 3w_i)$$
+      <p>In terms of the $\Omega_i$, like the Friedmann equation:</p>
+      $$\frac{\ddot a}{a} = -\frac{H^2}{2}\sum_i \Omega_i\,(1 + 3w_i)$$
       <div class="fragment">
-        <p>so today</p>
-        $$q_0 = \Omega_{r,0} + \tfrac{1}{2}\,\Omega_{m,0} - \Omega_{\Lambda,0}$$
-        <p>Benchmark Model: $q_0 \approx -0.53$, speeding up.</p>
+        <p>Take $-H^2$ to the left:</p>
+        $$-\frac{\ddot a}{aH^2} = \frac{1}{2}\sum_i \Omega_i\,(1 + 3w_i)$$
+        <p>No curvature term. Radiation and matter decelerate, $\Lambda$ accelerates.</p>
       </div>
-      <p class="aside" style="margin-top: 0.6em;">Flat, matter + $\Lambda$: $\Omega_{m,0}$ = <span data-v="Om"></span>, $\Omega_{\Lambda,0}$ = <span data-v="OL"></span>, so $q_0$ = <span data-v="q0"></span>: the expansion today is <span data-v="accel"></span>.</p>
+      <div class="fragment">
+        <p>Today, the left side is $q_0$:</p>
+        $$q_0 = \frac{1}{2}\sum_i \Omega_{i,0}\,(1 + 3w_i) = \Omega_{r,0} + \tfrac{1}{2}\,\Omega_{m,0} - \Omega_{\Lambda,0}$$
+      </div>
+      <p class="fragment">Benchmark Model: $q_0 \approx -0.53$, so the expansion is <strong>speeding up</strong> today.</p>
     </div>
     <div>
-      <div class="w-fig" data-widget="taylor" data-h="380"></div>
-      <input class="olbers-slider" data-k="Om" type="range" min="0.05" max="1.5" step="0.01" value="0.31" aria-label="Omega m,0">
+      <div class="w-fig" data-widget="taylor" data-h="340"></div>
+      <label class="olbers-label">Deceleration parameter $q_0$ = <span data-v="q0"></span></label>
+      <input class="olbers-slider" data-k="q0" type="range" min="-1" max="1.25" step="0.01" value="-0.53" aria-label="q0">
+      <p class="aside" style="margin-top: 0.4em; max-width: 380px;">Exact $a(t)$: the flat universe with $\Omega_{m,0}$ = <span data-v="Om"></span>, $\Omega_{\Lambda,0}$ = <span data-v="OL"></span>, <span data-v="accel"></span> today.</p>
     </div>
   </div>
-  <aside class="notes">From the acceleration equation, ä/a = −(4πG/3c²) Σ εi(1 + 3wi), and εc = 3c²H²/(8πG).
-    The plot: the exact a(t) (gold), the first order (a straight line: the empty universe) and the second order with q0. Close to today the parabola follows the exact curve; far away it does not. Try Ωm,0 = 1 (q0 = 1/2) and Ωm,0 = 0.31.
+  <aside class="notes">First line: the acceleration equation ä/a = −(4πG/3c²) Σ εi(1 + 3wi), divided by H², with εc = 3c²H²/(8πG), so 4πG/(3c²H²) = 1/(2εc) and εi/εc = Ωi. This works because q0 has H² in its denominator: unitless.
+    Before click 2, on the board: with H = ȧ/a, −ä/(aH²) = −ä a/ȧ², which at t0 is q0 (previous slide). It has no units. With w = 1/3, 0, −1: Ωr + Ωm/2 − ΩΛ.
+    If asked about other times: Ωi H² = Ωi,0 H0² a^(−3(1+wi)), so ä/a = −H0² [Ωr,0/a⁴ + Ωm,0/(2a³) − ΩΛ,0], the partner of H²/H0² = Ωr,0/a⁴ + Ωm,0/a³ + ΩΛ,0 + (1 − Ω0)/a². The decelerating terms fall as a⁻⁴ and a⁻³, Λ stays: early on the expansion always slows down, later Λ wins. This is the equation the a(t) curves of Lectures 6 and 7 integrate.
+    If asked when it started speeding up (Benchmark), where Ωm,0/2a³ = ΩΛ,0: a = (Ωm,0/2ΩΛ,0)^(1/3) = (0.31/1.38)^(1/3) ≈ 0.61, z ≈ 0.65 (radiation negligible).
+    Warn: q0 is not the exponent q of a ∝ t^q in Lecture 5. They are related: for a ∝ t^p, q0 = (1 − p)/p = (1 + 3w)/2 with p = 2/(3(1+w)), the formula above with one component and Ω = 1 (matter 1/2, radiation 1).
+    The plot: the slider sets q0. Gold: the exact a(t) of the flat matter + Λ universe with that q0 (q0 = 3Ωm,0/2 − 1). The first order is a straight line (the empty universe), the second order the parabola with q0. Close to today the parabola follows the exact curve; far away it does not: this is the point of the next slide. Try q0 = 1/2 (matter only) and q0 = −0.53.
     Expansion speeds up today if ΩΛ,0 > Ωr,0 + Ωm,0/2.</aside>
 </section>
 
 <section id="dp-two-numbers">
   <p class="kicker">A search for two numbers</p>
-  <h2>Distance and the two numbers</h2>
-  <p>Put the expansion of $1/a$ into $\;d_p(t_0) = c\displaystyle\int_{t_e}^{t_0}\frac{dt}{a(t)}$:</p>
-  $$d_p(t_0) \approx c\,(t_0 - t_e) + \frac{cH_0}{2}\,(t_0 - t_e)^2$$
+  <h2>Beyond the two numbers</h2>
+  <p>$H_0$ and $q_0$ describe $a(t)$ only <strong>near today</strong>: further away, the Taylor expansion misses the exact curve.</p>
   <div class="fragment">
-    <p>But light comes with a redshift, not a lookback time:</p>
-    $$z = \frac{1}{a(t_e)} - 1 \approx H_0(t_0 - t_e) + \left(1 + \frac{q_0}{2}\right)H_0^2(t_0 - t_e)^2$$
+    <p>To use measurements at <strong>any redshift</strong>, use the full distance:</p>
+    $$d_p(t_0) = \frac{c}{H_0}\int_0^z \frac{dz'}{\left[\Omega_{r,0}(1+z')^4 + \Omega_{m,0}(1+z')^3 + \Omega_{\Lambda,0} + (1 - \Omega_0)(1+z')^2\right]^{1/2}}$$
   </div>
   <div class="fragment">
-    <p>Invert, and substitute:</p>
-    $$d_p(t_0) \approx \frac{c}{H_0}\,z\left(1 - \frac{1 + q_0}{2}\,z\right)$$
-    <p>Hubble's law $d_p = cz/H_0$ only holds for $z \ll 2/(1 + q_0)$. <strong>The deviation measures $q_0$.</strong></p>
+    <p>The parameters to measure: $H_0$, $\Omega_{r,0}$, $\Omega_{m,0}$, $\Omega_{\Lambda,0}$ (and from them the curvature, $1 - \Omega_0$).</p>
+    <p>Knowing the $\Omega_{i,0}$ also gives the deceleration parameter:</p>
+    $$q_0 = \Omega_{r,0} + \tfrac{1}{2}\,\Omega_{m,0} - \Omega_{\Lambda,0}$$
   </div>
-  <aside class="notes">Ryden eqs 6.14–6.19. 1/a ≈ 1 − H0(t − t0) + (1 + q0/2)H0²(t − t0)². The first term in d_p is the distance in a static universe; the second is the stretching while the light travels.
-    Inverting: t0 − te ≈ H0⁻¹[z − (1 + q0/2)z²].</aside>
+  <aside class="notes">As in HT25: point at the plot on the previous slide; the parabola leaves the exact curve a few tenths of a Hubble time from today, so data at z ≳ 0.3 need the full model. The integral is the one from the recap at the start (slide 4).
+    For reference, the small-z expansion (Ryden eqs 6.14–6.19): d_p(t0) ≈ (c/H0) z [1 − (1 + q0) z/2], so Hubble's law holds only for z ≪ 2/(1 + q0), and the deviation measures q0. With d_L = d_p(1 + z) in a flat universe this gives d_L ≈ (c/H0) z [1 + (1 − q0) z/2] (luminosity distance slide).</aside>
 </section>
 
 <!-- ============ Luminosity distance ============ -->
@@ -180,8 +192,8 @@
   <h2>How do we actually measure distances?</h2>
   <p>$d_p(t_0)$ cannot be measured: the tape measure would have to be laid out instantly. Instead:</p>
   <ul>
-    <li class="fragment"><strong>Standard candle</strong>: an object of known luminosity. Measure its flux: the <strong>luminosity distance</strong>.</li>
-    <li class="fragment"><strong>Standard yardstick</strong>: an object of known size. Measure its angle on the sky: the <strong>angular-diameter distance</strong>.</li>
+    <li class="fragment">A <strong>standard candle</strong> is an object of known luminosity. Measuring its flux gives the <strong>luminosity distance</strong>.</li>
+    <li class="fragment">A <strong>standard yardstick</strong> is an object of known size. Measuring its angle on the sky gives the <strong>angular-diameter distance</strong>.</li>
     <li class="fragment">Each is related to $d_p(t_0)$. Compare with the prediction of each model universe to find the one that fits best.</li>
   </ul>
   <aside class="notes">Radar works in the Solar System (1 AU = 149 597 870.7 km); parallax in our Galaxy (Gaia: about 10 microarcseconds). A galaxy at 100 Mpc would need 0.01 microarcseconds: too small.</aside>
@@ -190,8 +202,8 @@
 <section id="dl-def">
   <h2>Luminosity distance</h2>
   <ul>
-    <li><strong>Luminosity</strong> $L$ (intrinsic): energy emitted per unit time. The Sun: $L_\odot = 3.83\times10^{26}$ W.</li>
-    <li class="fragment"><strong>Flux</strong> $f$ (observed): energy received per unit time and unit area. The Sun, at the top of the Earth's atmosphere: $f = 1361$ W m⁻².</li>
+    <li>The <strong>luminosity</strong> $L$ is the energy a source emits per unit time, a property of the source. For the Sun, $L_\odot = 3.83\times10^{26}$ W.</li>
+    <li class="fragment">The <strong>flux</strong> $f$ is the energy we receive per unit time and unit area, what we observe. For the Sun, at the top of the Earth's atmosphere, $f = 1361$ W m⁻².</li>
   </ul>
   <div class="fragment">
     <p>The <strong>luminosity distance</strong> $d_L$ is defined so that</p>
@@ -200,12 +212,17 @@
   </div>
 </section>
 
-<section id="dl-why" data-text-size="0.85">
+<section id="dl-why" data-text-size="0.74">
   <h2>Luminosity distance in an expanding universe</h2>
+  <div style="display: flex; align-items: center; justify-content: center; gap: 1.5em; margin: -0.4em 0;">
+    <div>Recall:</div>
+    <div>$$ds^2 = -c^2dt^2 + a(t)^2\left[dr^2 + S_\kappa(r)^2\,d\Omega^2\right]$$</div>
+    <div>$$S_\kappa(r) = \begin{cases} R_0\sin(r/R_0) & \kappa = +1\\ r & \kappa = 0\\ R_0\sinh(r/R_0) & \kappa = -1\end{cases}$$</div>
+  </div>
   <p>Observed flux $= \dfrac{\text{energy}}{\text{time}\times\text{area}}$. In an expanding universe, $d_L \ne d_p(t_0)$, for three reasons:</p>
   <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 0.4em;">
-    <div class="fragment">
-      <svg viewBox="0 0 300 150" style="width: 100%; height: auto;" aria-label="A source at the centre of a sphere; the observer is on the sphere">
+    <div class="fragment" data-fragment-index="1">
+      <svg viewBox="0 0 300 150" style="width: 100%; height: auto; max-height: 120px;" aria-label="A source at the centre of a sphere; the observer is on the sphere">
         <circle cx="150" cy="75" r="66" style="fill: var(--accent); fill-opacity: 0.08; stroke: var(--accent); stroke-width: 2.5;"/>
         <circle cx="150" cy="75" r="7" style="fill: var(--gold);"/>
         <line x1="150" y1="75" x2="207" y2="42" style="stroke: var(--ink-soft); stroke-width: 1.5; stroke-dasharray: 4 4;"/>
@@ -213,10 +230,10 @@
         <text x="214" y="34" style="fill: var(--ink); font: 600 16px var(--f-ui);">us</text>
         <text x="150" y="98" text-anchor="middle" style="fill: var(--ink-soft); font: 15px var(--f-ui);">source</text>
       </svg>
-      <p><strong>1. Geometry:</strong> the light today is spread over a sphere of area $A_p(t_0) = 4\pi S_\kappa(r)^2$, not $4\pi r^2$.</p>
+      <p><strong>1. Geometry:</strong> today ($a = 1$) the light is spread over a sphere of area $4\pi S_\kappa(r)^2$, not $4\pi r^2$.</p>
     </div>
-    <div class="fragment">
-      <svg viewBox="0 0 300 150" style="width: 100%; height: auto;" aria-label="A short wave stretched into a longer wave">
+    <div class="fragment" data-fragment-index="2">
+      <svg viewBox="0 0 300 150" style="width: 100%; height: auto; max-height: 120px;" aria-label="A short wave stretched into a longer wave">
         <path style="fill: none; stroke: var(--accent); stroke-width: 2.5;" d="M 12.0 55.0 L 14.0 49.0 L 16.0 44.6 L 18.0 43.0 L 20.0 44.6 L 22.0 49.0 L 24.0 55.0 L 26.0 61.0 L 28.0 65.4 L 30.0 67.0 L 32.0 65.4 L 34.0 61.0 L 36.0 55.0 L 38.0 49.0 L 40.0 44.6 L 42.0 43.0 L 44.0 44.6 L 46.0 49.0 L 48.0 55.0 L 50.0 61.0 L 52.0 65.4 L 54.0 67.0 L 56.0 65.4 L 58.0 61.0 L 60.0 55.0 L 62.0 49.0 L 64.0 44.6 L 66.0 43.0 L 68.0 44.6 L 70.0 49.0 L 72.0 55.0 L 74.0 61.0 L 76.0 65.4 L 78.0 67.0 L 80.0 65.4 L 82.0 61.0 L 84.0 55.0 L 86.0 49.0 L 88.0 44.6 L 90.0 43.0 L 92.0 44.6 L 94.0 49.0 L 96.0 55.0 L 98.0 61.0 L 100.0 65.4 L 102.0 67.0 L 104.0 65.4 L 106.0 61.0 L 108.0 55.0 L 110.0 49.0 L 112.0 44.6 L 114.0 43.0 L 116.0 44.6 L 118.0 49.0 L 120.0 55.0 L 122.0 61.0 L 124.0 65.4 L 126.0 67.0 L 128.0 65.4 L 130.0 61.0 L 132.0 55.0 L 134.0 49.0 L 136.0 44.6 L 138.0 43.0 L 140.0 44.6 L 142.0 49.0 L 144.0 55.0 L 146.0 61.0 L 148.0 65.4 L 150.0 67.0 L 152.0 65.4 L 154.0 61.0 L 156.0 55.0 L 158.0 49.0 L 160.0 44.6 L 162.0 43.0 L 164.0 44.6 L 166.0 49.0 L 168.0 55.0 L 170.0 61.0 L 172.0 65.4 L 174.0 67.0 L 176.0 65.4 L 178.0 61.0 L 180.0 55.0 L 182.0 49.0 L 184.0 44.6 L 186.0 43.0 L 188.0 44.6 L 190.0 49.0 L 192.0 55.0 L 194.0 61.0 L 196.0 65.4 L 198.0 67.0 L 200.0 65.4 L 202.0 61.0 L 204.0 55.0 L 206.0 49.0 L 208.0 44.6 L 210.0 43.0 L 212.0 44.6 L 214.0 49.0 L 216.0 55.0 L 218.0 61.0 L 220.0 65.4 L 222.0 67.0 L 224.0 65.4 L 226.0 61.0 L 228.0 55.0 L 230.0 49.0 L 232.0 44.6 L 234.0 43.0 L 236.0 44.6 L 238.0 49.0 L 240.0 55.0 L 242.0 61.0 L 244.0 65.4 L 246.0 67.0 L 248.0 65.4 L 250.0 61.0 L 252.0 55.0 L 254.0 49.0 L 256.0 44.6 L 258.0 43.0 L 260.0 44.6 L 262.0 49.0 L 264.0 55.0 L 266.0 61.0 L 268.0 65.4 L 270.0 67.0 L 272.0 65.4 L 274.0 61.0 L 276.0 55.0 L 278.0 49.0 L 280.0 44.6 L 282.0 43.0 L 284.0 44.6 L 286.0 49.0 L 288.0 55.0 L 290.0 61.0"/>
         <path style="fill: none; stroke: var(--hot); stroke-width: 2.5;" d="M 12.0 125.0 L 14.0 122.5 L 16.0 120.1 L 18.0 117.9 L 20.0 116.1 L 22.0 114.6 L 24.0 113.6 L 26.0 113.1 L 28.0 113.1 L 30.0 113.6 L 32.0 114.6 L 34.0 116.1 L 36.0 117.9 L 38.0 120.1 L 40.0 122.5 L 42.0 125.0 L 44.0 127.5 L 46.0 129.9 L 48.0 132.1 L 50.0 133.9 L 52.0 135.4 L 54.0 136.4 L 56.0 136.9 L 58.0 136.9 L 60.0 136.4 L 62.0 135.4 L 64.0 133.9 L 66.0 132.1 L 68.0 129.9 L 70.0 127.5 L 72.0 125.0 L 74.0 122.5 L 76.0 120.1 L 78.0 117.9 L 80.0 116.1 L 82.0 114.6 L 84.0 113.6 L 86.0 113.1 L 88.0 113.1 L 90.0 113.6 L 92.0 114.6 L 94.0 116.1 L 96.0 117.9 L 98.0 120.1 L 100.0 122.5 L 102.0 125.0 L 104.0 127.5 L 106.0 129.9 L 108.0 132.1 L 110.0 133.9 L 112.0 135.4 L 114.0 136.4 L 116.0 136.9 L 118.0 136.9 L 120.0 136.4 L 122.0 135.4 L 124.0 133.9 L 126.0 132.1 L 128.0 129.9 L 130.0 127.5 L 132.0 125.0 L 134.0 122.5 L 136.0 120.1 L 138.0 117.9 L 140.0 116.1 L 142.0 114.6 L 144.0 113.6 L 146.0 113.1 L 148.0 113.1 L 150.0 113.6 L 152.0 114.6 L 154.0 116.1 L 156.0 117.9 L 158.0 120.1 L 160.0 122.5 L 162.0 125.0 L 164.0 127.5 L 166.0 129.9 L 168.0 132.1 L 170.0 133.9 L 172.0 135.4 L 174.0 136.4 L 176.0 136.9 L 178.0 136.9 L 180.0 136.4 L 182.0 135.4 L 184.0 133.9 L 186.0 132.1 L 188.0 129.9 L 190.0 127.5 L 192.0 125.0 L 194.0 122.5 L 196.0 120.1 L 198.0 117.9 L 200.0 116.1 L 202.0 114.6 L 204.0 113.6 L 206.0 113.1 L 208.0 113.1 L 210.0 113.6 L 212.0 114.6 L 214.0 116.1 L 216.0 117.9 L 218.0 120.1 L 220.0 122.5 L 222.0 125.0 L 224.0 127.5 L 226.0 129.9 L 228.0 132.1 L 230.0 133.9 L 232.0 135.4 L 234.0 136.4 L 236.0 136.9 L 238.0 136.9 L 240.0 136.4 L 242.0 135.4 L 244.0 133.9 L 246.0 132.1 L 248.0 129.9 L 250.0 127.5 L 252.0 125.0 L 254.0 122.5 L 256.0 120.1 L 258.0 117.9 L 260.0 116.1 L 262.0 114.6 L 264.0 113.6 L 266.0 113.1 L 268.0 113.1 L 270.0 113.6 L 272.0 114.6 L 274.0 116.1 L 276.0 117.9 L 278.0 120.1 L 280.0 122.5 L 282.0 125.0 L 284.0 127.5 L 286.0 129.9 L 288.0 132.1 L 290.0 133.9"/>
         <text x="8" y="30" style="fill: var(--accent); font: 600 16px var(--f-ui);">emitted: λₑ</text>
@@ -224,8 +241,8 @@
       </svg>
       <p><strong>2. Redshift:</strong> each photon arrives with less energy, $E_0 = E_e/(1+z)$.</p>
     </div>
-    <div class="fragment">
-      <svg viewBox="0 0 300 150" style="width: 100%; height: auto;" aria-label="Photons spaced further apart on arrival than on emission">
+    <div class="fragment" data-fragment-index="3">
+      <svg viewBox="0 0 300 150" style="width: 100%; height: auto; max-height: 120px;" aria-label="Photons spaced further apart on arrival than on emission">
         <g style="fill: var(--accent);"><circle cx="40" cy="50" r="7"/><circle cx="80" cy="50" r="7"/><circle cx="120" cy="50" r="7"/><circle cx="160" cy="50" r="7"/></g>
         <g style="fill: var(--hot);"><circle cx="40" cy="120" r="7"/><circle cx="110" cy="120" r="7"/><circle cx="180" cy="120" r="7"/><circle cx="250" cy="120" r="7"/></g>
         <text x="8" y="26" style="fill: var(--accent); font: 600 16px var(--f-ui);">emitted every δtₑ</text>
@@ -234,10 +251,15 @@
       <p><strong>3. Time dilation:</strong> photons emitted $\delta t_e$ apart arrive $\delta t_0 = (1+z)\,\delta t_e$ apart.</p>
     </div>
   </div>
-  <div class="fragment">
-    $$f = \frac{L}{4\pi\,S_\kappa(r)^2\,(1+z)^2} \qquad\Rightarrow\qquad \boxed{d_L = S_\kappa(r)\,(1+z)}$$
+  <!-- the flux builds up with the three reasons: each click replaces the line below -->
+  <div class="r-stack">
+    <div class="fragment fade-in-then-out" data-fragment-index="1">$$f = \frac{\text{energy}}{\text{time}\times 4\pi S_\kappa(r)^2}$$</div>
+    <div class="fragment fade-in-then-out" data-fragment-index="2">$$f = \frac{E_e/(1+z)}{\text{time}\times 4\pi S_\kappa(r)^2}$$</div>
+    <div class="fragment fade-in-then-out" data-fragment-index="3">$$f = \frac{E_e/(1+z)}{(1+z)\,\delta t_e\times 4\pi S_\kappa(r)^2}$$</div>
+    <div class="fragment" data-fragment-index="4">$$f = \frac{E_e/(1+z)}{(1+z)\,\delta t_e\times 4\pi S_\kappa(r)^2} = \frac{L}{4\pi\,S_\kappa(r)^2\,(1+z)^2} \qquad\Rightarrow\qquad \boxed{d_L = S_\kappa(r)\,(1+z)}$$</div>
   </div>
-  <aside class="notes">Robertson–Walker metric: ds² = −c²dt² + a(t)²[dr² + Sκ(r)²dΩ²], with Sκ(r) = R0 sin(r/R0), r, R0 sinh(r/R0) for κ = +1, 0, −1.
+  <aside class="notes">The metric (Lecture 3): at fixed time t0 (a = 1) a sphere of comoving radius r around the source has area 4πSκ(r)²; r is the comoving distance, r = dp(t0).
+    The flux line builds up with each reason: first the area, then the energy (Ee emitted by the source), then the time. Energy Ee emitted in a time δte, so L = Ee/δte; each photon arrives with Ee/(1 + z), spread over (1 + z)δte and over the sphere.
     Positive curvature: the sphere has less area than 4πr², so the source looks brighter; negative curvature: fainter.
     The redshift and time-dilation factors apply even in flat space.</aside>
 </section>
@@ -249,16 +271,15 @@
       <p>Flat: $S_\kappa(r) = r = d_p(t_0)$, so</p>
       $$d_L = d_p(t_0)\,(1+z)$$
       <p>A naive inverse-square law <strong>overestimates</strong> the distance by a factor $(1+z)$.</p>
-      <div class="fragment">
-        <p>At small $z$, with $d_p(t_0)$ from the two numbers:</p>
-        $$d_L \approx \frac{c}{H_0}\,z\left(1 + \frac{1 - q_0}{2}\,z\right)$$
-        <p>At a given $z$, sources are <strong>fainter</strong> (larger $d_L$) in an accelerating universe ($q_0 < 0$).</p>
-      </div>
+      <p class="fragment">At a given $z$, sources are <strong>fainter</strong> (larger $d_L$) with $\Lambda$ than with matter only.</p>
     </div>
-    <div class="w-fig" data-widget="dz" data-q="dL" data-w="480" data-h="400"></div>
+    <div>
+      <div class="w-fig" data-widget="dz" data-q="dL" data-w="480" data-h="380"></div>
+      <label class="w-toggle" style="justify-content: center;"><input type="checkbox" data-k="flip"> <span>Flip the redshift axis: the past on the left, as in $a(t)$</span></label>
+    </div>
   </div>
   <aside class="notes">After Ryden Fig. 6.2, with the same models and colours as the distance plots of Lecture 6. The empty universe is curved (κ = −1): there d_L = Sκ(r)(1 + z).
-    Small z: the Benchmark Model (q0 = −0.53) has larger d_L than the empty universe (q0 = 0) by 5% at z = 0.2.
+    Small z (Ryden eq. 6.31, if asked): d_L ≈ (c/H0) z [1 + (1 − q0) z/2]; the Benchmark Model (q0 = −0.53) has larger d_L than the empty universe (q0 = 0) by 5% at z = 0.2.
     Our universe is close to flat (radius of curvature much larger than the horizon), so Sκ(r) ≈ r is a very good approximation.</aside>
 </section>
 
@@ -271,9 +292,9 @@
     <div>
       <ul>
         <li>Luminous pulsating stars, $L \approx 400$–$40\,000\;L_\odot$, periods 1.5–60 days.</li>
-        <li><strong>Leavitt's law</strong>: the period gives the luminosity (<a href="../02-expansion/#/cepheids" target="_blank">Lecture 2</a>).</li>
+        <li><strong>Leavitt's law</strong>: the period gives the luminosity (<a href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/02-expansion/#/cepheids" target="_blank">Lecture 2</a>).</li>
         <li class="fragment">Calibrate with Cepheids of known (parallax) distance; then a <strong>distance ladder</strong>: parallax → Cepheids → brighter candles.</li>
-        <li class="fragment">Seen out to $d_L \sim 30$ Mpc: not far enough to escape peculiar velocities. Hubble's 1929 value of $H_0$ was ~7 times too large: he underestimated the luminosity of his candles ~49 times.</li>
+        <li class="fragment">Edwin Hubble used Cepheids to measure the distances to nearby galaxies, <strong>discovering the expansion of the universe</strong> (and making the first measurement of the Hubble constant).</li>
       </ul>
     </div>
     <div style="width: 400px;">
@@ -282,6 +303,7 @@
     </div>
   </div>
   <aside class="notes">Two Cepheids with the same period have the same luminosity: their flux ratio gives their distance ratio, d_L ∝ f^(−1/2). Example (Ryden): f(LMC)/f(M31) = 230, so d_L(M31)/d_L(LMC) = 15.2. Absolute distances need the calibration: LMC at 50 kpc, M31 at 760 kpc.
+    If asked: Cepheids are seen out to d_L ~ 30 Mpc, not far enough to escape peculiar velocities. Hubble's 1929 H0 was ~7 times too large: his calibration underestimated the luminosities ~49 times.
     The HST Key Project (Freedman et al. 2001) measured Cepheids out to the Virgo cluster (15 Mpc): H0 = 72 ± 8. Peculiar motions (Virgocentric flow, ~250 km/s) matter at these distances.</aside>
 </section>
 
@@ -310,8 +332,9 @@
   <p>Astronomers measure fluxes and luminosities in <strong>magnitudes</strong>:</p>
   <ul>
     <li>Apparent magnitude: $\;m = -2.5\log_{10}(f/f_x)$ &nbsp;<span class="aside">(larger $m$: fainter)</span></li>
-    <li>Absolute magnitude: $\;M = -2.5\log_{10}(L/L_x)$, the apparent magnitude at $d_L = 10$ pc</li>
+    <li>Absolute magnitude: $\;M = -2.5\log_{10}(L/L_x)$</li>
   </ul>
+  <p>The reference values go together: a source of luminosity $L_x$ at $d_L = 10$ pc has flux $f_x$. So $M$ is the apparent magnitude the source would have at 10 pc.</p>
   <div class="fragment">
     <p>The <strong>distance modulus</strong>:</p>
     $$m - M = 5\log_{10}\left(\frac{d_L}{1\ \text{Mpc}}\right) + 25$$
@@ -322,22 +345,27 @@
     Small z (Ryden eq. 6.51): m − M ≈ 43.23 − 5 log10(H0/68 km/s/Mpc) + 5 log10 z + 1.086(1 − q0)z. The level gives H0, the bend gives q0.</aside>
 </section>
 
-<section id="hubble-sne" data-text-size="0.75">
+<section id="hubble-sne" data-text-size="0.8">
   <p class="kicker">Type Ia supernovae and the accelerating universe</p>
   <h2>The supernova Hubble diagram</h2>
   <div class="cols" style="grid-template-columns: 1fr auto; gap: 24px;">
     <div>
       <ul>
         <li>At small $z$ all models agree: the level gives $H_0$ (combined with the Cepheid calibration).</li>
-        <li class="fragment">Below: the difference from the empty universe ($q_0 = 0$). The supernovae at $z \gtrsim 0.3$ are <strong>fainter</strong> than in an empty universe, so farther away: the expansion is <strong>speeding up</strong>.</li>
+        <li class="fragment">The supernovae at $z \gtrsim 0.3$ are <strong>fainter</strong> than in an empty universe ($q_0 = 0$), so farther away. The expansion is <strong>speeding up</strong>.</li>
         <li class="fragment">At $z \approx 1$: 0.6 mag fainter than matter only, 0.6 mag brighter than $\Lambda$ only.</li>
       </ul>
       <p class="fragment">Nobel Prize in Physics 2011: Perlmutter (Supernova Cosmology Project), Schmidt and Riess (High-z Supernova Search Team).</p>
-      <p class="credit">Data: Union2.1, <a href="https://supernova.lbl.gov/Union/" target="_blank">Suzuki et al. 2012, ApJ 746, 85</a>, for $H_0 = 70$ km/s/Mpc. Dots: averages in bins of $z$.</p>
+      <p class="credit">Data: Union2.1, <a href="https://supernova.lbl.gov/Union/" target="_blank">Suzuki et al. 2012, ApJ 746, 85</a>, for $H_0 = 70$ km/s/Mpc.</p>
     </div>
-    <div class="w-fig" data-widget="hubble" data-mode="both" data-w="540" data-h="290" data-h2="250"></div>
+    <div>
+      <div class="w-fig" data-widget="hubble" data-key data-w="540" data-h="420"></div>
+      <label class="w-toggle" style="justify-content: center;"><input type="checkbox" data-k="zoom"> <span>Zoom in on $0.2 < z < 2$</span></label>
+      <label class="w-toggle" style="justify-content: center;"><input type="checkbox" data-k="flip"> <span>Flip the redshift axis: the past on the left, as in $a(t)$</span></label>
+    </div>
   </div>
-  <aside class="notes">After Ryden Fig. 6.5 (same data). The individual supernovae scatter by about 0.15–0.2 mag; the binned averages show the trend clearly.
+  <aside class="notes">After Ryden Fig. 6.5 (same data). The individual supernovae scatter by about 0.15–0.2 mag.
+    The same plot as on the title slide. The differences between the models are a few tenths of a magnitude: tick Zoom to see them (0.2 < z < 2). The next slide starts zoomed in.
     Fainter at a given z = larger d_L = more distance travelled = the universe expanded more slowly in the past than today: it accelerates.
     Riess et al. 1998 (AJ 116, 1009) and Perlmutter et al. 1999 (ApJ 517, 565), with about 50 supernovae between them. Worries at the time: dust (would redden the supernovae; not seen), evolution of the supernovae with time.</aside>
 </section>
@@ -346,17 +374,22 @@
   <p class="kicker">Type Ia supernovae and the accelerating universe</p>
   <h2>Try it: which universes fit the supernovae?</h2>
   <div style="display: flex; gap: 24px; justify-content: center; align-items: start;">
-    <div class="w-fig" data-widget="snplane"></div>
     <div>
-      <div class="w-fig" data-widget="hubble" data-mode="resid" data-w="560" data-h2="380"></div>
-      <p class="w-out olbers-out" style="text-align: center; margin: 0.3em 0 0;">Gold: $\Omega_{m,0}$ = <span data-v="Om"></span>, $\Omega_{\Lambda,0}$ = <span data-v="OL"></span>, $q_0$ = <span data-v="q0"></span><br>
+      <div class="w-fig" data-widget="snplane"></div>
+      <p class="w-out olbers-out" style="text-align: center; margin: 0.3em 0 0; max-width: 400px;">Gold: $\Omega_{m,0}$ = <span data-v="Om"></span>, $\Omega_{\Lambda,0}$ = <span data-v="OL"></span>, $q_0$ = <span data-v="q0"></span><br>
         <span class="aside">Click the plane to pick a universe. ★: the Benchmark Model.</span></p>
+    </div>
+    <div>
+      <div class="w-fig" data-widget="hubble" data-key data-w="540" data-h="420"></div>
+      <label class="w-toggle" style="justify-content: center;"><input type="checkbox" data-k="zoom" checked> <span>Zoom in on $0.2 < z < 2$</span></label>
+      <label class="w-toggle" style="justify-content: center;"><input type="checkbox" data-k="flip"> <span>Flip the redshift axis: the past on the left, as in $a(t)$</span></label>
     </div>
   </div>
   <input type="hidden" data-k="Om" value="0.31">
   <input type="hidden" data-k="OL" value="0.69">
   <aside class="notes">After Ryden Fig. 6.6, from the same Union2.1 data (statistical errors only, so the regions are a little smaller than the published ones). For each universe the zero point of the magnitudes (H0 together with the supernova luminosity) is fitted, so only the shape of the curve matters.
     The supernovae alone rule out decelerating universes (below the dotted q0 = 0 line), Big Crunch and Big Bounce universes; along the region the data cannot tell curved from flat. Combined with the CMB (chapter 8: flat), Ωm,0 ≈ 0.3 and ΩΛ,0 ≈ 0.7.
+    Only the 99.7% region (Δχ² < 11.8) is drawn, from the supernovae alone. The ★ is the Benchmark Model, which also uses other observations, mainly the CMB; so it need not sit at the centre of the supernova region. (Supernovae alone fit best at Ωm,0 ≈ 0.28, ΩΛ,0 ≈ 0.73, almost flat.)
     Things to try: Einstein–de Sitter (1, 0); the empty universe (0, 0); a point inside the region but far from flat.</aside>
 </section>
 
@@ -397,9 +430,12 @@
       <p>Flat: $S_\kappa(r) = d_p(t_0)$, so</p>
       $$d_A = \frac{d_p(t_0)}{1+z} = a(t_e)\,d_p(t_0) = d_p(t_e)$$
       <p>The angular-diameter distance is the proper distance <strong>when the light was emitted</strong>.</p>
-      <p class="fragment">So $d_A$ has a <strong>maximum</strong> (Lecture 6): beyond it, more distant objects look <strong>bigger</strong> on the sky. Benchmark Model: $d_A \le 0.40\,c/H_0 = 1.8$ Gpc, so 1 kpc appears at least 0.1″ across.</p>
+      <p class="fragment">So $d_A$ has a <strong>maximum</strong> (<a href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/06-multiple/#/distances-z" target="_blank">Lecture 6</a>): beyond it, more distant objects look <strong>bigger</strong> on the sky. Benchmark Model: $d_A \le 0.40\,c/H_0 = 1.8$ Gpc, so 1 kpc appears at least 0.1″ across.</p>
     </div>
-    <div class="w-fig" data-widget="dz" data-q="dA" data-w="480" data-h="400"></div>
+    <div>
+      <div class="w-fig" data-widget="dz" data-q="dA" data-w="480" data-h="380"></div>
+      <label class="w-toggle" style="justify-content: center;"><input type="checkbox" data-k="flip"> <span>Flip the redshift axis: the past on the left, as in $a(t)$</span></label>
+    </div>
   </div>
   <aside class="notes">After Ryden Fig. 6.4: the same curves as the "at emission" plot of Lecture 6, on a linear z axis.
     Benchmark: maximum at z_c = 1.6, d_A = 0.405 c/H0 = 1770 Mpc. Small z: d_A ≈ (c/H0) z (1 − (3 + q0)z/2). Large z: d_A → d_hor/z.
@@ -425,7 +461,7 @@
     <li class="fragment">Type Ia supernovae are fainter than expected at $z \gtrsim 0.3$:<br>
       the expansion is <strong>speeding up</strong>, $q_0 < 0$</li>
   </ul>
-  <aside class="notes">Next: Thursday, a recap of chapters 3–6 and exercises. Then dark matter (chapter 7), how we know Ωm,0 ≈ 0.3.</aside>
+  <aside class="notes">Next lecture: a recap of chapters 2–6 and exercises. Give 3 minutes now for the anonymous Recap topics survey on Canvas. Then dark matter (chapter 7), how we know Ωm,0 ≈ 0.3.</aside>
 </section>
 
 <section id="exercises">
@@ -437,9 +473,9 @@
 <section id="before-next-time">
   <h2>Before next time</h2>
   <ul>
-    <li>Thursday: recap of chapters 3–6. <strong>Send me</strong> the topics or exercises you want to go through.</li>
+    <li>Next lecture: recap of chapters 2–6. Fill in the <em>anonymous</em> Canvas survey <a href="https://canvas.su.se/courses/12102/assignments/36079" target="_blank"><em>Recap topics</em></a> by <strong>Wednesday 25 November, 13:00</strong>.</li>
     <li><a href="https://canvas.su.se/courses/12102/modules/items/204294" target="_blank"><em>Problem set 4</em></a> is due <strong>Thursday 3 December</strong>, in Canvas</li>
-    <li>Read <strong>Ryden chapter 6</strong> (and look back at chapters 3–5)</li>
+    <li>Read <strong>Ryden chapter 6</strong> (and look back at chapters 2–5)</li>
   </ul>
 </section>
 

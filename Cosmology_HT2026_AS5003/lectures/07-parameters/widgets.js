@@ -70,30 +70,22 @@ function chi2() {
   return chi2Grid;
 }
 
-// the supernovae in bins of log z: weighted means of z and of resid(d), and the error of the mean
-const binned = (resid) => {
-  const edges = d3.range(Math.log10(0.015), Math.log10(1.5) + 1e-9, 0.15);
-  return edges.slice(0, -1).map((e, i) => {
-    const sel = union21.filter((d) => Math.log10(d[0]) >= e && Math.log10(d[0]) < edges[i + 1]);
-    const w = sel.map((d) => 1 / d[2] ** 2), W = d3.sum(w);
-    return sel.length < 3 ? null : { z: d3.sum(sel, (d, k) => d[0] * w[k]) / W, d: d3.sum(sel, (d, k) => resid(d) * w[k]) / W, e: 1 / Math.sqrt(W) };
-  }).filter(Boolean);
-};
-
 const widgets = {
   // the four universes of Ryden Fig. 5.7 (Lecture 6); with data-steps, the first click adds the
   // Benchmark Model (thick, in the ink colour, under the Big Chill curve it almost follows)
   fates: (box) => {
     const C = colours(), steps = "steps" in box.dataset;
-    const bench = { pts: evolve(benchmark, fateRange[1] + 0.2, aMax + 0.5).pts, colour: C.ink, width: 6, key: "Benchmark Model", step: 1 };
+    const bench = { pts: evolve(benchmark, fateRange[1] + 0.2, aMax + 0.5).pts, colour: C.ink, width: 6, step: 1,
+      label: "Benchmark\nModel", at: { s: fateRange[1], a: 3.05 }, anchor: "end" };
     box.replaceChildren(fatePlot(C, [...(steps ? [bench] : []), ...fates(C).map((f) => ({ ...f, step: undefined }))], { height: +(box.dataset.h ?? 400) }));
     if (steps) showSteps(box);
   },
 
-  // a(t) near today and its Taylor expansion, for a flat universe with matter and Λ (slider Om):
-  // the first order is the empty universe, a = 1 + H0(t − t0); the second adds −q0 H0²(t − t0)²/2
+  // a(t) near today and its Taylor expansion (slider q0), with the exact a(t) of the flat universe with
+  // matter and Λ that has this q0 (q0 = 3Ωm/2 − 1): the first order is the empty universe,
+  // a = 1 + H0(t − t0); the second adds −q0 H0²(t − t0)²/2
   taylor: (box, s) => {
-    const C = colours(), Om = s.Om, OL = 1 - Om, q0 = Om / 2 - OL;
+    const C = colours(), q0 = s.q0, Om = (q0 + 1) / 1.5, OL = 1 - Om;
     const ss = d3.range(fateRange[0], fateRange[1] + 1e-4, 0.01);
     const curves = [
       { pts: history(Om, OL).pts, colour: C.gold, width: 10, opacity: 0.45, key: "exact a(t)" },
@@ -105,9 +97,10 @@ const widgets = {
   },
 
   // luminosity distance (data-q="dL", after Ryden Fig. 6.2) or angular-diameter distance (data-q="dA",
-  // Fig. 6.4) against redshift, for the Benchmark Model and the universes of Lecture 5, in c/H0
-  dz: (box) => {
-    const C = colours(), q = box.dataset.q ?? "dL", zs = d3.range(0, 10.0001, 0.05);
+  // Fig. 6.4) against redshift, for the Benchmark Model and the universes of Lecture 5, in c/H0. A
+  // checkbox data-k="flip" puts high z on the left (time left to right); the key stays in the same place
+  dz: (box, s) => {
+    const C = colours(), q = box.dataset.q ?? "dL", zs = d3.range(0, 10.0001, 0.05), anchor = s.flip ? "end" : "start";
     const f = q === "dL" ? (S, z) => S * (1 + z) : (S, z) => S / (1 + z);
     const ymax = q === "dL" ? 25 : 1.05, ms = models(C);
     const marks = ms.map((m) => Plot.line(zs.map((z) => ({ z, d: f(m.S(z), z) })), { x: "z", y: "d", stroke: m.c, strokeWidth: m.width ?? 3, strokeDasharray: m.dash, clip: true }));
@@ -121,11 +114,11 @@ const widgets = {
       const d = ((q === "dL" ? 0.27 : 0.78) - (q === "dL" ? 0.07 : 0.065) * i) * ymax, z0 = 5.4;
       marks.push(m.dot ? Plot.dot([{ z: z0 + 0.4, d }], { x: "z", y: "d", r: 6, fill: m.c })
         : Plot.line([{ z: z0, d }, { z: z0 + 0.8, d }], { x: "z", y: "d", stroke: m.c, strokeWidth: m.width ?? 3, strokeDasharray: m.dash }),
-        Plot.text([{ z: z0 + 1, d }], { x: "z", y: "d", text: () => m.key, textAnchor: "start", fill: m.c, fontWeight: 700 }));
+        Plot.text([{ z: z0 + 1, d }], { x: "z", y: "d", text: () => m.key, textAnchor: anchor, fill: m.c, fontWeight: 700 }));
     });
     box.replaceChildren(Plot.plot(withAxes({
       width: +(box.dataset.w ?? 520), height: +(box.dataset.h ?? 400), marginLeft: 56, marginBottom: 46, marginTop: 32, marginRight: 20, style: style(C),
-      x: { domain: [0, 10], label: "redshift z →", labelAnchor: "right", labelArrow: "none" },
+      x: { domain: [0, 10], reverse: !!s.flip, label: s.flip ? "← redshift z" : "redshift z →", labelAnchor: s.flip ? "left" : "right", labelArrow: "none" },
       y: { domain: [0, ymax], label: q === "dL" ? "↑ luminosity distance dL (c/H₀)" : "↑ angular-diameter distance dA (c/H₀)", labelAnchor: "top", labelArrow: "none" },
       marks,
     }, C.ink)));
@@ -149,57 +142,35 @@ const widgets = {
   },
 
   // Hubble diagram of the Union2.1 supernovae, with the universes of Lecture 5 and the Benchmark Model.
-  // data-mode: "cover" (m − M only), "both" (m − M and the difference from the empty universe),
-  // "resid" (the difference only, with the universe chosen on the plane as a gold curve)
+  // data-key adds the key; inputs Om and OL (set by the plane) add that universe as a gold curve. A
+  // checkbox data-k="zoom" shows 0.2 < z < 2, where the models differ; data-k="flip" puts high z on the left. The key stays at the low-z end.
   hubble: (box, s) => {
-    const C = colours(), mode = box.dataset.mode ?? "both", W = +(box.dataset.w ?? 520);
-    const zs = d3.range(Math.log10(0.01), Math.log10(2) + 1e-9, 0.01).map((x) => 10 ** x);
-    const empty = (z) => mu(Math.sinh(Math.log(1 + z)), z);
-    const ms = models(C).map((m) => ({ ...m, pts: zs.map((z) => ({ z, mu: mu(m.S(z), z), d: mu(m.S(z), z) - empty(z) })) }));
-    const xAxis = { type: "log", domain: [0.01, 2], ticks: [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2], tickFormat: (d) => String(d), label: "redshift z →", labelAnchor: "right", labelArrow: "none" };
-    const key = (y0, dy, ymax) => ms.flatMap((m, i) => {
-      const y = y0 - dy * i;
-      return [Plot.line([{ z: 0.012, y }, { z: 0.02, y }], { x: "z", y: "y", stroke: m.c, strokeWidth: m.width ?? 3, strokeDasharray: m.dash }),
-        Plot.text([{ z: 0.022, y }], { x: "z", y: "y", text: () => m.key, textAnchor: "start", fill: m.c, fontWeight: 700 })];
+    const C = colours(), zoom = !!s.zoom, anchor = s.flip ? "end" : "start";
+    const [z0, z1] = zoom ? [0.2, 2] : [0.01, 2], [y0, y1] = zoom ? [39.5, 46.5] : [33, 46];
+    const zs = d3.range(Math.log10(z0), Math.log10(z1) + 1e-9, 0.005).map((x) => 10 ** x);
+    const ms = models(C).map((m) => ({ ...m, pts: zs.map((z) => ({ z, mu: mu(m.S(z), z) })) }));
+    const marks = [Plot.dot(union21.filter((d) => d[0] >= z0), { x: (d) => d[0], y: (d) => d[1], r: zoom ? 2.5 : 2, fill: C.ink_soft, fillOpacity: 0.6 })];
+    if (s.Om !== undefined) {
+      const tab = distances(s.Om, s.OL, 2.05);
+      if (tab) marks.push(Plot.line(zs.map((z) => ({ z, mu: mu(at(tab, z), z) })).filter((p) => isFinite(p.mu)), { x: "z", y: "mu", stroke: C.gold, strokeWidth: 10, strokeOpacity: 0.45, clip: true }));
+    }
+    marks.push(...ms.map((m) => Plot.line(m.pts, { x: "z", y: "mu", stroke: m.c, strokeWidth: m.width ?? 2.5, strokeDasharray: m.dash, strokeOpacity: m.width ? 0.85 : 1, clip: true })));
+    // the key in the empty top left (top right when flipped): rows evenly spaced in m − M
+    if ("key" in box.dataset) ms.forEach((m, i) => {
+      const y = y1 - (y1 - y0) * (0.08 + 0.085 * i), [a, b, t] = zoom ? [0.21, 0.27, 0.285] : [0.012, 0.02, 0.022];
+      marks.push(Plot.line([{ z: a, y }, { z: b, y }], { x: "z", y: "y", stroke: m.c, strokeWidth: m.width ?? 3, strokeDasharray: m.dash }),
+        Plot.text([{ z: t, y }], { x: "z", y: "y", text: () => m.key, textAnchor: anchor, fill: m.c, fontWeight: 700 }));
     });
-    const plots = [];
-    if (mode !== "resid") {
-      const marks = [
-        Plot.dot(union21, { x: (d) => d[0], y: (d) => d[1], r: 2, fill: C.ink_soft, fillOpacity: 0.6 }),
-        ...ms.map((m) => Plot.line(m.pts, { x: "z", y: "mu", stroke: m.c, strokeWidth: m.width ?? 2.5, strokeDasharray: m.dash, strokeOpacity: m.width ? 0.85 : 1 })),
-      ];
-      if (mode === "both") marks.push(...key(45, 1.1));
-      plots.push(Plot.plot(withAxes({
-        width: W, height: +(box.dataset.h ?? (mode === "cover" ? 395 : 300)), marginLeft: 56, marginBottom: mode === "cover" ? 46 : 30, marginTop: 32, marginRight: 20, style: style(C),
-        x: mode === "cover" ? xAxis : { ...xAxis, label: null },
-        y: { domain: [33, 46], label: "↑ distance modulus m − M", labelAnchor: "top", labelArrow: "none" },
-        marks,
-      }, C.ink)));
-    }
-    if (mode !== "cover") {
-      const marks = [Plot.ruleY([0], { stroke: C.edge, strokeDasharray: "4 4" })];
-      const bins = binned((d) => d[1] - empty(d[0]));
-      if (s.Om !== undefined) {
-        const tab = distances(s.Om, s.OL, 2.05);
-        if (tab) marks.push(Plot.line(zs.map((z) => ({ z, d: mu(at(tab, z), z) - empty(z) })).filter((p) => isFinite(p.d)), { x: "z", y: "d", stroke: C.gold, strokeWidth: 10, strokeOpacity: 0.45 }));
-      }
-      marks.push(...ms.map((m) => Plot.line(m.pts, { x: "z", y: "d", stroke: m.c, strokeWidth: m.width ?? 2.5, strokeDasharray: m.dash })),
-        Plot.ruleX(bins, { x: "z", y1: (b) => b.d - b.e, y2: (b) => b.d + b.e, stroke: C.ink, strokeWidth: 2 }),
-        Plot.dot(bins, { x: "z", y: "d", r: 5, fill: C.ink, stroke: C.bg, strokeWidth: 1.5 }),
-        Plot.text([{ z: 0.011, y: 0.33 }], { x: "z", y: "y", text: () => "↑ fainter: farther away", textAnchor: "start", fill: C.ink_soft }),
-        Plot.text([{ z: 0.011, y: -0.2 }], { x: "z", y: "y", text: () => "↓ brighter: closer", textAnchor: "start", fill: C.ink_soft }));
-      if (mode === "resid") marks.push(...key(-0.5, 0.12));
-      plots.push(Plot.plot(withAxes({
-        width: W, height: +(box.dataset.h2 ?? 200), marginLeft: 56, marginBottom: 46, marginTop: 24, marginRight: 20, style: style(C),
-        x: xAxis,
-        y: { domain: [-1, 0.5], ticks: [-1, -0.5, 0, 0.5], tickFormat: (d) => minus(String(d)), label: "↑ m − M, minus empty universe", labelAnchor: "top", labelArrow: "none" },
-        marks,
-      }, C.ink)));
-    }
-    box.replaceChildren(...plots);
+    box.replaceChildren(Plot.plot(withAxes({
+      width: +(box.dataset.w ?? 520), height: +(box.dataset.h ?? 395), marginLeft: 56, marginBottom: 46, marginTop: 32, marginRight: 20, style: style(C),
+      x: { type: "log", domain: [z0, z1], reverse: !!s.flip, ticks: zoom ? [0.2, 0.3, 0.5, 0.7, 1, 1.5, 2] : [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2], tickFormat: (d) => String(d),
+        label: s.flip ? "← redshift z" : "redshift z →", labelAnchor: s.flip ? "left" : "right", labelArrow: "none" },
+      y: { domain: [y0, y1], label: "↑ distance modulus m − M", labelAnchor: "top", labelArrow: "none" },
+      marks,
+    }, C.ink)));
   },
 
-  // the Ωm,0–ΩΛ,0 plane with the 68, 95 and 99.7% regions allowed by the Union2.1 supernovae (after
+  // the Ωm,0–ΩΛ,0 plane with the 99.7% region allowed by the Union2.1 supernovae (after
   // Ryden Fig. 6.6), the flat and coasting (q0 = 0) lines, and the regions of Lecture 6. A click picks
   // a universe: it sets the inputs Om and OL, drawn as the gold curve of the hubble widget.
   snplane: (box, s) => {
@@ -211,20 +182,20 @@ const widgets = {
       marks: [
         Plot.areaY(ms, { x: (m) => m, y1: (m) => Math.min(bounceLine(m), grid.l[1]), y2: grid.l[1], fill: C.accent, fillOpacity: 0.12 }),
         Plot.areaY(ms, { x: (m) => m, y1: grid.l[0], y2: (m) => Math.max(grid.l[0], crunchLine(m)), fill: C.hot, fillOpacity: 0.12 }),
-        // filled inside Δχ² = 11.83, 6.18, 2.30: the 99.7, 95 and 68% regions for two parameters
-        Plot.contour(chi2(), { width: grid.n, height: grid.n, x1: grid.m[0], x2: grid.m[1], y1: grid.l[0], y2: grid.l[1], value: (v) => -v, thresholds: [-11.83], fill: C.cool, fillOpacity: 0.25, stroke: C.cool }),
-        Plot.contour(chi2(), { width: grid.n, height: grid.n, x1: grid.m[0], x2: grid.m[1], y1: grid.l[0], y2: grid.l[1], value: (v) => -v, thresholds: [-6.18], fill: C.cool, fillOpacity: 0.3, stroke: C.cool }),
-        Plot.contour(chi2(), { width: grid.n, height: grid.n, x1: grid.m[0], x2: grid.m[1], y1: grid.l[0], y2: grid.l[1], value: (v) => -v, thresholds: [-2.3], fill: C.cool, fillOpacity: 0.4, stroke: C.cool, strokeWidth: 2 }),
+        // filled inside Δχ² = 11.83: the 99.7% region for two parameters
+        Plot.contour(chi2(), { width: grid.n, height: grid.n, x1: grid.m[0], x2: grid.m[1], y1: grid.l[0], y2: grid.l[1], value: (v) => -v, thresholds: [-11.83], fill: C.cool, fillOpacity: 0.35, stroke: C.cool, strokeWidth: 2 }),
         Plot.line([[0, 1], [1.5, -0.5]], { stroke: C.ink_soft, strokeWidth: 1.5, strokeDasharray: "6 5" }),
         Plot.text([[1.32, -0.32]], { text: () => "flat", rotate: 38, fill: C.ink_soft, dy: -8 }),
         Plot.line([[0, 0], [1.5, 0.75]], { stroke: C.ink_soft, strokeWidth: 1.5, strokeDasharray: "2 4" }),
-        Plot.text([[1.48, 0.74]], { text: () => "q₀ < 0: speeding up ↑", textAnchor: "end", fill: C.ink_soft, dy: -12 }),
-        Plot.text([[1.48, 0.74]], { text: () => "q₀ > 0: slowing down ↓", textAnchor: "end", fill: C.ink_soft, dy: 12 }),
+        // along the q0 = 0 line (18° on these axes), one label above it and one below
+        Plot.text([[1.46, 0.73]], { text: () => "q₀ < 0: speeding up ↑", textAnchor: "end", rotate: -18, fill: C.ink_soft, dy: -15 }),
+        Plot.text([[1.46, 0.73]], { text: () => "q₀ > 0: slowing down ↓", textAnchor: "end", rotate: -18, fill: C.ink_soft, dy: 16 }),
         Plot.text([[0.05, 1.85]], { text: () => "no Big Bang (bounce)", textAnchor: "start", fill: C.accent, fontWeight: 700 }),
         Plot.text([[1.45, -0.42]], { text: () => "Big Crunch", textAnchor: "end", fill: C.hot, fontWeight: 700 }),
-        Plot.text([[0.05, -0.4]], { text: () => "supernovae: 68, 95, 99.7%", textAnchor: "start", fill: C.cool, fontWeight: 700 }),
-        Plot.dot([[benchmark.Om, benchmark.OL]], { symbol: "star", r: 7, fill: C.gold }),
+        Plot.text([[0.05, -0.4]], { text: () => "supernovae (99.7%)", textAnchor: "start", fill: C.cool, fontWeight: 700 }),
         Plot.dot([[s.Om, s.OL]], { r: 7, fill: C.ink, stroke: C.bg, strokeWidth: 2 }),
+        // the Benchmark Model on top of the chosen universe, so it shows when they coincide
+        Plot.dot([[benchmark.Om, benchmark.OL]], { symbol: "star", r: 6.5, fill: C.gold, stroke: C.bg, strokeWidth: 1 }),
       ],
     }, C.ink));
     plane.style.cursor = "crosshair";

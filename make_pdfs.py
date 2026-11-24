@@ -19,6 +19,7 @@ from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parent
 DECKS = sorted(ROOT.glob("*/lectures/*/index.html"))
+SITE = "https://sambit-giri.github.io/teaching"
 
 
 class Quiet(http.server.SimpleHTTPRequestHandler):
@@ -41,6 +42,11 @@ def main(names):
             page.wait_for_selector(".pdf-page", state="attached")
             page.evaluate("document.fonts.ready")
             page.wait_for_timeout(3000)
+            # links to other pages of the site point to the published site, not to this local server
+            page.evaluate("""([local, site]) => {
+                for (const a of document.querySelectorAll("a[href]"))
+                    if (a.href.startsWith(local)) a.href = site + a.href.slice(local.length);
+            }""", [base, SITE])
             failed = page.locator("text=widget failed").count()
             out = deck.parent / "slides.pdf"
             page.pdf(path=out, prefer_css_page_size=True, print_background=True)

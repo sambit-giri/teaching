@@ -47,9 +47,10 @@ const widgets = {
   fates: (box) => box.replaceChildren(fatePlot(colours(), fates(colours()).map((f) => ({ ...f, step: undefined })), { height: +(box.dataset.h ?? 400) })),
 
   // all the distances to a source at redshift z, for one universe (select data-k="model", or data-model
-  // on the box), on log axes: the colours here mark the kind of distance, not a component
+  // on the box), on log axes: the colours here mark the kind of distance, not a component. A checkbox
+  // data-k="flip" puts high z on the left; the key and labels stay at low z
   zoo: (box, s) => {
-    const C = colours(), name = s.model ?? box.dataset.model ?? "benchmark", u = universes[name];
+    const C = colours(), name = s.model ?? box.dataset.model ?? "benchmark", u = universes[name], anchor = s.flip ? "end" : "start";
     const { pts, hor } = table(u);
     const sel = pts.filter((p, i) => p.z >= 0.01 && p.z <= 1000 && i % 4 === 0);
     const lines = [
@@ -62,17 +63,18 @@ const widgets = {
     ];
     const marks = [];
     if (isFinite(hor)) marks.push(Plot.ruleY([hor], { stroke: C.edge, strokeWidth: 1.5, strokeDasharray: "4 4" }),
-      Plot.text([{ z: 0.012, d: hor }], { x: "z", y: "d", text: () => `horizon today, ${hor.toFixed(2)} c/H₀`, textAnchor: "start", dy: -10, fill: C.ink_soft }));
+      Plot.text([{ z: 0.012, d: hor }], { x: "z", y: "d", text: () => `horizon today, ${hor.toFixed(2)} c/H₀`, textAnchor: anchor, dy: -10, fill: C.ink_soft }));
     for (const l of lines) marks.push(Plot.line(sel.map((p) => ({ z: p.z, d: l.f(p) })), { x: "z", y: "d", stroke: l.c, strokeWidth: l.width ?? 3, strokeDasharray: l.dash, clip: true }));
     // the key in the empty top left; the rows are evenly spaced in log d
     if ("key" in box.dataset) lines.forEach((l, i) => {
       const d = 10 ** (3.6 - 0.36 * i);
       marks.push(Plot.line([{ z: 0.012, d }, { z: 0.03, d }], { x: "z", y: "d", stroke: l.c, strokeWidth: l.width ?? 3, strokeDasharray: l.dash }),
-        Plot.text([{ z: 0.035, d }], { x: "z", y: "d", text: () => l.key, textAnchor: "start", fill: l.c, fontWeight: 700 }));
+        Plot.text([{ z: 0.035, d }], { x: "z", y: "d", text: () => l.key, textAnchor: anchor, fill: l.c, fontWeight: 700 }));
     });
     box.replaceChildren(Plot.plot(withAxes({
       width: +(box.dataset.w ?? 640), height: +(box.dataset.h ?? 440), marginLeft: 56, marginBottom: 46, marginTop: 32, marginRight: 20, style: style(C),
-      x: { type: "log", domain: [0.01, 1000], tickFormat: (d) => (Number.isInteger(Math.log10(d)) ? String(d) : ""), label: "redshift z →", labelAnchor: "right", labelArrow: "none" },
+      x: { type: "log", domain: [0.01, 1000], reverse: !!s.flip, tickFormat: (d) => (Number.isInteger(Math.log10(d)) ? String(d) : ""),
+        label: s.flip ? "← redshift z" : "redshift z →", labelAnchor: s.flip ? "left" : "right", labelArrow: "none" },
       y: { type: "log", domain: [1e-3, 1e4], ticks: [1e-3, 1e-2, 1e-1, 1, 10, 100, 1e3, 1e4], tickFormat: pow, label: "↑ distance (c/H₀)", labelAnchor: "top", labelArrow: "none" },
       marks,
     }, C.ink)));
