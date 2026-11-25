@@ -18,21 +18,29 @@
 <script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.16/dist/plot.umd.min.js"></script>
 <script type="module" src="widgets.js"></script>
 <style>
-  /* the map of chapters 3–6: boxes joined by arrows, each box links to its lecture */
-  .reveal .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 34px 46px; margin-top: 0.6em; }
+  /* the map of chapters 2–6: boxes joined by arrows, each box links to its lecture */
+  .reveal .flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px 46px; margin-top: 0.6em; }
   .reveal .flow a { position: relative; display: block; padding: 12px 16px; border: 1px solid var(--edge); border-radius: 12px;
     background: var(--card); color: var(--ink); text-decoration: none; font: 500 0.7em/1.35 var(--f-ui); }
   .reveal .flow a strong { display: block; font-size: 1.15em; color: var(--accent); }
   .reveal .flow a:hover { border-color: var(--accent); }
   .reveal .flow a.right::after { content: "→"; position: absolute; right: -36px; top: 50%; transform: translateY(-50%); color: var(--ink-soft); font-size: 1.6em; }
-  .reveal .flow a.down::after { content: "↓"; position: absolute; left: 50%; bottom: -36px; transform: translateX(-50%); color: var(--ink-soft); font-size: 1.6em; }
+  .reveal .flow a.down::after { content: "↓"; position: absolute; left: 50%; bottom: -33px; transform: translateX(-50%); color: var(--ink-soft); font-size: 1.6em; }
   .reveal .flow a.left::after { content: "←"; position: absolute; left: -36px; top: 50%; transform: translateY(-50%); color: var(--ink-soft); font-size: 1.6em; }
+  /* the three categories of the review, one per row of the map, also on the plan slide */
+  .reveal .cat1, .reveal .cat1::marker { color: var(--good); } .reveal .cat2, .reveal .cat2::marker { color: var(--violet); } .reveal .cat3, .reveal .cat3::marker { color: var(--gold); }
+  .reveal .flow a.cat1 strong { color: var(--good); } .reveal .flow a.cat2 strong { color: var(--violet); } .reveal .flow a.cat3 strong { color: var(--gold); }
+  /* the map fills in as the review goes: a box still to come shows only its header, faded; the box
+     reviewed next (class "next") fills in on a click, when its description (a fragment) appears */
+  .reveal .flow a { transition: opacity 0.4s; }
+  .reveal .flow a.dim, .reveal .flow a.next:not(:has(.d.visible)) { opacity: 0.4; }
+  .reveal .flow a.dim .d { visibility: hidden; }
 </style>
 </head>
 <body>
 <a class="deck-home" href="../../">&larr; AS5003</a>
 <div class="reveal"><div class="slides">
-<!-- One <section> per slide. A review of Ryden ch. 3–6, after HT25's "Cosmic dynamics review" sheet and
+<!-- One <section> per slide. A review of Ryden ch. 2–6, after HT25's "Cosmic dynamics review" sheet and
      the HT22 Lecture 8 deck; the id is the slide's link (#/id). Each summary slide links to its lecture.
      class="fragment"          appears on the next click, like a Keynote build
      <section data-text-size="1.2">   fixes the text size of a slide (1 = 30px) instead of the automatic fit
@@ -70,47 +78,121 @@
 
 <section id="plan">
   <h2>Today's plan</h2>
-  <ol>
-    <li>The big picture: how chapters 3–6 fit together</li>
-    <li>The key results, one slide per topic</li>
-    <li>Check your understanding</li>
-    <li>Exercises: the ones you asked for</li>
-  </ol>
+  <ul>
+    <li>The story so far: chapters 2–6 on one page</li>
+    <li>The review, in three broad categories:
+      <ol>
+        <li class="cat1">Expansion, geometry and distances</li>
+        <li class="cat2">Dynamics, contents and model universes</li>
+        <li class="cat3">Predictions, observations and parameters</li>
+      </ol>
+    </li>
+  </ul>
+  <aside class="notes">Each category: the map fills in its three boxes with the key results, then think-pair-share questions and an exercise on the board. Take the break when it is time, ideally after the second category.</aside>
 </section>
 
-<!-- ============ The big picture ============ -->
+<!-- ============ Expansion, geometry and distances ============ -->
 
 <section id="map" data-text-size="1">
   <h2>The story so far</h2>
   <div class="flow">
-    <a class="right" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/03-curvature/#/robertson-walker" target="_blank" style="grid-area: 1 / 1;"><strong>Geometry</strong>Homogeneous and isotropic: the Robertson–Walker metric, with $a(t)$ and $\kappa$</a>
-    <a class="right fragment" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/03-curvature/#/proper-distance" target="_blank" style="grid-area: 1 / 2;"><strong>Distances</strong>Light travels on $ds = 0$: proper distance, redshift $1 + z = 1/a$</a>
-    <a class="right fragment" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/04-friedmann/#/friedmann" target="_blank" style="grid-area: 1 / 3;"><strong>Dynamics</strong>General relativity: the Friedmann, fluid and acceleration equations</a>
-    <a class="down fragment" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/04-friedmann/#/eos" target="_blank" style="grid-area: 1 / 4;"><strong>Contents</strong>Equation of state $P = w\varepsilon$: $\varepsilon \propto a^{-3(1+w)}$</a>
-    <a class="left fragment" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/05-single/#/flat-general" target="_blank" style="grid-area: 2 / 4;"><strong>Model universes</strong>$a(t)$ for one or several components: the Benchmark Model</a>
-    <a class="left fragment" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/06-multiple/#/distances-z" target="_blank" style="grid-area: 2 / 3;"><strong>Predictions</strong>Distances against redshift in each model universe</a>
-    <a class="left fragment" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/measure" target="_blank" style="grid-area: 2 / 2;"><strong>Observations</strong>Standard candles and yardsticks: $d_L$ and $d_A$ against $z$</a>
-    <a class="fragment" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/sn-plane" target="_blank" style="grid-area: 2 / 1;"><strong>Parameters</strong>Fit the models: $H_0$, $q_0$, $\Omega_{m,0}$, $\Omega_{\Lambda,0}$, …</a>
+    <a class="right cat1 next" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/02-expansion/#/hubble-law" target="_blank" style="grid-area: 1 / 1;"><strong>Expansion</strong><span class="d fragment">Hubble's law $v = H_0 d$: the universe expands. Hubble time $1/H_0$</span></a>
+    <a class="right cat1 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/03-curvature/#/robertson-walker" target="_blank" style="grid-area: 1 / 2;"><strong>Geometry</strong><span class="d">Homogeneous and isotropic: the Robertson–Walker metric, with $a(t)$ and $\kappa$</span></a>
+    <a class="down cat1 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/03-curvature/#/proper-distance" target="_blank" style="grid-area: 1 / 3;"><strong>Distances</strong><span class="d">Light travels on $ds = 0$: proper distance, redshift $1 + z = 1/a$</span></a>
+    <a class="left cat2 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/04-friedmann/#/friedmann" target="_blank" style="grid-area: 2 / 3;"><strong>Dynamics</strong><span class="d">General relativity: the Friedmann, fluid and acceleration equations</span></a>
+    <a class="left cat2 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/04-friedmann/#/eos" target="_blank" style="grid-area: 2 / 2;"><strong>Contents</strong><span class="d">Equation of state $P = w\varepsilon$: $\varepsilon \propto a^{-3(1+w)}$, and $\Omega$</span></a>
+    <a class="down cat2 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/05-single/#/flat-general" target="_blank" style="grid-area: 2 / 1;"><strong>Model universes</strong><span class="d">$a(t)$ for one or several components: the Benchmark Model</span></a>
+    <a class="right cat3 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/06-multiple/#/distances-z" target="_blank" style="grid-area: 3 / 1;"><strong>Predictions</strong><span class="d">Distances against redshift in each model universe</span></a>
+    <a class="right cat3 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/measure" target="_blank" style="grid-area: 3 / 2;"><strong>Observations</strong><span class="d">Standard candles and yardsticks: $d_L$ and $d_A$ against $z$</span></a>
+    <a class="cat3 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/sn-plane" target="_blank" style="grid-area: 3 / 3;"><strong>Parameters</strong><span class="d">Fit the models: $H_0$, $q_0$, $\Omega_{m,0}$, $\Omega_{\Lambda,0}$, …</span></a>
   </div>
-  <p class="aside fragment" style="margin-top: 1.2em;">Each box links to the slides where it was introduced.</p>
-  <aside class="notes">Walk around the loop: from symmetry to the metric, from the metric to distances and redshift, from GR to the equations for a(t), with the contents, the solutions, the distances they predict, and back to measurements that pin down the parameters.
-    The second row runs right to left (the arrows point left).</aside>
+  <aside class="notes">This was the flow of the course so far. We first learnt that the universe is expanding… (click: Expansion fills in). The three rows are today's three categories; the middle row runs right to left.</aside>
 </section>
 
-<!-- ============ Key results ============ -->
+<section id="expansion" data-text-size="0.95">
+  <p class="kicker">Chapter 2 · <a href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/01-observables/" target="_blank">Lecture 1</a>, <a href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/02-expansion/" target="_blank">Lecture 2</a></p>
+  <h2>The universe is expanding</h2>
+  <div class="cols" style="grid-template-columns: 1fr auto; gap: 30px; align-items: center;">
+    <ul>
+      <li><strong>Cosmological principle</strong>: on scales above about 100 Mpc, the universe looks the same everywhere and in every direction.</li>
+      <li class="fragment" data-fragment-index="1"><strong>Hubble's law</strong>: galaxies recede with $\;v = H_0\,d$, $\;H_0 \approx 68$ km/s/Mpc.</li>
+      <li class="fragment" data-fragment-index="2">No centre: all distances grow by the same factor, $a(t)$.</li>
+      <li class="fragment" data-fragment-index="3"><strong>Hubble time</strong>: $\;t_H = 1/H_0 \approx 14$ Gyr.</li>
+    </ul>
+    <div class="r-stack" style="width: 520px;">
+      <figure class="fragment fade-out" data-fragment-index="1" style="margin: 0;">
+        <img class="plate" src="../../figures/2dfgrs-redshift-cone.gif" alt="The 2dF Galaxy Redshift Survey: two wedges of galaxies seen from our position at the tip" style="width: 520px;">
+        <p class="credit">2dF Galaxy Redshift Survey (Colless et al. 2001)</p>
+      </figure>
+      <figure class="fragment fade-in-then-out" data-fragment-index="1" style="margin: 0;">
+        <img class="plate" src="../../figures/hubble-1929-velocity-distance.gif" alt="Hubble's 1929 diagram: velocity against distance for nearby galaxies" style="width: 480px;">
+        <p class="credit">Hubble (1929), PNAS 15, 168</p>
+      </figure>
+      <div class="fragment" data-fragment-index="2">
+        <div class="w-fig" data-widget="raisins"></div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">Hubble time (raisins still rising): if the universe expanded at a constant rate forever, 1/H0 would be its age. Observations say otherwise: the expansion is speeding up (Nobel Prize in Physics 2011, Lecture 7), and the Benchmark age is 13.7 Gyr = 0.95/H0.
+    If asked about the measured value: H0 ≈ 67–68 km/s/Mpc from the CMB, ≈ 73 from Cepheids and supernovae (the Hubble tension, later in the course). 1/H0 = 977.8/68 Gyr ≈ 14.4 Gyr.</aside>
+</section>
 
-<section id="metric" data-text-size="0.9">
+<section id="map-geometry" data-text-size="1">
+  <h2>The story so far</h2>
+  <div class="flow">
+    <a class="right cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/02-expansion/#/hubble-law" target="_blank" style="grid-area: 1 / 1;"><strong>Expansion</strong><span class="d">Hubble's law $v = H_0 d$: the universe expands. Hubble time $1/H_0$</span></a>
+    <a class="right cat1 next" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/03-curvature/#/robertson-walker" target="_blank" style="grid-area: 1 / 2;"><strong>Geometry</strong><span class="d fragment">Homogeneous and isotropic: the Robertson–Walker metric, with $a(t)$ and $\kappa$</span></a>
+    <a class="down cat1 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/03-curvature/#/proper-distance" target="_blank" style="grid-area: 1 / 3;"><strong>Distances</strong><span class="d">Light travels on $ds = 0$: proper distance, redshift $1 + z = 1/a$</span></a>
+    <a class="left cat2 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/04-friedmann/#/friedmann" target="_blank" style="grid-area: 2 / 3;"><strong>Dynamics</strong><span class="d">General relativity: the Friedmann, fluid and acceleration equations</span></a>
+    <a class="left cat2 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/04-friedmann/#/eos" target="_blank" style="grid-area: 2 / 2;"><strong>Contents</strong><span class="d">Equation of state $P = w\varepsilon$: $\varepsilon \propto a^{-3(1+w)}$, and $\Omega$</span></a>
+    <a class="down cat2 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/05-single/#/flat-general" target="_blank" style="grid-area: 2 / 1;"><strong>Model universes</strong><span class="d">$a(t)$ for one or several components: the Benchmark Model</span></a>
+    <a class="right cat3 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/06-multiple/#/distances-z" target="_blank" style="grid-area: 3 / 1;"><strong>Predictions</strong><span class="d">Distances against redshift in each model universe</span></a>
+    <a class="right cat3 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/measure" target="_blank" style="grid-area: 3 / 2;"><strong>Observations</strong><span class="d">Standard candles and yardsticks: $d_L$ and $d_A$ against $z$</span></a>
+    <a class="cat3 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/sn-plane" target="_blank" style="grid-area: 3 / 3;"><strong>Parameters</strong><span class="d">Fit the models: $H_0$, $q_0$, $\Omega_{m,0}$, $\Omega_{\Lambda,0}$, …</span></a>
+  </div>
+  <aside class="notes">Geometry: what space looks like if it is homogeneous and isotropic.</aside>
+</section>
+
+<section id="metric" data-text-size="0.85">
   <p class="kicker">Chapter 3 · <a href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/03-curvature/" target="_blank">Lecture 3</a></p>
   <h2>The Robertson–Walker metric</h2>
-  <div style="display: flex; align-items: center; justify-content: center; gap: 2em;">
-    <div>$$ds^2 = -c^2dt^2 + a(t)^2\left[dr^2 + S_\kappa(r)^2\,d\Omega^2\right]$$</div>
-    <div>$$S_\kappa(r) = \begin{cases} R_0\sin(r/R_0) & \kappa = +1\\ r & \kappa = 0\\ R_0\sinh(r/R_0) & \kappa = -1\end{cases}$$</div>
+  <div class="cols" style="grid-template-columns: 1fr auto; gap: 30px; align-items: center;">
+    <div>
+      $$ds^2 = -c^2dt^2 + a(t)^2\left[dr^2 + S_\kappa(r)^2\,d\Omega^2\right]$$
+      $$S_\kappa(r) = \begin{cases} R_0\sin(r/R_0) & \kappa = +1\\ r & \kappa = 0\\ R_0\sinh(r/R_0) & \kappa = -1\end{cases}$$
+      <ul>
+        <li>$a(t)$: the scale factor, $a(t_0) = 1$. $\;r, \theta, \phi$: comoving coordinates.</li>
+        <li class="fragment" data-fragment-index="1">Light: $ds = 0$. A photon coming radially towards us: $\;c\,dt = a(t)\,dr$.</li>
+        <li class="fragment" data-fragment-index="2">Redshift: $\;1 + z = \dfrac{\lambda_\text{obs}}{\lambda_\text{em}} = \dfrac{1}{a(t_e)}$</li>
+      </ul>
+    </div>
+    <div class="r-stack" style="width: 500px;">
+      <figure class="fragment fade-out" data-fragment-index="2" style="margin: 0;">
+        <img class="plate" src="../../figures/universe-geometry-wmap.jpg" alt="Triangles drawn on a sphere, a saddle and a flat sheet: closed, open and flat space" style="width: 400px;">
+        <p class="credit">Closed ($\kappa = +1$), open ($\kappa = -1$) and flat ($\kappa = 0$). Image: NASA / WMAP Science Team</p>
+      </figure>
+      <div class="fragment" data-fragment-index="2">
+        <div class="w-fig" data-widget="stretch"></div>
+      </div>
+    </div>
   </div>
-  <ul>
-    <li>$a(t)$: the scale factor, $a(t_0) = 1$. $\;r, \theta, \phi$: comoving coordinates.</li>
-    <li class="fragment">Light: $ds = 0$. A photon coming radially towards us: $\;c\,dt = a(t)\,dr$.</li>
-    <li class="fragment">Redshift: $\;1 + z = \dfrac{\lambda_\text{obs}}{\lambda_\text{em}} = \dfrac{1}{a(t_e)}$. At small $z$: $cz = H_0 d$, with $H_0 = \dot a/a$ today.</li>
-  </ul>
+  <aside class="notes">The wave: emitted when a = 0.5, its wavelength stretches with the expansion, so 1 + z = 2 today. At small z: cz = H0 d, Hubble's law again, with H0 = ȧ/a today.</aside>
+</section>
+
+<section id="map-distances" data-text-size="1">
+  <h2>The story so far</h2>
+  <div class="flow">
+    <a class="right cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/02-expansion/#/hubble-law" target="_blank" style="grid-area: 1 / 1;"><strong>Expansion</strong><span class="d">Hubble's law $v = H_0 d$: the universe expands. Hubble time $1/H_0$</span></a>
+    <a class="right cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/03-curvature/#/robertson-walker" target="_blank" style="grid-area: 1 / 2;"><strong>Geometry</strong><span class="d">Homogeneous and isotropic: the Robertson–Walker metric, with $a(t)$ and $\kappa$</span></a>
+    <a class="down cat1 next" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/03-curvature/#/proper-distance" target="_blank" style="grid-area: 1 / 3;"><strong>Distances</strong><span class="d fragment">Light travels on $ds = 0$: proper distance, redshift $1 + z = 1/a$</span></a>
+    <a class="left cat2 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/04-friedmann/#/friedmann" target="_blank" style="grid-area: 2 / 3;"><strong>Dynamics</strong><span class="d">General relativity: the Friedmann, fluid and acceleration equations</span></a>
+    <a class="left cat2 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/04-friedmann/#/eos" target="_blank" style="grid-area: 2 / 2;"><strong>Contents</strong><span class="d">Equation of state $P = w\varepsilon$: $\varepsilon \propto a^{-3(1+w)}$, and $\Omega$</span></a>
+    <a class="down cat2 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/05-single/#/flat-general" target="_blank" style="grid-area: 2 / 1;"><strong>Model universes</strong><span class="d">$a(t)$ for one or several components: the Benchmark Model</span></a>
+    <a class="right cat3 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/06-multiple/#/distances-z" target="_blank" style="grid-area: 3 / 1;"><strong>Predictions</strong><span class="d">Distances against redshift in each model universe</span></a>
+    <a class="right cat3 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/measure" target="_blank" style="grid-area: 3 / 2;"><strong>Observations</strong><span class="d">Standard candles and yardsticks: $d_L$ and $d_A$ against $z$</span></a>
+    <a class="cat3 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/sn-plane" target="_blank" style="grid-area: 3 / 3;"><strong>Parameters</strong><span class="d">Fit the models: $H_0$, $q_0$, $\Omega_{m,0}$, $\Omega_{\Lambda,0}$, …</span></a>
+  </div>
+  <aside class="notes">Distances: how light travels in that space.</aside>
 </section>
 
 <section id="distances">
@@ -124,6 +206,67 @@
       $$d_\text{hor}(t_0) = c\int_0^{t_0}\frac{dt}{a(t)}$$</li>
   </ul>
   <aside class="notes">The comoving distance r does not change with time; the proper distance grows with a(t). Light-travel distance c(t0 − te) is yet another distance: between d_p(te) and d_p(t0).</aside>
+</section>
+
+<section id="quiz-size" data-text-size="1">
+  <p class="kicker">Think-Pair-Share</p>
+  <h2 style="margin-bottom: 0.15em;">Light from a galaxy at $z = 1$ reaches us today. When it left, the universe was…</h2>
+  <p class="aside">Think alone, discuss with your neighbour, then share. Click an option to check.</p>
+  <div class="choices" style="margin-top: 12px;">
+    <details class="no">
+      <summary>the same size <span>the light lost energy on the way</span></summary>
+      <p><b>No.</b> Redshift is the stretching of space while the light travels: $1 + z = 1/a(t_e)$.</p>
+    </details>
+    <details class="yes">
+      <summary>half its present size</summary>
+      <p><b>Yes.</b> $a(t_e) = 1/(1+z) = 1/2$: all distances between galaxies were half as large.</p>
+    </details>
+    <details class="no">
+      <summary>twice its present size</summary>
+      <p><b>No: backwards.</b> The universe expands, so it was smaller in the past.</p>
+    </details>
+    <details class="partly">
+      <summary>it depends on Ω<sub>m,0</sub> and Ω<sub>Λ,0</sub></summary>
+      <p><b>The size does not:</b> $a = 1/(1+z)$ in every universe. <em>When</em> the light left, $t_e$, does.</p>
+    </details>
+  </div>
+  <aside class="notes">Follow-up: is the galaxy closer or farther now than when the light left? Farther: d_p(t0) = (1+z) d_p(te).</aside>
+</section>
+
+<section id="board-distances" data-text-size="0.85">
+  <p class="kicker">On the board</p>
+  <h2>Four distances to one galaxy</h2>
+  <p class="aside">Single-component universes, exercise 6</p>
+  <p>A light source at $z = 3$ in an Einstein–de Sitter universe, $\;a(t) = (t/t_0)^{2/3}$. In units of the Hubble distance $c/H_0$:</p>
+  <ol type="a">
+    <li>How far has its light travelled to reach us?</li>
+    <li>How distant is the source today?</li>
+    <li>How distant was it when the light was emitted?</li>
+    <li>How far would light emitted from us today have to travel to reach it?</li>
+  </ol>
+  <p class="fragment"><strong>Hint for (d):</strong> the comoving distance between us and the source does not change.</p>
+  <aside class="notes">Pairs for 5 minutes on (a)–(c), then on the board; (d) together. First: t0 = 2/(3H0), a = 1/(1+z) = 1/4, te = t0 (1+z)^(−3/2) = t0/8.
+    (a) c(t0 − te) = (2/3)(1 − 1/8) ≈ 0.58. (b) dp(t0) = (2c/H0)[1 − (1+z)^(−1/2)] = 1.0. (c) dp(te) = dp(t0)/(1+z) = 0.25.
+    (d) From us at t0, light covers the comoving distance c∫ dt/a = 2(c/H0)(a^(1/2) − 1); set it to 1: a = 2.25. It travels c(t − t0) = (2/3)(2.25^(3/2) − 1) ≈ 1.58, and the source is then 2.25 away.
+    Order: dp(te) = 0.25 &lt; c(t0 − te) = 0.58 &lt; dp(t0) = 1.0 &lt; 1.58: the same order as on the distances slide.</aside>
+</section>
+
+<!-- ============ Dynamics, contents and model universes ============ -->
+
+<section id="map-dynamics" data-text-size="1">
+  <h2>The story so far</h2>
+  <div class="flow">
+    <a class="right cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/02-expansion/#/hubble-law" target="_blank" style="grid-area: 1 / 1;"><strong>Expansion</strong><span class="d">Hubble's law $v = H_0 d$: the universe expands. Hubble time $1/H_0$</span></a>
+    <a class="right cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/03-curvature/#/robertson-walker" target="_blank" style="grid-area: 1 / 2;"><strong>Geometry</strong><span class="d">Homogeneous and isotropic: the Robertson–Walker metric, with $a(t)$ and $\kappa$</span></a>
+    <a class="down cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/03-curvature/#/proper-distance" target="_blank" style="grid-area: 1 / 3;"><strong>Distances</strong><span class="d">Light travels on $ds = 0$: proper distance, redshift $1 + z = 1/a$</span></a>
+    <a class="left cat2 next" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/04-friedmann/#/friedmann" target="_blank" style="grid-area: 2 / 3;"><strong>Dynamics</strong><span class="d fragment">General relativity: the Friedmann, fluid and acceleration equations</span></a>
+    <a class="left cat2 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/04-friedmann/#/eos" target="_blank" style="grid-area: 2 / 2;"><strong>Contents</strong><span class="d">Equation of state $P = w\varepsilon$: $\varepsilon \propto a^{-3(1+w)}$, and $\Omega$</span></a>
+    <a class="down cat2 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/05-single/#/flat-general" target="_blank" style="grid-area: 2 / 1;"><strong>Model universes</strong><span class="d">$a(t)$ for one or several components: the Benchmark Model</span></a>
+    <a class="right cat3 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/06-multiple/#/distances-z" target="_blank" style="grid-area: 3 / 1;"><strong>Predictions</strong><span class="d">Distances against redshift in each model universe</span></a>
+    <a class="right cat3 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/measure" target="_blank" style="grid-area: 3 / 2;"><strong>Observations</strong><span class="d">Standard candles and yardsticks: $d_L$ and $d_A$ against $z$</span></a>
+    <a class="cat3 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/sn-plane" target="_blank" style="grid-area: 3 / 3;"><strong>Parameters</strong><span class="d">Fit the models: $H_0$, $q_0$, $\Omega_{m,0}$, $\Omega_{\Lambda,0}$, …</span></a>
+  </div>
+  <aside class="notes">Second category. Dynamics: how a(t) changes, from general relativity.</aside>
 </section>
 
 <section id="equations" data-text-size="0.95">
@@ -147,6 +290,22 @@
   <aside class="notes">Anything with w &lt; −1/3 makes the expansion speed up (ε + 3P &lt; 0): dark energy. Photon number density ∝ a⁻³, and each photon's energy ∝ 1/a: radiation ∝ a⁻⁴.</aside>
 </section>
 
+<section id="map-contents" data-text-size="1">
+  <h2>The story so far</h2>
+  <div class="flow">
+    <a class="right cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/02-expansion/#/hubble-law" target="_blank" style="grid-area: 1 / 1;"><strong>Expansion</strong><span class="d">Hubble's law $v = H_0 d$: the universe expands. Hubble time $1/H_0$</span></a>
+    <a class="right cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/03-curvature/#/robertson-walker" target="_blank" style="grid-area: 1 / 2;"><strong>Geometry</strong><span class="d">Homogeneous and isotropic: the Robertson–Walker metric, with $a(t)$ and $\kappa$</span></a>
+    <a class="down cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/03-curvature/#/proper-distance" target="_blank" style="grid-area: 1 / 3;"><strong>Distances</strong><span class="d">Light travels on $ds = 0$: proper distance, redshift $1 + z = 1/a$</span></a>
+    <a class="left cat2" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/04-friedmann/#/friedmann" target="_blank" style="grid-area: 2 / 3;"><strong>Dynamics</strong><span class="d">General relativity: the Friedmann, fluid and acceleration equations</span></a>
+    <a class="left cat2 next" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/04-friedmann/#/eos" target="_blank" style="grid-area: 2 / 2;"><strong>Contents</strong><span class="d fragment">Equation of state $P = w\varepsilon$: $\varepsilon \propto a^{-3(1+w)}$, and $\Omega$</span></a>
+    <a class="down cat2 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/05-single/#/flat-general" target="_blank" style="grid-area: 2 / 1;"><strong>Model universes</strong><span class="d">$a(t)$ for one or several components: the Benchmark Model</span></a>
+    <a class="right cat3 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/06-multiple/#/distances-z" target="_blank" style="grid-area: 3 / 1;"><strong>Predictions</strong><span class="d">Distances against redshift in each model universe</span></a>
+    <a class="right cat3 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/measure" target="_blank" style="grid-area: 3 / 2;"><strong>Observations</strong><span class="d">Standard candles and yardsticks: $d_L$ and $d_A$ against $z$</span></a>
+    <a class="cat3 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/sn-plane" target="_blank" style="grid-area: 3 / 3;"><strong>Parameters</strong><span class="d">Fit the models: $H_0$, $q_0$, $\Omega_{m,0}$, $\Omega_{\Lambda,0}$, …</span></a>
+  </div>
+  <aside class="notes">Contents: what is in the universe, and how each part dilutes.</aside>
+</section>
+
 <section id="omega">
   <p class="kicker">Chapters 4–5 · <a href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/04-friedmann/#/omega" target="_blank">Lecture 4</a>, <a href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/06-multiple/#/friedmann-omega" target="_blank">Lecture 6</a></p>
   <h2>Critical density and $\Omega$</h2>
@@ -159,6 +318,22 @@
     $$\frac{H^2}{H_0^2} = \htmlClass{c-hot}{\frac{\Omega_{r,0}}{a^4}} + \htmlClass{c-accent}{\frac{\Omega_{m,0}}{a^3}} + \htmlClass{c-good}{\Omega_{\Lambda,0}} + \htmlClass{c-soft}{\frac{1 - \Omega_0}{a^2}}$$
   </div>
   <p class="fragment">Acceleration today: $\;q_0 = \Omega_{r,0} + \tfrac{1}{2}\,\Omega_{m,0} - \Omega_{\Lambda,0}$ <span class="aside">(<a href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/q0" target="_blank">Lecture 7</a>)</span></p>
+</section>
+
+<section id="map-model-universes" data-text-size="1">
+  <h2>The story so far</h2>
+  <div class="flow">
+    <a class="right cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/02-expansion/#/hubble-law" target="_blank" style="grid-area: 1 / 1;"><strong>Expansion</strong><span class="d">Hubble's law $v = H_0 d$: the universe expands. Hubble time $1/H_0$</span></a>
+    <a class="right cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/03-curvature/#/robertson-walker" target="_blank" style="grid-area: 1 / 2;"><strong>Geometry</strong><span class="d">Homogeneous and isotropic: the Robertson–Walker metric, with $a(t)$ and $\kappa$</span></a>
+    <a class="down cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/03-curvature/#/proper-distance" target="_blank" style="grid-area: 1 / 3;"><strong>Distances</strong><span class="d">Light travels on $ds = 0$: proper distance, redshift $1 + z = 1/a$</span></a>
+    <a class="left cat2" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/04-friedmann/#/friedmann" target="_blank" style="grid-area: 2 / 3;"><strong>Dynamics</strong><span class="d">General relativity: the Friedmann, fluid and acceleration equations</span></a>
+    <a class="left cat2" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/04-friedmann/#/eos" target="_blank" style="grid-area: 2 / 2;"><strong>Contents</strong><span class="d">Equation of state $P = w\varepsilon$: $\varepsilon \propto a^{-3(1+w)}$, and $\Omega$</span></a>
+    <a class="down cat2 next" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/05-single/#/flat-general" target="_blank" style="grid-area: 2 / 1;"><strong>Model universes</strong><span class="d fragment">$a(t)$ for one or several components: the Benchmark Model</span></a>
+    <a class="right cat3 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/06-multiple/#/distances-z" target="_blank" style="grid-area: 3 / 1;"><strong>Predictions</strong><span class="d">Distances against redshift in each model universe</span></a>
+    <a class="right cat3 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/measure" target="_blank" style="grid-area: 3 / 2;"><strong>Observations</strong><span class="d">Standard candles and yardsticks: $d_L$ and $d_A$ against $z$</span></a>
+    <a class="cat3 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/sn-plane" target="_blank" style="grid-area: 3 / 3;"><strong>Parameters</strong><span class="d">Fit the models: $H_0$, $q_0$, $\Omega_{m,0}$, $\Omega_{\Lambda,0}$, …</span></a>
+  </div>
+  <aside class="notes">Model universes: solving for a(t).</aside>
 </section>
 
 <section id="single" data-text-size="0.85">
@@ -193,6 +368,131 @@
   </div>
 </section>
 
+<section id="quiz-omega" data-text-size="1">
+  <p class="kicker">Think-Pair-Share</p>
+  <h2 style="margin-bottom: 0.15em;">Going back in time, what happens to $\Omega_m$ in the Benchmark Model?</h2>
+  <p class="aside">Think alone, discuss with your neighbour, then share. Click an option to check.</p>
+  <div class="choices" style="margin-top: 12px;">
+    <details class="no">
+      <summary>it grows as (1 + z)<sup>3</sup>, without limit</summary>
+      <p><b>No.</b> $\varepsilon_m$ grows as $(1+z)^3$, but the critical density $\varepsilon_c \propto H^2$ grows too. In a flat universe $\Omega_m \le 1$.</p>
+    </details>
+    <details class="no">
+      <summary>it stays at 0.31</summary>
+      <p><b>No.</b> $\varepsilon_\Lambda$ stays constant while $\varepsilon_m$ grows: going back, matter takes a larger share.</p>
+    </details>
+    <details class="yes">
+      <summary>it rises towards 1, then falls as radiation takes over</summary>
+      <p><b>Yes.</b> $\Omega_m > 0.9$ for $2 \lesssim z \lesssim 300$. Radiation grows faster, $(1+z)^4$, and wins before $z \approx 3400$.</p>
+    </details>
+  </div>
+  <aside class="notes">This sets up PS3 problem 2, next.</aside>
+</section>
+
+<section id="ps3-a" data-text-size="0.9">
+  <p class="kicker">On the board · Problem set 3, problem 2</p>
+  <h2>Does $\Omega_\text{total}$ change with time?</h2>
+  <p>(a) If $\Omega_\text{total} = 1$ today, was it always 1? If $\Omega_\text{total} > 1$ today, was it always greater than 1?</p>
+  <div class="fragment">
+    <p>Friedmann at any time, then divide by $H(t)^2$, with $\Omega = \varepsilon/\varepsilon_c$ and $\varepsilon_c = 3c^2H^2/(8\pi G)$:</p>
+    $$H^2 = \frac{8\pi G}{3c^2}\,\varepsilon - \frac{\kappa c^2}{R_0^2\,a^2} \quad\Rightarrow\quad 1 - \Omega(t) = -\frac{\kappa c^2}{R_0^2\,a(t)^2H(t)^2}$$
+  </div>
+  <p class="fragment">The right side <strong>never changes sign</strong>: $\kappa$ is fixed and $a^2H^2 > 0$. Flat stays flat ($\Omega = 1$), closed stays closed ($\Omega > 1$), open stays open.</p>
+  <div class="callout fragment" style="position: static; transform: none; width: auto; margin-top: 0.5em; padding: 12px 22px; font-size: 1em;">The total stays at 1, but each $\Omega_i$ changes: that is part (b).</div>
+  <aside class="notes">Common answer that misses the point: "the Ωi are constants". Only Ωi,0 are; Ωi(t) = εi(t)/εc(t).
+    If asked: 1 − Ω = −κc²/(R0² ȧ²). While the expansion slows down, ȧ falls and |1 − Ω| grows: the flatness problem, which inflation addresses later in the course.</aside>
+</section>
+
+<section id="ps3-b" data-text-size="0.8">
+  <p class="kicker">On the board · Problem set 3, problem 2</p>
+  <h2>The density parameters at $z = 999$</h2>
+  <p>(b) $\Omega_{m,0} = 0.31$, $\Omega_{\Lambda,0} = 0.69$, $\Omega_{r,0} = 9\times10^{-5}$: find $\Omega_m$, $\Omega_\Lambda$ and $\Omega_r$ at $z = 999$.</p>
+  <div class="cols" style="grid-template-columns: 1fr auto; gap: 30px; align-items: start;">
+    <div>
+      <div class="fragment">
+        <p>Both $\varepsilon_i$ and $\varepsilon_c \propto H^2$ change:</p>
+        $$\Omega_i(z) = \frac{\varepsilon_i(z)}{\varepsilon_c(z)} = \frac{\Omega_{i,0}\,(1+z)^{3(1+w_i)}}{E(z)^2}$$
+        $$E^2 = \htmlClass{c-hot}{\Omega_{r,0}(1+z)^4} + \htmlClass{c-accent}{\Omega_{m,0}(1+z)^3} + \htmlClass{c-good}{\Omega_{\Lambda,0}}$$
+      </div>
+      <table class="w-table fragment" style="margin-top: 0.4em;">
+        <tr><th>$1 + z = 1000$</th><th>$\Omega_{i,0}(1+z)^{3(1+w_i)}$</th><th>$\Omega_i(z = 999)$</th></tr>
+        <tr><td class="c-accent">Matter</td><td>$3.1\times10^8$</td><td>$0.775$</td></tr>
+        <tr><td class="c-hot">Radiation</td><td>$9.0\times10^7$</td><td>$0.225$</td></tr>
+        <tr><td class="c-good">$\Lambda$</td><td>$0.69$</td><td>$1.7\times10^{-9}$</td></tr>
+        <tr><td>Sum</td><td>$E^2 = 4.0\times10^8$</td><td>$1$</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="callout fragment" style="position: static; transform: none; width: auto; margin: 0 0 0.6em; padding: 10px 18px; font-size: 1em; max-width: 480px;"><strong>Common mistake:</strong> $\Omega_m = 0.31\times1000^3 = 3\times10^8$. Forgetting that $\varepsilon_c$ was larger too.</div>
+      <div class="fragment">
+      <div class="w-fig" data-widget="omz" data-z="999" data-w="480" data-h="300"></div>
+      <label class="w-toggle" style="justify-content: center;"><input type="checkbox" data-k="flip"> <span>Flip the redshift axis: the past on the left, as in $a(t)$</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">Divide numerator and denominator by H0²: εi/εc = (εi/εc,0)(εc,0/εc) = Ωi,0 (1+z)^(3(1+wi)) × H0²/H². Curvature term is zero here (flat).
+    Sanity check: the three must add up to 1 (flat, part a). Radiation–matter equality at 1 + z = Ωm,0/Ωr,0 ≈ 3400: at z = 999 matter still leads, but radiation is not negligible (CMB, Lecture 11).</aside>
+</section>
+
+<!-- ============ Predictions, observations and parameters ============ -->
+
+<section id="map-predictions" data-text-size="1">
+  <h2>The story so far</h2>
+  <div class="flow">
+    <a class="right cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/02-expansion/#/hubble-law" target="_blank" style="grid-area: 1 / 1;"><strong>Expansion</strong><span class="d">Hubble's law $v = H_0 d$: the universe expands. Hubble time $1/H_0$</span></a>
+    <a class="right cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/03-curvature/#/robertson-walker" target="_blank" style="grid-area: 1 / 2;"><strong>Geometry</strong><span class="d">Homogeneous and isotropic: the Robertson–Walker metric, with $a(t)$ and $\kappa$</span></a>
+    <a class="down cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/03-curvature/#/proper-distance" target="_blank" style="grid-area: 1 / 3;"><strong>Distances</strong><span class="d">Light travels on $ds = 0$: proper distance, redshift $1 + z = 1/a$</span></a>
+    <a class="left cat2" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/04-friedmann/#/friedmann" target="_blank" style="grid-area: 2 / 3;"><strong>Dynamics</strong><span class="d">General relativity: the Friedmann, fluid and acceleration equations</span></a>
+    <a class="left cat2" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/04-friedmann/#/eos" target="_blank" style="grid-area: 2 / 2;"><strong>Contents</strong><span class="d">Equation of state $P = w\varepsilon$: $\varepsilon \propto a^{-3(1+w)}$, and $\Omega$</span></a>
+    <a class="down cat2" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/05-single/#/flat-general" target="_blank" style="grid-area: 2 / 1;"><strong>Model universes</strong><span class="d">$a(t)$ for one or several components: the Benchmark Model</span></a>
+    <a class="right cat3 next" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/06-multiple/#/distances-z" target="_blank" style="grid-area: 3 / 1;"><strong>Predictions</strong><span class="d fragment">Distances against redshift in each model universe</span></a>
+    <a class="right cat3 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/measure" target="_blank" style="grid-area: 3 / 2;"><strong>Observations</strong><span class="d">Standard candles and yardsticks: $d_L$ and $d_A$ against $z$</span></a>
+    <a class="cat3 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/sn-plane" target="_blank" style="grid-area: 3 / 3;"><strong>Parameters</strong><span class="d">Fit the models: $H_0$, $q_0$, $\Omega_{m,0}$, $\Omega_{\Lambda,0}$, …</span></a>
+  </div>
+  <aside class="notes">Third category. Predictions: what each model universe predicts for distances.</aside>
+</section>
+
+<section id="predict-try" data-text-size="0.8">
+  <h2>Try it: what each model predicts</h2>
+  <div class="cols" style="grid-template-columns: 1fr auto; gap: 24px; align-items: start;">
+    <div>
+      <select class="w-select" data-k="dist" aria-label="Distance">
+        <option value="dp0" selected>Comoving distance, dₚ(t₀)</option>
+        <option value="dpe">Proper distance at emission, dₚ(tₑ)</option>
+        <option value="lt">Light-travel distance, c(t₀ − tₑ)</option>
+        <option value="hor">Horizon distance when the light left</option>
+      </select>
+      <label class="w-toggle" style="margin-top: 0.5em;"><input type="checkbox" data-k="flip"> <span>Flip the redshift axis (past on the left)</span></label>
+      <ul style="margin-top: 0.6em;">
+        <li>At $z \ll 1$ all models agree: Hubble's law.</li>
+        <li class="fragment">Further away, each model predicts a <strong>different distance</strong> to the same $z$.</li>
+        <li class="fragment">So measuring distances tells us which model is our universe.</li>
+      </ul>
+    </div>
+    <div class="w-fig" data-widget="predict" data-w="660" data-h="500"></div>
+  </div>
+  <aside class="notes">Log axes; colours and dashes as in Lectures 5 and 6, the thick curve is the Benchmark Model (radiation + matter + Λ).
+    Questions to ask: which distance has a maximum (dp(te), except in de Sitter)? Which universes have a horizon (with matter or radiation)? Benchmark: dp(t0) &gt; c/H0 (receding faster than light today) beyond z ≈ 1.5.
+    The horizon option is not a distance to the source: it is how far light could have travelled since the Big Bang by the time te, so it does not follow Hubble's law at small z (infinite for the empty and Λ-only universes).
+    Catch: none of these four can be measured directly. Next: the distances we observe.</aside>
+</section>
+
+<section id="map-observations" data-text-size="1">
+  <h2>The story so far</h2>
+  <div class="flow">
+    <a class="right cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/02-expansion/#/hubble-law" target="_blank" style="grid-area: 1 / 1;"><strong>Expansion</strong><span class="d">Hubble's law $v = H_0 d$: the universe expands. Hubble time $1/H_0$</span></a>
+    <a class="right cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/03-curvature/#/robertson-walker" target="_blank" style="grid-area: 1 / 2;"><strong>Geometry</strong><span class="d">Homogeneous and isotropic: the Robertson–Walker metric, with $a(t)$ and $\kappa$</span></a>
+    <a class="down cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/03-curvature/#/proper-distance" target="_blank" style="grid-area: 1 / 3;"><strong>Distances</strong><span class="d">Light travels on $ds = 0$: proper distance, redshift $1 + z = 1/a$</span></a>
+    <a class="left cat2" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/04-friedmann/#/friedmann" target="_blank" style="grid-area: 2 / 3;"><strong>Dynamics</strong><span class="d">General relativity: the Friedmann, fluid and acceleration equations</span></a>
+    <a class="left cat2" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/04-friedmann/#/eos" target="_blank" style="grid-area: 2 / 2;"><strong>Contents</strong><span class="d">Equation of state $P = w\varepsilon$: $\varepsilon \propto a^{-3(1+w)}$, and $\Omega$</span></a>
+    <a class="down cat2" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/05-single/#/flat-general" target="_blank" style="grid-area: 2 / 1;"><strong>Model universes</strong><span class="d">$a(t)$ for one or several components: the Benchmark Model</span></a>
+    <a class="right cat3" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/06-multiple/#/distances-z" target="_blank" style="grid-area: 3 / 1;"><strong>Predictions</strong><span class="d">Distances against redshift in each model universe</span></a>
+    <a class="right cat3 next" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/measure" target="_blank" style="grid-area: 3 / 2;"><strong>Observations</strong><span class="d fragment">Standard candles and yardsticks: $d_L$ and $d_A$ against $z$</span></a>
+    <a class="cat3 dim" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/sn-plane" target="_blank" style="grid-area: 3 / 3;"><strong>Parameters</strong><span class="d">Fit the models: $H_0$, $q_0$, $\Omega_{m,0}$, $\Omega_{\Lambda,0}$, …</span></a>
+  </div>
+  <aside class="notes">Observations: measuring those distances.</aside>
+</section>
+
 <section id="observed" data-text-size="0.95">
   <p class="kicker">Chapter 6 · <a href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/" target="_blank">Lecture 7</a></p>
   <h2>Measuring distances</h2>
@@ -214,45 +514,65 @@
   </div>
 </section>
 
-<section id="zoo-try" data-text-size="0.8">
-  <h2>Try it: all the distances</h2>
+<section id="observe-try" data-text-size="0.8">
+  <h2>Try it: what we can observe</h2>
   <div class="cols" style="grid-template-columns: 1fr auto; gap: 24px; align-items: start;">
     <div>
-      <select class="w-select" data-k="model" aria-label="Model universe">
-        <option value="benchmark" selected>Benchmark Model</option>
-        <option value="matter">Matter only (Einstein–de Sitter)</option>
-        <option value="radiation">Radiation only</option>
-        <option value="lambda">Λ only (de Sitter)</option>
-        <option value="milne">Empty (Milne)</option>
+      <select class="w-select" data-k="dist" aria-label="Distance">
+        <option value="dL" selected>Luminosity distance, dL</option>
+        <option value="mu">Distance modulus, m − M</option>
+        <option value="dA">Angular-diameter distance, dA</option>
       </select>
-      <label class="w-toggle" style="margin-top: 0.5em;"><input type="checkbox" data-k="flip"> <span>Flip the redshift axis: the past on the left, as in $a(t)$</span></label>
+      <label class="w-toggle" style="margin-top: 0.5em;"><input type="checkbox" data-k="flip"> <span>Flip the redshift axis (past on the left)</span></label>
       <ul style="margin-top: 0.6em;">
-        <li>At $z \ll 1$ all distances agree: Hubble's law.</li>
-        <li>Flat: $d_A = d_p(t_e) < c(t_0 - t_e) < d_p(t_0) < d_L$</li>
-        <li>Horizon today: <span data-v="hor"></span></li>
-        <li>Receding faster than light today ($d_p(t_0) > c/H_0$) for $z >$ <span data-v="zc"></span>, and we see them!</li>
+        <li><strong>Standard candles</strong> give $d_L$, or $m - M$.</li>
+        <li><strong>Standard yardsticks</strong> give $d_A$.</li>
+        <li class="fragment">Each model predicts its own curve: compare with the data (supernovae, <a href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/hubble-sne" target="_blank">Lecture 7</a>).</li>
       </ul>
     </div>
-    <div class="w-fig" data-widget="zoo" data-key data-w="660" data-h="500"></div>
+    <div class="w-fig" data-widget="predict" data-steps data-w="660" data-h="500"></div>
   </div>
-  <aside class="notes">Log axes. The colours mark the kind of distance here, not a component.
-    Questions to ask: which distance is largest? Which one has a maximum (d_p(te) and d_A, except in de Sitter)? Which universes have a finite horizon (with matter or radiation)? In the empty universe, d_A ≠ d_p(te): it is curved.
-    Faster than light: Hubble's law v = H0 d_p holds exactly for the proper distance; v > c is allowed (it is space that expands), and the light we see now left those galaxies when they were closer.</aside>
+  <aside class="notes">The last click adds the Union2.1 supernovae (on dL and m − M only; dA needs standard yardsticks). Distance modulus for H0 = 68 km/s/Mpc. The empty universe is curved (κ = −1): there dL = Sκ(r)(1 + z), not dp(t0)(1 + z).
+    dA has a maximum (Benchmark: z ≈ 1.6): far enough away, objects look larger again. Λ only: no maximum.</aside>
 </section>
 
-<section id="confusions" data-text-size="0.95">
-  <h2>Common confusions</h2>
-  <ul>
-    <li class="fragment"><strong>The Hubble "constant" changes with time</strong>: $H_0$ is its value today. $H(t)$ is the same everywhere at a given time.</li>
-    <li class="fragment"><strong>Hubble time $\ne$ age</strong>: $t_0 = 1/H_0$ only for the empty universe (Benchmark: $t_0 = 0.95/H_0$).</li>
-    <li class="fragment"><strong>Hubble distance $c/H_0$ $\ne$ horizon distance</strong>: the horizon is $c\int dt/a$ from the Big Bang (Benchmark: $3.2\,c/H_0$).</li>
-    <li class="fragment"><strong>Redshift is not a Doppler shift</strong>: it is the stretching of space while the light travels, $1 + z = 1/a(t_e)$.</li>
-    <li class="fragment"><strong>Accelerating $\ne$ $H$ growing</strong>: $\ddot a > 0$, but in the Benchmark Model $H$ still falls towards $H_0\sqrt{\Omega_{\Lambda,0}}$.</li>
-  </ul>
-  <aside class="notes">Most of these came up in the exercises and the problem sets. Each one in one sentence: ask the students to explain it to their neighbour.</aside>
+<section id="map-parameters" data-text-size="1">
+  <h2>The story so far</h2>
+  <div class="flow">
+    <a class="right cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/02-expansion/#/hubble-law" target="_blank" style="grid-area: 1 / 1;"><strong>Expansion</strong><span class="d">Hubble's law $v = H_0 d$: the universe expands. Hubble time $1/H_0$</span></a>
+    <a class="right cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/03-curvature/#/robertson-walker" target="_blank" style="grid-area: 1 / 2;"><strong>Geometry</strong><span class="d">Homogeneous and isotropic: the Robertson–Walker metric, with $a(t)$ and $\kappa$</span></a>
+    <a class="down cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/03-curvature/#/proper-distance" target="_blank" style="grid-area: 1 / 3;"><strong>Distances</strong><span class="d">Light travels on $ds = 0$: proper distance, redshift $1 + z = 1/a$</span></a>
+    <a class="left cat2" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/04-friedmann/#/friedmann" target="_blank" style="grid-area: 2 / 3;"><strong>Dynamics</strong><span class="d">General relativity: the Friedmann, fluid and acceleration equations</span></a>
+    <a class="left cat2" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/04-friedmann/#/eos" target="_blank" style="grid-area: 2 / 2;"><strong>Contents</strong><span class="d">Equation of state $P = w\varepsilon$: $\varepsilon \propto a^{-3(1+w)}$, and $\Omega$</span></a>
+    <a class="down cat2" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/05-single/#/flat-general" target="_blank" style="grid-area: 2 / 1;"><strong>Model universes</strong><span class="d">$a(t)$ for one or several components: the Benchmark Model</span></a>
+    <a class="right cat3" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/06-multiple/#/distances-z" target="_blank" style="grid-area: 3 / 1;"><strong>Predictions</strong><span class="d">Distances against redshift in each model universe</span></a>
+    <a class="right cat3" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/measure" target="_blank" style="grid-area: 3 / 2;"><strong>Observations</strong><span class="d">Standard candles and yardsticks: $d_L$ and $d_A$ against $z$</span></a>
+    <a class="cat3 next" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/sn-plane" target="_blank" style="grid-area: 3 / 3;"><strong>Parameters</strong><span class="d fragment">Fit the models: $H_0$, $q_0$, $\Omega_{m,0}$, $\Omega_{\Lambda,0}$, …</span></a>
+  </div>
+  <aside class="notes">Parameters: fitting the models to the measurements.</aside>
 </section>
 
-<!-- ============ Check your understanding ============ -->
+<section id="parameters" data-text-size="0.76">
+  <p class="kicker">Chapter 6 · <a href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/" target="_blank">Lecture 7</a></p>
+  <h2>Fitting the parameters</h2>
+  <div class="cols" style="grid-template-columns: 1fr auto; gap: 26px; align-items: start;">
+    <div>
+      <ul>
+    <li>$H_0$: the slope of Hubble's law at small $z$, with distances calibrated by Cepheids.</li>
+    <li class="fragment" data-fragment-index="1">$q_0 = \Omega_{r,0} + \tfrac{1}{2}\Omega_{m,0} - \Omega_{\Lambda,0}$: supernovae at $z \gtrsim 0.3$ are fainter than for $q_0 = 0$, so $q_0 < 0$: the expansion is <strong>speeding up</strong>.</li>
+    <li class="fragment" data-fragment-index="2">The full curve $d_L(z)$ depends on $\Omega_{m,0}$ and $\Omega_{\Lambda,0}$: the supernovae allow a narrow band in the $(\Omega_{m,0}, \Omega_{\Lambda,0})$ plane (<a href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/sn-plane" target="_blank">Lecture 7</a>).</li>
+    <li class="fragment" data-fragment-index="3">With the CMB (later in the course): the flat <strong>Benchmark Model</strong>, with $H_0 = 68$ km/s/Mpc, $\Omega_{m,0} = 0.31$ and $\Omega_{\Lambda,0} = 0.69$.</li>
+      </ul>
+      <p class="aside fragment" data-fragment-index="4">The allowed region comes from <strong>statistical inference</strong>. You will get some experience of this in Problem set 4.</p>
+    </div>
+    <div class="fragment" data-fragment-index="2">
+      <div class="w-fig" data-widget="plane" data-w="420" data-h="460"></div>
+      <p class="credit">Union2.1 supernovae (statistical errors only). ★: the Benchmark Model.</p>
+    </div>
+  </div>
+  <aside class="notes">The plane is Lecture 7's: only the 99.7% region. The ★ comes from the supernovae together with other observations, mainly the CMB, so it need not sit at the centre.
+    Statistical inference (χ², likelihoods, Bayesian methods) turns data with errors into allowed regions of parameters. Problem set 4, problem 2 gives some experience of how parameters are fitted; statistical inference is not needed there: plotting the curves with the data and arguing qualitatively gets full points. Do not show any model's χ² here.</aside>
+</section>
 
 <section id="quiz-distances" data-text-size="1">
   <p class="kicker">Think-Pair-Share</p>
@@ -274,6 +594,26 @@
     <details class="partly">
       <summary>It depends on what the universe contains</summary>
       <p><b>The values do, the order does not.</b> $d_p(t_0)$ depends on $\Omega_{m,0}$, $\Omega_{\Lambda,0}$, …, but the factors $(1+z)$ do not.</p>
+    </details>
+  </div>
+</section>
+
+<section id="quiz-faster" data-text-size="1">
+  <p class="kicker">Think-Pair-Share</p>
+  <h2 style="margin-bottom: 0.15em;">Can we see galaxies that are receding from us faster than light?</h2>
+  <p class="aside">Think alone, discuss with your neighbour, then share. Click an option to check.</p>
+  <div class="choices" style="margin-top: 12px;">
+    <details class="no">
+      <summary>No <span>nothing moves faster than light</span></summary>
+      <p><b>No.</b> Special relativity limits motion <em>through</em> space. The recession speed $H_0\,d_p(t_0)$ comes from the expansion of space, and can exceed $c$.</p>
+    </details>
+    <details class="yes">
+      <summary>Yes <span>we see many</span></summary>
+      <p><b>Yes.</b> In the Benchmark Model, every galaxy with $z \gtrsim 1.5$ has $d_p(t_0) > c/H_0$. Their light left when they were closer, and has been reaching us since (see the "Try it" on what each model predicts).</p>
+    </details>
+    <details class="partly">
+      <summary>Only in an accelerating universe</summary>
+      <p><b>No.</b> In the Einstein–de Sitter universe too: $d_p(t_0) > c/H_0$ for $z > 3$.</p>
     </details>
   </div>
 </section>
@@ -302,33 +642,74 @@
   </div>
 </section>
 
-<section id="quiz-faster" data-text-size="1">
-  <p class="kicker">Think-Pair-Share</p>
-  <h2 style="margin-bottom: 0.15em;">Can we see galaxies that are receding from us faster than light?</h2>
-  <p class="aside">Think alone, discuss with your neighbour, then share. Click an option to check.</p>
-  <div class="choices" style="margin-top: 12px;">
-    <details class="no">
-      <summary>No <span>nothing moves faster than light</span></summary>
-      <p><b>No.</b> Special relativity limits motion <em>through</em> space. The recession speed $H_0\,d_p(t_0)$ comes from the expansion of space, and can exceed $c$.</p>
-    </details>
-    <details class="yes">
-      <summary>Yes <span>we see many</span></summary>
-      <p><b>Yes.</b> In the Benchmark Model, every galaxy with $z \gtrsim 1.5$ has $d_p(t_0) > c/H_0$. Their light left when they were closer, and has been reaching us since (see the previous "Try it").</p>
-    </details>
-    <details class="partly">
-      <summary>Only in an accelerating universe</summary>
-      <p><b>No.</b> In the Einstein–de Sitter universe too: $d_p(t_0) > c/H_0$ for $z > 3$.</p>
-    </details>
-  </div>
+<section id="boards" data-text-size="1">
+  <p class="kicker">Two boards</p>
+  <h2>Two boards, the same problems</h2>
+  <ol>
+    <li class="fragment"><strong>Both groups solve problems 1–3.</strong> Everyone must be able to explain them: I pick who defends.</li>
+    <li class="fragment"><strong>Swap:</strong> half of each group moves to the other board and checks it against their own solution; the other half defends.</li>
+    <li class="fragment">A solution shows the <strong>starting equation</strong>, <strong>each substitution</strong>, the <strong>final integral</strong>, and a <strong>check</strong> in a case you know.</li>
+  </ol>
+  <aside class="notes">Timing: about 25 min to solve, 10 min to swap and defend. Both groups solve the same problems, so the checkers know their own version. If time is short, problem 3 is for groups that finish early.</aside>
 </section>
 
-<section id="exercises">
-  <h2>Exercise session</h2>
+<section id="board-problems" data-text-size="0.74">
+  <p class="kicker">Two boards</p>
+  <h2>The distances you asked for</h2>
+  <div class="cols" style="grid-template-columns: 1fr 1fr; gap: 36px; align-items: start; flex: none;">
+    <div>
+      <p><strong>Problem 1</strong> · Multiple components, exercise 4</p>
+      <p>Show that the comoving distance is</p>
+      $$d_p(t_0) = \frac{c}{H_0}\int_{a_e}^{1}\frac{da}{\left[\Sigma_i\Omega_{i,0}\,a^{4-n_i}+(1-\Omega_{0})\,a^2\right]^{1/2}}$$
+      <p class="aside">$n_i = 4, 3, 0$ for radiation, matter, $\Lambda$. Check: flat, matter only.</p>
+    </div>
+    <div>
+      <p><strong>Problem 2</strong> · Observational distances, ex. 9(a)</p>
+      <p>Show that in a flat matter + $\Lambda$ universe</p>
+      $$d_A = \frac{c}{H_0(1+z)}\int_1^{1+z}\frac{dx}{\left(\Omega_{m,0}x^3+\Omega_{\Lambda,0}\right)^{1/2}}$$
+      <p class="aside">Check: $\Omega_{m,0} = 1$.</p>
+    </div>
+  </div>
+  <p style="margin-top: 1em;"><strong>Problem 3</strong> · Observational distances, exercise 3. A galaxy at $d_p(t_0) = 1$ Gpc ($h = 0.7$) in a positively curved universe with $R_0 = 2c/H_0$: find $d_L$. Is it smaller or larger than in a flat universe? Why? How far away must an object be for $d_L$ to differ by more than 1% from the flat value?</p>
+  <p class="aside fragment">Hint for problem 3: same $r$, same $z$; only the area of the sphere changes, <span style="white-space: nowrap;">$d_L = S_\kappa(r)\,(1+z)$</span> with <span style="white-space: nowrap;">$S_\kappa(r) = R_0\sin(r/R_0)$</span>.</p>
+  <aside class="notes">Both start from a light ray, c dt = a dr, and Friedmann in Ω form, H² = H0²[Σ Ωi,0 a^(−ni) + (1 − Ω0) a^(−2)].
+    A: dp(t0) = c∫dt/a = c∫da/(a²H); a²H = H0[Σ Ωi,0 a^(4−ni) + (1 − Ω0)a²]^(1/2). Check, flat matter only: (2c/H0)(1 − ae^(1/2)) (exercise 5).
+    B: dA = dp(t0)/(1+z) in a flat universe, dp(t0) = c∫0^z dz'/H(z'), H = H0[Ωm,0(1+z)³ + ΩΛ,0]^(1/2), x = 1 + z. Check, Ωm,0 = 1: dA = (2c/H0)[1 − (1+z)^(−1/2)]/(1+z).
+    Point out after the swap: problems 1 and 2 are the same integral, in a and in z (da = −dz/(1+z)²). If time: Ex 9(c), the maximum of dA, with the "Try it" plot.
+    Problem 3 answers (from the sheet): R0 = 2 × 4283 Mpc ≈ 8.57 Gpc; Sκ = R0 sin(1/8.57) ≈ 0.998 Gpc, so dL is about 0.2% smaller than flat (1.279 vs 1.282 Gpc for z ≈ 0.28, the redshift of exercise 2).
+    Smaller: the sphere through us of radius r has area 4πSκ² < 4πr², so the light is spread over less area: brighter, smaller dL.
+    1%: sin(x)/x < 0.99 for x = r/R0 ≳ 0.245, r ≳ 2.1 Gpc.</aside>
+</section>
+
+<!-- ============ Wrap-up ============ -->
+
+<section id="confusions" data-text-size="0.95">
+  <h2>Common confusions</h2>
   <ul>
-    <li>The exercises you asked for</li>
-    <li>The exercise sheets of Lectures 2–7 are on Canvas</li>
+    <li class="fragment"><strong>The Hubble "constant" changes with time</strong>: $H(t) = \dot a/a$ is the <strong>Hubble parameter</strong>, and $H_0$ is its value today. $H(t)$ is the same everywhere at a given time.</li>
+    <li class="fragment"><strong>Hubble time $\ne$ age</strong>: $t_0 = 1/H_0$ only for the empty universe (Benchmark: $t_0 = 0.95/H_0$).</li>
+    <li class="fragment"><strong>Hubble distance $c/H_0$ $\ne$ horizon distance</strong>: the horizon is $c\int dt/a$ from the Big Bang (Benchmark: $3.2\,c/H_0$).</li>
+    <li class="fragment"><strong>Redshift is not a Doppler shift</strong>: it is the stretching of space while the light travels, <span style="white-space: nowrap;">$1 + z = 1/a(t_e)$</span>.</li>
+    <li class="fragment"><strong>Accelerating $\ne$ $H$ growing</strong>: $\ddot a > 0$, but in the Benchmark Model $H$ still falls towards $H_0\sqrt{\Omega_{\Lambda,0}}$.</li>
   </ul>
-  <!-- TODO: Canvas links to the exercise sheets; add the exercises chosen by the students -->
+  <aside class="notes">Most of these came up in the exercises and the problem sets. Each one in one sentence: ask the students to explain it to their neighbour.</aside>
+</section>
+
+<section id="map-end" data-text-size="1">
+  <h2>The story so far, again</h2>
+  <div class="flow">
+    <a class="right cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/02-expansion/#/hubble-law" target="_blank" style="grid-area: 1 / 1;"><strong>Expansion</strong><span class="d">Hubble's law $v = H_0 d$: the universe expands. Hubble time $1/H_0$</span></a>
+    <a class="right cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/03-curvature/#/robertson-walker" target="_blank" style="grid-area: 1 / 2;"><strong>Geometry</strong><span class="d">Homogeneous and isotropic: the Robertson–Walker metric, with $a(t)$ and $\kappa$</span></a>
+    <a class="down cat1" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/03-curvature/#/proper-distance" target="_blank" style="grid-area: 1 / 3;"><strong>Distances</strong><span class="d">Light travels on $ds = 0$: proper distance, redshift $1 + z = 1/a$</span></a>
+    <a class="left cat2" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/04-friedmann/#/friedmann" target="_blank" style="grid-area: 2 / 3;"><strong>Dynamics</strong><span class="d">General relativity: the Friedmann, fluid and acceleration equations</span></a>
+    <a class="left cat2" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/04-friedmann/#/eos" target="_blank" style="grid-area: 2 / 2;"><strong>Contents</strong><span class="d">Equation of state $P = w\varepsilon$: $\varepsilon \propto a^{-3(1+w)}$, and $\Omega$</span></a>
+    <a class="down cat2" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/05-single/#/flat-general" target="_blank" style="grid-area: 2 / 1;"><strong>Model universes</strong><span class="d">$a(t)$ for one or several components: the Benchmark Model</span></a>
+    <a class="right cat3" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/06-multiple/#/distances-z" target="_blank" style="grid-area: 3 / 1;"><strong>Predictions</strong><span class="d">Distances against redshift in each model universe</span></a>
+    <a class="right cat3" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/measure" target="_blank" style="grid-area: 3 / 2;"><strong>Observations</strong><span class="d">Standard candles and yardsticks: $d_L$ and $d_A$ against $z$</span></a>
+    <a class="cat3" href="https://sambit-giri.github.io/teaching/Cosmology_HT2026_AS5003/lectures/07-parameters/#/sn-plane" target="_blank" style="grid-area: 3 / 3;"><strong>Parameters</strong><span class="d">Fit the models: $H_0$, $q_0$, $\Omega_{m,0}$, $\Omega_{\Lambda,0}$, …</span></a>
+  </div>
+  <p class="aside" style="margin-top: 0.9em;">Each box links to the slides where it was introduced.</p>
+  <aside class="notes">Ask: where on the loop did each exercise sit? Single-component Ex 6: Distances (with the a(t) of a model universe). PS3 problem 2: Contents (Ω). Multiple-component Ex 4 and Observational distances Ex 9: Predictions. Observational distances Ex 3: Geometry and Observations.</aside>
 </section>
 
 <section id="before-next-time">
@@ -337,6 +718,7 @@
     <li>Next lecture: <strong>Thursday 3 December</strong> (no lecture on Tuesday 1 December)</li>
     <li><a href="https://canvas.su.se/courses/12102/modules/items/204294" target="_blank"><em>Problem set 4</em></a> is due <strong>Thursday 3 December</strong>, in Canvas</li>
     <li>Read <strong>Ryden chapter 7</strong>: dark matter</li>
+    <li>The exercise sheets of Lectures 2–7 are on Canvas: try the ones we did not do today.</li>
   </ul>
 </section>
 
